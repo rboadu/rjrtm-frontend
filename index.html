@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Countries, States, Cities</title>
+
+    <!-- Link external CSS -->
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+
+  <body>
+    <main class="container">
+      <section class="card">
+        <h1>Frontend API Connector</h1>
+        <p>
+          Enter your backend base URL and load 3 endpoints:
+          <code>/countries</code>, <code>/states</code>, <code>/cities</code>.
+        </p>
+        <div class="row">
+          <input
+            id="apiBaseUrl"
+            type="url"
+            placeholder="http://127.0.0.1:5005"
+            value="http://127.0.0.1:5005"
+          />
+          <button id="loadBtn">Load Data</button>
+        </div>
+        <p class="status" id="status">Ready.</p>
+      </section>
+
+      <section class="card">
+        <h2>Countries</h2>
+        <ul id="countriesList"></ul>
+      </section>
+
+      <section class="card">
+        <h2>States</h2>
+        <ul id="statesList"></ul>
+      </section>
+
+      <section class="card">
+        <h2>Cities</h2>
+        <ul id="citiesList"></ul>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
