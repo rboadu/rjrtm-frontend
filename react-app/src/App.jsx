@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "./components/button";
+import Navbar from "./components/navbar";
 
 import "./App.css";
 function App() {
@@ -55,8 +56,11 @@ function App() {
       <li key={idx}>{item && item.name ? item.name : JSON.stringify(item)}</li>
     ));
   };
+
+
   return (
-    <main className="container">
+    <main>
+      <Navbar />
       <section className="card">
         <h1>Frontend API Connector</h1>
         <p>
