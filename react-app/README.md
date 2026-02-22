@@ -1,3 +1,25 @@
+# Using Tailwind CSS
+
+1. Make sure dependencies are installed:
+	```
+	npm install
+	```
+
+2. Tailwind CSS is already configured. To use Tailwind utility classes, simply add them to your React component JSX.
+
+3. The main CSS file (`src/index.css`) includes Tailwind directives:
+	```
+	@tailwind base;
+	@tailwind components;
+	@tailwind utilities;
+	```
+
+4. To start the development server:
+	```
+	npm run dev
+	```
+
+5. For best editor experience, install the "Tailwind CSS IntelliSense" extension in VS Code.
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

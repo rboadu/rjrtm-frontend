@@ -1,6 +1,5 @@
 import { useState } from "react";
 import "./App.css";
-
 function App() {
   const [apiBaseUrl, setApiBaseUrl] = useState("http://127.0.0.1:8000");
   const [status, setStatus] = useState("Ready.");
@@ -9,7 +8,6 @@ function App() {
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
-
   async function fetchJson(base, path) {
     const url = base.replace(/\/+$/, "") + path;
     try {
@@ -23,7 +21,6 @@ function App() {
       throw e;
     }
   }
-
   const handleLoadData = async () => {
     setStatus("Loading...");
     setIsError(false);
@@ -48,7 +45,6 @@ function App() {
       setLoading(false);
     }
   };
-
   const renderList = (data) => {
     if (!data || data.length === 0) {
       return <li>No data found.</li>;
@@ -57,7 +53,6 @@ function App() {
       <li key={idx}>{item && item.name ? item.name : JSON.stringify(item)}</li>
     ));
   };
-
   return (
     <main className="container">
       <section className="card">
@@ -80,17 +75,14 @@ function App() {
         </div>
         <p className={`status${isError ? " error" : ""}`}>{status}</p>
       </section>
-
       <section className="card">
         <h2>Countries</h2>
         <ul>{renderList(countries)}</ul>
       </section>
-
       <section className="card">
         <h2>States</h2>
         <ul>{renderList(states)}</ul>
       </section>
-
       <section className="card">
         <h2>Cities</h2>
         <ul>{renderList(cities)}</ul>
@@ -98,5 +90,4 @@ function App() {
     </main>
   );
 }
-
 export default App;
