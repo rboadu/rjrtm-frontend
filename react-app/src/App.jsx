@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Button } from "./components/button";
+
 import "./App.css";
 function App() {
   const [apiBaseUrl, setApiBaseUrl] = useState("http://127.0.0.1:8000");
@@ -69,9 +71,9 @@ function App() {
             onChange={(e) => setApiBaseUrl(e.target.value)}
             disabled={loading}
           />
-          <button onClick={handleLoadData} disabled={loading}>
+          <Button onClick={handleLoadData} disabled={loading}>
             {loading ? "Loading..." : "Load Data"}
-          </button>
+          </Button>
         </div>
         <p className={`status${isError ? " error" : ""}`}>{status}</p>
       </section>
