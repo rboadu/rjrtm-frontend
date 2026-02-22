@@ -1,6 +1,8 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "./components/button";
 import Navbar from "./components/navbar";
+import Team from "./sub_pages/Team";
 
 import "./App.css";
 function App() {
@@ -59,41 +61,53 @@ function App() {
 
 
   return (
-    <main>
+    <Router>
       <Navbar />
-      <section className="card">
-        <h1>Frontend API Connector</h1>
-        <p>
-          Enter your backend base URL and load 3 endpoints:
-          <code>/countries</code>, <code>/states</code>, <code>/cities</code>.
-        </p>
-        <div className="row">
-          <input
-            type="url"
-            placeholder="http://127.0.0.1:5005"
-            value={apiBaseUrl}
-            onChange={(e) => setApiBaseUrl(e.target.value)}
-            disabled={loading}
+      <main>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <section className="card">
+                  <h1>Frontend API Connector</h1>
+                  <p>
+                    Enter your backend base URL and load 3 endpoints:
+                    <code>/countries</code>, <code>/states</code>, <code>/cities</code>.
+                  </p>
+                  <div className="row">
+                    <input
+                      type="url"
+                      placeholder="http://127.0.0.1:5005"
+                      value={apiBaseUrl}
+                      onChange={(e) => setApiBaseUrl(e.target.value)}
+                      disabled={loading}
+                    />
+                    <Button onClick={handleLoadData} disabled={loading}>
+                      {loading ? "Loading..." : "Load Data"}
+                    </Button>
+                  </div>
+                  <p className={`status${isError ? " error" : ""}`}>{status}</p>
+                </section>
+                <section className="card">
+                  <h2>Countries</h2>
+                  <ul>{renderList(countries)}</ul>
+                </section>
+                <section className="card">
+                  <h2>States</h2>
+                  <ul>{renderList(states)}</ul>
+                </section>
+                <section className="card">
+                  <h2>Cities</h2>
+                  <ul>{renderList(cities)}</ul>
+                </section>
+              </>
+            }
           />
-          <Button onClick={handleLoadData} disabled={loading}>
-            {loading ? "Loading..." : "Load Data"}
-          </Button>
-        </div>
-        <p className={`status${isError ? " error" : ""}`}>{status}</p>
-      </section>
-      <section className="card">
-        <h2>Countries</h2>
-        <ul>{renderList(countries)}</ul>
-      </section>
-      <section className="card">
-        <h2>States</h2>
-        <ul>{renderList(states)}</ul>
-      </section>
-      <section className="card">
-        <h2>Cities</h2>
-        <ul>{renderList(cities)}</ul>
-      </section>
-    </main>
+          <Route path="/team" element={<Team />} />
+        </Routes>
+      </main>
+    </Router>
   );
 }
 export default App;
