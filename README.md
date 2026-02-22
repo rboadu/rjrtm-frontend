@@ -1,6 +1,7 @@
-# rjrtm-frontend
-Repo for Design Project Front End Spring 2026
+# Frontend Repository for Geographic API Server 
+A frontend web application for interacting with a geographic data platform that manages countries, states, and cities. This application provides a user-friendly interface for exploring and performing CRUD operations on geographic data through a RESTful backend API.
 
+The project is designed with a production-style mindset, emphasizing clear UI structure, seamless frontend–backend integration, and maintainable code practices. It serves both as a learning exercise in full-stack development and as a portfolio-quality frontend demonstrating effective API consumption, state management, and user interaction design.
 
 ## Steps to run the frontend:
 1. Use command `python3 -m http.server 9000` to run the frontend
