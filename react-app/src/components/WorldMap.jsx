@@ -1,16 +1,6 @@
 import { MapContainer, TileLayer } from "react-leaflet";
 import React from "react";
-// export default function WorldMapPage() {
-//   import React from "react";
-//   import WorldMap from "../components/worldMap";
 
-//   return (
-//     <div style={{ padding: "2rem" }}>
-//       <h1>World Map</h1>
-//       <WorldMap />
-//     </div>
-//   );
-// }
 function WorldMap() {
   return (
     <MapContainer

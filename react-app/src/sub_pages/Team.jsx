@@ -3,8 +3,9 @@ import ProfileCard from "../components/profile_card";
 const teamMembers = [
   {
     name: "Rebecca Boadu",
-    bio: "N/A", // change this to actual bios when available
+    bio: "A computer science major passionate about exploring the depths of software development and thoughtful design. ",
     accentColor: "#000dfe", // dummy colours feel free to change it to whatever you want
+    photo: "/src/images/Profile.png"
   },
   {
     name: "Jaden Ritchie",

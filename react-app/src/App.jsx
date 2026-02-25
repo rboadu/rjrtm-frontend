@@ -13,7 +13,8 @@ function App() {
       <Navbar />
       <main>
         <Routes>
-          <Route path="/" element={<div style={{ padding: "5rem" }}><h1>RJRTM Frontend</h1></div>} />
+          <Route path="/" element={<div style={{ padding: "5rem" }}><h1>Home Page</h1></div>} />
+          <Route path="/worldmap" element={<WorldMapPage />} />
           <Route path="/loadscript" element={<LoadScript />} />
           <Route path="/team" element={<Team />} />
         </Routes>
