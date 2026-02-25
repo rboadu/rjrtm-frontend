@@ -1,35 +1,84 @@
-export default function Team() {
-  const teamMembers = [
-    "Rebecca Boadu",
-    "Jaden Ritchie",
-    "Riku Santa Cruz",
-    "Terra Nagai",
-    "Mikiyas Legesse"
-  ];
+import ProfileCard from "../components/profile_card";
 
+const teamMembers = [
+  {
+    name: "Rebecca Boadu",
+    bio: "N/A", // change this to actual bios when available
+    accentColor: "#000dfe", // dummy colours feel free to change it to whatever you want
+  },
+  {
+    name: "Jaden Ritchie",
+    bio: "N/A",
+    accentColor: "#000dfe",
+  },
+  {
+    name: "Riku Santa Cruz",
+    bio: "N/A",    
+    accentColor: "#000dfe",
+  },
+  {
+    name: "Terra Nagai",
+    bio: "N/A",    
+    accentColor: "#000dfe",
+  },
+  {
+    name: "Mikiyas Legesse",
+    bio: "N/A",    
+    accentColor: "#000dfe",
+  },
+];
+
+export default function Team() {
+    const row1 = teamMembers.slice(0, 3);
+    const row2 = teamMembers.slice(3);
   return (
-    <div style={{ padding: "5rem", display: "flex", flexDirection: "column", alignItems: "center" }}>
-      <h1 style={{ marginBottom: "3rem" }}>Team RJRTM</h1>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "2rem", justifyContent: "center" }}>
-        {teamMembers.map((name) => (
-          <div key={name} style={{ textAlign: "center" }}>
-            <div
-              style={{
-                width: "200px",
-                height: "200px",
-                backgroundColor: "#e0e0e0",
-                borderRadius: "8px",
-                marginBottom: "1rem",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#999"
-              }}
-            >
-              Headshot
-            </div>
-            <h3>{name}</h3>
-          </div>
+    <div
+      style={{
+        padding: "5rem 2rem",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <h1 style={{ marginBottom: "0.5rem" }}>Senior Design Team</h1>
+      <p style={{ marginBottom: "3rem", color: "#999" }}>
+        This is the RJRTM team.
+      </p>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "2rem",
+          justifyContent: "center",
+        }}
+      >
+        {row1.map((member) => (
+          <ProfileCard
+            key={member.name}
+            name={member.name}
+            bio={member.bio}
+            photo={member.photo}
+            accentColor={member.accentColor}
+          />
+        ))}
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "2rem",
+          justifyContent: "center",
+          marginTop: "2rem",
+        }}
+      >
+        {row2.map((member) => (
+          <ProfileCard
+            key={member.name}
+            name={member.name}
+            bio={member.bio}
+            photo={member.photo}
+            accentColor={member.accentColor}
+          />
         ))}
       </div>
     </div>
