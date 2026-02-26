@@ -1,37 +1,39 @@
 import ProfileCard from "../components/profile_card";
+import JadenHeadshot from "../images/Jaden_headshot.jpeg";
 
 const teamMembers = [
   {
     name: "Rebecca Boadu",
     bio: "A computer science major passionate about exploring the depths of software development and thoughtful design. ",
     accentColor: "#000dfe", // dummy colours feel free to change it to whatever you want
-    photo: "/src/images/Profile.png"
+    photo: "/src/images/Profile.png",
   },
   {
     name: "Jaden Ritchie",
+    bio: "A computer science major interested in software development and the nicher fields of SRE and Networking",
+    accentColor: "#000dfe",
+    photo: JadenHeadshot,
+  },
+  {
+    name: "Riku Santa Cruz",
     bio: "N/A",
     accentColor: "#000dfe",
   },
   {
-    name: "Riku Santa Cruz",
-    bio: "N/A",    
-    accentColor: "#000dfe",
-  },
-  {
     name: "Terra Nagai",
-    bio: "N/A",    
+    bio: "N/A",
     accentColor: "#000dfe",
   },
   {
     name: "Mikiyas Legesse",
-    bio: "N/A",    
+    bio: "N/A",
     accentColor: "#000dfe",
   },
 ];
 
 export default function Team() {
-    const row1 = teamMembers.slice(0, 3);
-    const row2 = teamMembers.slice(3);
+  const row1 = teamMembers.slice(0, 3);
+  const row2 = teamMembers.slice(3);
   return (
     <div
       style={{
