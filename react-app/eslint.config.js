@@ -12,6 +12,10 @@ export default defineConfig([
       js.configs.recommended,
       reactHooks.configs.flat.recommended,
       reactRefresh.configs.vite,
+      {
+        "browser": true,
+        "es2021": true
+      }
     ],
     languageOptions: {
       ecmaVersion: 2020,
@@ -21,6 +25,8 @@ export default defineConfig([
         ecmaFeatures: { jsx: true },
         sourceType: 'module',
       },
+      parserOptions: { ecmaFeatures: { jsx: true }, ecmaVersion: 12, sourceType: 'module' },
+      settings: { react: { version: 'detect' } },
     },
     rules: {
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],

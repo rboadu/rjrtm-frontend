@@ -1,12 +1,12 @@
 import ProfileCard from "../components/profile_card";
 import JadenHeadshot from "../images/Jaden_headshot.jpeg";
-
+import RebeccaHeadshot from "../images/Profile.png";
 const teamMembers = [
   {
     name: "Rebecca Boadu",
     bio: "A computer science major passionate about exploring the depths of software development and thoughtful design. ",
-    accentColor: "#000dfe", // dummy colours feel free to change it to whatever you want
-    photo: "/src/images/Profile.png",
+    accentColor: "#000dfe", 
+    photo: RebeccaHeadshot,
   },
   {
     name: "Jaden Ritchie",
