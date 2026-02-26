@@ -3,9 +3,19 @@ A frontend web application for interacting with a geographic data platform that 
 
 The project is designed with a production-style mindset, emphasizing clear UI structure, seamless frontend–backend integration, and maintainable code practices. It serves both as a learning exercise in full-stack development and as a portfolio-quality frontend demonstrating effective API consumption, state management, and user interaction design.
 
-## Steps to run the frontend:
+## Steps to run the frontend (Static HTML):
 1. Use command `python3 -m http.server 9000` to run the frontend
 2. Go to `http://localhost:9000` to view the frontend
+
+## Steps to run the frontend (React App):
+1. Go into the React folder:  
+    `cd react-app`
+2. Then run:
+    ```
+    npm install
+    npm run dev
+    ```
+3. Then go to your local host `http://localhost:5173/` to view the website
 
 ## To Combine it with the backend:
 1. First go to `rjrtm` and run command `./local.sh`. This will start the backend. Note that the backend local host will appear on `http://127.0.0.1:8000`
