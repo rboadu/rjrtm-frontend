@@ -1,4 +1,5 @@
 import ProfileCard from "../components/profile_card";
+import ContactUs from "../components/ContactUs";  
 import JadenHeadshot from "../images/Jaden_headshot.jpeg";
 import RebeccaHeadshot from "../images/Profile.png";
 const teamMembers = [
@@ -84,6 +85,7 @@ export default function Team() {
           />
         ))}
       </div>
+      <ContactUs />
     </div>
   );
 }
