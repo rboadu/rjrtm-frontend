@@ -4,6 +4,7 @@ const statusEl = document.getElementById('status');
 const countriesList = document.getElementById('countriesList');
 const statesList = document.getElementById('statesList');
 const citiesList = document.getElementById('citiesList');
+const API_BASE_URL = import.meta.env.REACT_APP_API_BASE_URL;
 
 function setStatus(txt, isError = false) {
   statusEl.textContent = txt;
