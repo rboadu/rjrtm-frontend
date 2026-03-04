@@ -2,8 +2,12 @@ import ProfileCard from "../components/profile_card";
 import ContactUs from "../components/ContactUs";  
 import JadenHeadshot from "../images/Jaden_headshot.jpeg";
 import RebeccaHeadshot from "../images/Profile.png";
+<<<<<<< HEAD
 import TerraHeadshot from "../images/terra.png";
 
+=======
+import RikuHeadshot from "../images/riku_headshot.png";
+>>>>>>> 5397f35a8f95b47edbd21d2c6312f1fabce2cec2
 const teamMembers = [
   {
     name: "Rebecca Boadu",
@@ -19,8 +23,9 @@ const teamMembers = [
   },
   {
     name: "Riku Santa Cruz",
-    bio: "N/A",
+    bio: "A computer science major interested in backend",
     accentColor: "#000dfe",
+    photo: RikuHeadshot,
   },
   {
     name: "Terra Nagai",
