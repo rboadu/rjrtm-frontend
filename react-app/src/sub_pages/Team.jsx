@@ -2,6 +2,8 @@ import ProfileCard from "../components/profile_card";
 import ContactUs from "../components/ContactUs";  
 import JadenHeadshot from "../images/Jaden_headshot.jpeg";
 import RebeccaHeadshot from "../images/Profile.png";
+import TerraHeadshot from "../images/terra.png";
+
 const teamMembers = [
   {
     name: "Rebecca Boadu",
@@ -22,8 +24,9 @@ const teamMembers = [
   },
   {
     name: "Terra Nagai",
-    bio: "N/A",
+    bio: "A student-athlete pursuing a degree in computer science, interested in the intersection of AI and sports with a passion for leveraging technology to enhance athletic performance and fan engagement.",
     accentColor: "#000dfe",
+    photo: TerraHeadshot,
   },
   {
     name: "Mikiyas Legesse",
