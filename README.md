@@ -18,11 +18,9 @@ The project is designed with a production-style mindset, emphasizing clear UI st
 3. Then go to your local host `http://localhost:5173/` to view the website
 
 ## To Combine it with the backend:
-1. Go to `rjrtm` and run command `./local.sh`. This will start the backend. Note that the backend local host will appear on `http://127.0.0.1:8000`
-2. Go to `rjrtm-frontend` and run command `cd react-app`. This will make your current directory `react-app`
-3. Run `npm install` to install all dependencies
-4. Run `npm run dev` to run the local host. The local host will appear on `http://localhost:5173/`
-- Note: If port 5173 is already in use, Vite will automatically choose another port (ex: 5174, 5175, etc.)
+1. First go to `rjrtm` and run command `./local.sh`. This will start the backend. Note that the backend local host will appear on `http://127.0.0.1:8000`
+2. Go to `rjrtm-frontend` and run command `python3 -m http.server 9000`. This will start the frontend. Note that the frontend local host will appear on `http://localhost:9000`
+
 
 ## Necessary Imports 
 1. Run 'npm install' within react-app
