@@ -3,6 +3,7 @@ import ContactUs from "../components/ContactUs";
 import JadenHeadshot from "../images/Jaden_headshot.jpeg";
 import RebeccaHeadshot from "../images/Profile.png";
 import TerraHeadshot from "../images/terra.png";
+import rikuHeadshot from "../images/riku_headshot.png";
 const teamMembers = [
   {
     name: "Rebecca Boadu",
@@ -20,6 +21,7 @@ const teamMembers = [
     name: "Riku Santa Cruz",
     bio: "N/A",
     accentColor: "#000dfe",
+    photo: rikuHeadshot,
   },
   {
     name: "Terra Nagai",
