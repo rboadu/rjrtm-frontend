@@ -6,7 +6,7 @@ const navigation = [
   { name: 'Home', to: '/' },
   { name: 'Load Script', to: '/loadscript' },
   { name: 'Team', to: '/team' },
-  { name: 'World Map', to: '/worldmap' },
+  { name: 'Game', to: '/game-worldmap' },
 ]
 
 function classNames(...classes) {
