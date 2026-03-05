@@ -4,6 +4,8 @@ import JadenHeadshot from "../images/Jaden_headshot.jpeg";
 import RebeccaHeadshot from "../images/Profile.png";
 import TerraHeadshot from "../images/terra.png";
 import rikuHeadshot from "../images/riku_headshot.png";
+import MikiyasHeadshot from "../images/miki_headshot.jpeg";
+
 const teamMembers = [
   {
     name: "Rebecca Boadu",
@@ -31,8 +33,9 @@ const teamMembers = [
   },
   {
     name: "Mikiyas Legesse",
-    bio: "N/A",
+    bio: "Graduating computer science student interested in software development, with a focus on backend engineering and AI-driven systems",
     accentColor: "#000dfe",
+    photo: MikiyasHeadshot,
   },
 ];
 

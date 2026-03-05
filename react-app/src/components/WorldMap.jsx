@@ -1,8 +1,10 @@
 import { MapContainer, TileLayer } from "react-leaflet";
 import React from "react";
 
+
 function WorldMap() {
   return (
+    
     <MapContainer
       center={[20, 0]}
       zoom={2}
