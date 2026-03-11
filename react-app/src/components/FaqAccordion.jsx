@@ -1,9 +1,9 @@
 import React from "react";
 
 const FaqAccordion = () => (
-  <div className="space-y-2">
+  <div className="space-y-2 max-w-3xl mx-auto mt-8">
     <details className="group [&amp;_summary::-webkit-details-marker]:hidden">
-      <summary className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-gray-200 bg-white px-4 py-3 font-medium text-gray-900 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:hover:bg-gray-800">
+      <summary className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-gray-200 bg-white px-12 py-3 text-lg font-semibold text-gray-900 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:hover:bg-gray-800">
         <span>What are the basic features?</span>
 
         <svg
@@ -32,7 +32,7 @@ const FaqAccordion = () => (
     </details>
 
     <details className="group [&amp;_summary::-webkit-details-marker]:hidden">
-      <summary className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-gray-200 bg-white px-4 py-3 font-medium text-gray-900 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:hover:bg-gray-800">
+      <summary className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-gray-200 bg-white px-12 py-3 text-lg font-semibold text-gray-900 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:hover:bg-gray-800">
         <span>How do I get started?</span>
 
         <svg
@@ -53,17 +53,17 @@ const FaqAccordion = () => (
 
       <div className="p-4">
         <p className="text-gray-700 dark:text-gray-200">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Deserunt
-          similique, quae hic dicta quo facere facilis praesentium a sunt, est
-          quia pariatur nam, modi aut minus iste odio consectetur molestias
-          iusto cupiditate ullam laborum veniam quos officia. Quos, temporibus
-          perspiciatis!
+          You can go to the navigate bar and try out the site by using the load
+          script. After that, we recommend moving on and trying to create your
+          own entity. Once you create an entity try to view it and ensure
+          everything is there. From then on, you can play around with it and
+          have fun!
         </p>
       </div>
     </details>
 
     <details className="group [&amp;_summary::-webkit-details-marker]:hidden">
-      <summary className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-gray-200 bg-white px-4 py-3 font-medium text-gray-900 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:hover:bg-gray-800">
+      <summary className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-gray-200 bg-white px-12 py-3 text-lg font-semibold text-gray-900 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:hover:bg-gray-800">
         <span>What support options are available?</span>
 
         <svg
@@ -84,11 +84,8 @@ const FaqAccordion = () => (
 
       <div className="p-4">
         <p className="text-gray-700 dark:text-gray-200">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Deserunt
-          similique, quae hic dicta quo facere facilis praesentium a sunt, est
-          quia pariatur nam, modi aut minus iste odio consectetur molestias
-          iusto cupiditate ullam laborum veniam quos officia. Quos, temporibus
-          perspiciatis!
+          For now the support options are limited to the basic CRUD
+          functionality
         </p>
       </div>
     </details>

@@ -3,7 +3,9 @@ import { Button } from "../components/button";
 import { API_BASE } from "../config";
 
 export default function LoadScript() {
-  const [apiBaseUrl, setApiBaseUrl] = useState(API_BASE || "http://127.0.0.1:9000");
+  const [apiBaseUrl, setApiBaseUrl] = useState(
+    API_BASE || "http://127.0.0.1:9000",
+  );
   const [status, setStatus] = useState("Ready.");
   const [isError, setIsError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -90,7 +92,7 @@ export default function LoadScript() {
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-[#232b36]">
       <section className="card">
         <h1>Frontend API Connector</h1>
         <p>This UI displays data from /countries, /states and /cities.</p>
@@ -103,7 +105,9 @@ export default function LoadScript() {
             key={tab}
             onClick={() => setEntity(tab)}
             className={`px-4 py-2 rounded-full capitalize ${
-              entity === tab ? "bg-blue-600 text-white" : "bg-gray-700 text-gray-300"
+              entity === tab
+                ? "bg-blue-600 text-white"
+                : "bg-gray-700 text-gray-300"
             }`}
           >
             {tab}
@@ -115,6 +119,6 @@ export default function LoadScript() {
         <h2 className="capitalize">{entity}</h2>
         <ul>{renderList(getCurrentData())}</ul>
       </section>
-    </>
+    </div>
   );
 }

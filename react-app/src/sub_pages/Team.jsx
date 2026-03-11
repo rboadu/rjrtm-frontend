@@ -1,5 +1,5 @@
 import ProfileCard from "../components/profile_card";
-import ContactUs from "../components/ContactUs";  
+import ContactUs from "../components/ContactUs";
 import JadenHeadshot from "../images/Jaden_headshot.jpeg";
 import RebeccaHeadshot from "../images/Profile.png";
 import TerraHeadshot from "../images/terra.png";
@@ -10,7 +10,7 @@ const teamMembers = [
   {
     name: "Rebecca Boadu",
     bio: "A computer science major passionate about exploring the depths of software development and thoughtful design. ",
-    accentColor: "#000dfe", 
+    accentColor: "#000dfe",
     photo: RebeccaHeadshot,
   },
   {
@@ -44,6 +44,7 @@ export default function Team() {
   const row2 = teamMembers.slice(3);
   return (
     <div
+      className="min-h-screen bg-[#232b36]"
       style={{
         padding: "5rem 2rem",
         display: "flex",
