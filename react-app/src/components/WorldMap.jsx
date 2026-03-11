@@ -1,6 +1,6 @@
 // WorldMap.jsx
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from "react-leaflet";
-import React, { useState } from "react";
+import React from "react";
 import L from "leaflet";
 
 // Fix for default marker icon in bundlers
@@ -32,10 +32,12 @@ function WorldMap({ onLocationSelect, selectedPosition }) {
       minZoom={2}
       style={{ height: "500px", width: "100%" }}
     >
+      {/* CartoDB NoLabels - Clean map without country names */}
       <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution="&copy; OpenStreetMap contributors"
+        url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
       />
+      
       <MapClickHandler />
       
       {/* Show marker at selected position */}
