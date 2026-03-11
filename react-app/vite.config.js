@@ -1,12 +1,31 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  server: {
+    proxy: {
+      // proxy each endpoint prefix to the backend
+      "/countries": {
+        target: "http://localhost:9000",
+        changeOrigin: true,
+        secure: false,
+      },
+      "/states": {
+        target: "http://localhost:9000",
+        changeOrigin: true,
+        secure: false,
+      },
+      "/cities": {
+        target: "http://localhost:9000",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
   test: {
-    environment: 'jsdom',
+    environment: "jsdom",
     globals: true,
-    setupFiles: './src/setupTests.js'
-  }
-})
+    setupFiles: "./src/setupTests.js",
+  },
+});
