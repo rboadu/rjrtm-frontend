@@ -92,10 +92,11 @@ export default function LoadScript() {
   };
 
   return (
-    <div className="min-h-screen bg-[#232b36]">
+    <div className="min-h-screen bg-[#f8f9f9]">
       <section className="card">
         <h1>Frontend API Connector</h1>
-        <p>This UI displays data from /countries, /states and /cities.</p>
+        <p>This interface displays data retrieved from the /countries, /states, and /cities endpoints.</p>
+        <p> Users can view, add, and delete items from each dataset.</p>
         <p className={`status${isError ? " error" : ""}`}>{status}</p>
       </section>
 
