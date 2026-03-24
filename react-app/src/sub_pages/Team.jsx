@@ -21,7 +21,7 @@ const teamMembers = [
   },
   {
     name: "Riku Santa Cruz",
-    bio: "N/A",
+    bio: "A computer science major interested in software development",
     accentColor: "#000dfe",
     photo: rikuHeadshot,
   },
