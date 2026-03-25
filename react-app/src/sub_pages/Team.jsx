@@ -44,7 +44,7 @@ export default function Team() {
   const row2 = teamMembers.slice(3);
   return (
     <div
-      className="min-h-screen bg-[#f8f9f9]"
+      className="min-h-screen bg-white dark:bg-gray-900"
       style={{
         padding: "5rem 2rem",
         display: "flex",
