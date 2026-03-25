@@ -4,6 +4,7 @@ import Team from "./sub_pages/Team";
 import LoadScript from "./sub_pages/LoadScript";
 import WorldMapPage from "./sub_pages/GameWorldMap";
 import Home from "./sub_pages/Home";
+import CreativeSuite from "./sub_pages/CreativeSuite";
 
 import "./App.css";
 
@@ -17,6 +18,7 @@ function App() {
           <Route path="/game-worldmap" element={<WorldMapPage />} />
           <Route path="/loadscript" element={<LoadScript />} />
           <Route path="/team" element={<Team />} />
+          <Route path="/creative-suite" element={<CreativeSuite />} />
         </Routes>
       </main>
     </Router>
