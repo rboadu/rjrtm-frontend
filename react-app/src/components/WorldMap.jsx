@@ -12,8 +12,12 @@ L.Icon.Default.mergeOptions({
 });
 
 function WorldMap({ onLocationSelect, selectedPosition }) {
-  
-  // Component to handle double-click events
+  // Define the world bounds (southwest and northeast corners)
+  const worldBounds = [
+    [-85, -180], // Southwest corner (min lat, min lng)
+    [85, 180],   // Northeast corner (max lat, max lng)
+  ];
+
   function MapClickHandler() {
     useMapEvents({
       dblclick: (e) => {
@@ -31,17 +35,16 @@ function WorldMap({ onLocationSelect, selectedPosition }) {
       zoom={2}
       minZoom={2}
       doubleClickZoom={false}
-      style={{ height: "500px", width: "100%", fillColor: 'transparent',weight: 2,color: '#666', }}
+      style={{ height: "500px", width: "100%", fillColor: 'transparent', weight: 2, color: '#666' }}
+      maxBounds={worldBounds}
+      maxBoundsViscosity={1.0} // Prevents dragging outside bounds
     >
-      {/* CartoDB NoLabels - Clean map without country names */}
+      {/* ...existing code... */}
       <TileLayer
         url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
       />
-      
       <MapClickHandler />
-      
-      {/* Show marker at selected position */}
       {selectedPosition && (
         <Marker position={[selectedPosition.lat, selectedPosition.lng]}>
           <Popup>

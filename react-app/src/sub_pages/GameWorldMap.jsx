@@ -33,37 +33,37 @@ function WorldMapPage() {
     setFeedback(null);
   };
 
-  const handleSubmitGuess = () => {
-    if (!selectedLocation || !targetCountry) return;
+  const handleSubmitGuess = async () => {
+    if (!selectedLocation) return;
 
-    const dist = Math.sqrt(
-      Math.pow(selectedLocation.lat - targetCountry.lat, 2) +
-      Math.pow(selectedLocation.lng - targetCountry.lng, 2)
-    );
+    const payload = {
+      latitude: selectedLocation.lat,
+      longitude: selectedLocation.lng,
+    };
 
-    const correct = dist < 5;
+    // Mock the API call to /api/makeGuess
+    try {
+      // Log the payload to show what would be sent
+      console.log("POST /api/makeGuess", payload);
 
-    if (correct) {
-      setScore(score + 1);
-
-      setFeedback({
+      // Mocked response (replace with real fetch/axios call later)
+      const mockResponse = {
         correct: true,
-        message: "Correct! Next country..."
-      });
+        message: "Mocked backend response: Guess received.",
+        correctCountry: "MockCountry" 
+      };
 
-      setSelectedLocation(null);
-      getRandomCountry();
-    } else {
-      setFeedback({
-        correct: false,
-        message: "Wrong location!",
-        correctCountry: targetCountry.name
-      });
-
-      setGameStarted(false);
+      setFeedback(mockResponse);
+    } catch (error) {
+      setFeedback({ correct: false, message: "Network error (mocked)" });
     }
   };
 
+  // Planning on making use of Google Maps Geocoding API to reverse geocode the lat/lng to get the country name,
+  // The Api endpoint will be implemented on the backend to keep the API key secure, with request limiting to prevent abuse. 
+  // You can't limit the billable account to the free tier, so I want to make sure the 
+  // API key is never exposed on the frontend and that the number of requests never exceeds the free tier limits.
+  // The Geocoding API is pretty accurate, even down to the address. That's unnecessary for this game, so I'll just extract the country name.
   const clearSelection = () => {
     setSelectedLocation(null);
     setFeedback(null);
@@ -113,7 +113,7 @@ function WorldMapPage() {
       {/* Map Section */}
       <section className="section-container map-section">
         <h2 className="section-heading">
-          The <strong className="highlight">Map</strong>
+          <strong className="highlight">The Map</strong>
         </h2>
         <p className="instruction-text">
           Double-click anywhere on the map to make your guess.
@@ -188,7 +188,3 @@ function WorldMapPage() {
 }
 
 export default WorldMapPage;
-
-
-/// Use geocode to reverse geocode the selected lat/lng to get country name, 
-// then send that to backend for validation.
