@@ -30,7 +30,8 @@ function WorldMap({ onLocationSelect, selectedPosition }) {
       center={[20, 0]}
       zoom={2}
       minZoom={2}
-      style={{ height: "500px", width: "100%" }}
+      doubleClickZoom={false}
+      style={{ height: "500px", width: "100%", fillColor: 'transparent',weight: 2,color: '#666', }}
     >
       {/* CartoDB NoLabels - Clean map without country names */}
       <TileLayer

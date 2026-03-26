@@ -3,6 +3,7 @@ import { useState } from "react";
 import WorldMap from "../components/WorldMap";
 import Rules from "../components/Rules";
 import countries from "../data/countries.json";
+import "./GameWorldMap.css";
 
 function WorldMapPage() {
   const [showRules, setShowRules] = useState(false);
@@ -27,7 +28,7 @@ function WorldMapPage() {
   }
 
   const handleLocationSelect = (lat, lng) => {
-    if (!gameStarted) return;
+    console.log(`User double-clicked at: Latitude ${lat}, Longitude ${lng}`);
     setSelectedLocation({ lat, lng });
     setFeedback(null);
   };
@@ -69,35 +70,25 @@ function WorldMapPage() {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-900 min-h-screen">
+    <div className="page-container dark">
 
       {/* HERO */}
-      <section className="bg-white dark:bg-gray-900 w-full">
-        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
+      <section>
+        <div className="section-container hero-section">
           <div className="max-w-prose text-left">
-
-            <h1 className="text-4xl font-bold text-gray-900 sm:text-5xl dark:text-white">
+            <h1 className="page-title">
               Find It On
-              <strong className="text-indigo-600"> The Map</strong>
+              <strong className="highlight"> The Map</strong>
             </h1>
-
-            <p className="mt-4 text-base text-gray-700 sm:text-lg dark:text-gray-200">
-              Press Start Game. A country will appear. Double-click where you think it is.
-              How many can you get correct in a row?
+            <p className="description-text">
+              A country will be chosen at random. Your only job is to find it.
+              Scroll the map, trust your instincts, and double-click. How many can you get right in a row?
             </p>
 
             <div className="mt-6 flex gap-4">
-
-              <button
-                onClick={startGame}
-                className="rounded bg-green-600 px-6 py-3 text-white font-medium hover:bg-green-700"
-              >
-                Start Game
-              </button>
-
               <button
                 onClick={() => setShowRules(!showRules)}
-                className="rounded border border-indigo-600 bg-indigo-600 px-5 py-3 text-white hover:bg-indigo-700"
+                className="btn-primary"
               >
                 How It Works
               </button>
@@ -107,60 +98,60 @@ function WorldMapPage() {
           </div>
 
           {showRules && (
-            <div className="mt-10">
-              <hr className="border-gray-200 dark:border-gray-700 mb-8" />
+            <div className="rules-container">
+              <hr className="divider divider-with-margin" />
               <Rules />
             </div>
           )}
         </div>
       </section>
 
-      {/* MAP SECTION */}
-      <section className="mx-auto max-w-7xl px-4 py-12">
+      <div className="section-container">
+        <hr className="divider" />
+      </div>
 
-        {gameStarted && (
-          <>
-            <div className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
-              Score: {score}
-            </div>
-
-            {targetCountry && (
-              <div className="mb-6 text-xl font-bold text-indigo-600">
-                Find: {targetCountry.name}
-              </div>
-            )}
-          </>
-        )}
-
-        <div className="rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700">
-          <WorldMap
+      {/* Map Section */}
+      <section className="section-container map-section">
+        <h2 className="section-heading">
+          The <strong className="highlight">Map</strong>
+        </h2>
+        <p className="instruction-text">
+          Double-click anywhere on the map to make your guess.
+        </p>
+        
+        <div className="map-container">
+          <WorldMap 
             onLocationSelect={handleLocationSelect}
             selectedPosition={selectedLocation}
           />
         </div>
 
-        {/* Selected Location */}
-        {selectedLocation && gameStarted && (
-          <div className="mt-6 p-6 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg border">
-
-            <div className="flex justify-between">
-
-              <div className="font-mono text-sm">
-                <p>Lat: {selectedLocation.lat.toFixed(4)}</p>
-                <p>Lng: {selectedLocation.lng.toFixed(4)}</p>
+        {/* Selected Location Display */}
+        {selectedLocation && (
+          <div className="location-card">
+            <div className="location-card-content">
+              <div className="location-info">
+                <h3 className="subsection-heading">
+                  📍 Selected Location
+                </h3>
+                <div className="coordinate-display">
+                  <p><strong>Latitude:</strong> {selectedLocation.lat.toFixed(6)}°</p>
+                  <p><strong>Longitude:</strong> {selectedLocation.lng.toFixed(6)}°</p>
+                </div>
               </div>
-
-              <div className="flex gap-3">
+              
+              <div className="button-group">
                 <button
                   onClick={handleSubmitGuess}
-                  className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+                  disabled={!selectedLocation}
+                  className="btn-submit"
                 >
                   Submit Guess
                 </button>
 
                 <button
                   onClick={clearSelection}
-                  className="px-6 py-2 bg-gray-300 rounded-lg"
+                  className="btn-secondary"
                 >
                   Clear
                 </button>
@@ -172,18 +163,17 @@ function WorldMapPage() {
 
         {/* FEEDBACK */}
         {feedback && (
-          <div className={`mt-6 p-6 rounded-lg border ${
-            feedback.correct ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"
+          <div className={`feedback-card ${
+            feedback.correct ? 'success' : 'error'
           }`}>
-
-            <h3 className="font-semibold text-lg text-black">
-              {feedback.correct ? "✅ Correct!" : "❌ Game Over"}
+            <h3 className="feedback-heading">
+              {feedback.correct ? '✅ Correct!' : '❌ Incorrect'}
             </h3>
-
-            <p className="text-black">{feedback.message}</p>
-
-            {!feedback.correct && (
-              <p className="mt-2 text-sm text-black">
+            <p className="feedback-message">
+              {feedback.message}
+            </p>
+            {!feedback.correct && feedback.correctCountry && (
+              <p className="feedback-detail">
                 Correct answer: {feedback.correctCountry}
               </p>
             )}
@@ -198,3 +188,7 @@ function WorldMapPage() {
 }
 
 export default WorldMapPage;
+
+
+/// Use geocode to reverse geocode the selected lat/lng to get country name, 
+// then send that to backend for validation.
