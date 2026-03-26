@@ -31,4 +31,11 @@ describe('Team Component', () => {
     const bioElement = screen.getByText(/A computer science major passionate about exploring the depths of software development and thoughtful design./i);
     expect(bioElement).toBeInTheDocument();
   });
+
+  test('renders a contact button that jumps to the contact section', () => {
+    render(<Team />);
+    const contactButton = screen.getByRole('link', { name: /contact us/i });
+    expect(contactButton).toHaveAttribute('href', '#contact-us');
+    expect(screen.getByRole('heading', { level: 2, name: /contact us/i })).toBeInTheDocument();
+  });
 });

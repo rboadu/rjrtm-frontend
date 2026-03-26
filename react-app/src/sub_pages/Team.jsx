@@ -56,6 +56,20 @@ export default function Team() {
       <p style={{ marginBottom: "3rem", color: "#999" }}>
         This is the RJRTM team.
       </p>
+      <a
+        href="#contact-us"
+        style={{
+          marginBottom: "3rem",
+          padding: "0.75rem 1.5rem",
+          backgroundColor: "#000dfe",
+          color: "#fff",
+          borderRadius: "9999px",
+          textDecoration: "none",
+          fontWeight: 600,
+        }}
+      >
+        Contact Us
+      </a>
       <div
         style={{
           display: "flex",

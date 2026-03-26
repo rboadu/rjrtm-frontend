@@ -69,6 +69,7 @@ export default function ContactUs() {
 
   return (
     <div
+      id="contact-us"
       style={{
         marginTop: "5rem",
         padding: "3rem",
@@ -76,6 +77,7 @@ export default function ContactUs() {
         width: "100%",
         borderTop: "1px solid #eee",
         textAlign: "center",
+        scrollMarginTop: "6rem",
       }}
     >
       <h2>Contact Us</h2>
