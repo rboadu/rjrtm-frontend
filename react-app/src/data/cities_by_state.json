@@ -2,128 +2,69 @@
   "California": [
     { "name": "Los Angeles" },
     { "name": "San Francisco" },
-    { "name": "San Diego" }
+    { "name": "San Diego" },
+    { "name": "Sacramento" }
   ],
   "New York": [
     { "name": "New York City" },
     { "name": "Buffalo" },
-    { "name": "Rochester" }
+    { "name": "Rochester" },
+    { "name": "Albany" }
   ],
   "Texas": [
     { "name": "Houston" },
     { "name": "Dallas" },
-    { "name": "Austin" }
+    { "name": "Austin" },
+    { "name": "San Antonio" }
   ],
-  "Florida": [
-    { "name": "Miami" },
-    { "name": "Orlando" },
-    { "name": "Tampa" }
+  "Illinois": [
+    { "name": "Chicago" },
+    { "name": "Springfield" }
   ],
-  "Washington": [
-    { "name": "Seattle" },
-    { "name": "Spokane" },
-    { "name": "Tacoma" }
+  "Georgia": [
+    { "name": "Atlanta" },
+    { "name": "Savannah" }
   ],
+
   "Greater Accra": [
     { "name": "Accra" },
-    { "name": "Tema" }
+    { "name": "Tema" },
+    { "name": "Madina" }
   ],
   "Ashanti": [
-    { "name": "Kumasi" }
+    { "name": "Kumasi" },
+    { "name": "Obuasi" }
   ],
-  "Northern": [
-    { "name": "Tamale" }
+  "Eastern": [
+    { "name": "Koforidua" }
   ],
-  "Western": [
-    { "name": "Takoradi" }
+  "Central": [
+    { "name": "Cape Coast" }
   ],
+
   "Ontario": [
     { "name": "Toronto" },
     { "name": "Ottawa" },
-    { "name": "Hamilton" }
+    { "name": "Hamilton" },
+    { "name": "London" }
   ],
-  "Quebec": [
-    { "name": "Montreal" },
-    { "name": "Quebec City" }
+  "Manitoba": [
+    { "name": "Winnipeg" }
   ],
-  "British Columbia": [
-    { "name": "Vancouver" },
-    { "name": "Victoria" }
-  ],
-  "Alberta": [
-    { "name": "Calgary" },
-    { "name": "Edmonton" }
-  ],
-  "New South Wales": [
-    { "name": "Sydney" },
-    { "name": "Newcastle" }
-  ],
-  "Victoria": [
-    { "name": "Melbourne" },
-    { "name": "Geelong" }
-  ],
-  "Queensland": [
-    { "name": "Brisbane" },
-    { "name": "Gold Coast" }
-  ],
+
   "Maharashtra": [
     { "name": "Mumbai" },
-    { "name": "Pune" }
+    { "name": "Pune" },
+    { "name": "Nagpur" }
   ],
-  "Delhi": [
-    { "name": "New Delhi" }
+  "Uttar Pradesh": [
+    { "name": "Lucknow" },
+    { "name": "Kanpur" }
   ],
-  "Karnataka": [
-    { "name": "Bengaluru" },
-    { "name": "Mysore" }
-  ],
-  "Tamil Nadu": [
-    { "name": "Chennai" },
-    { "name": "Coimbatore" }
-  ],
+
   "England": [
     { "name": "London" },
-    { "name": "Manchester" }
-  ],
-  "Scotland": [
-    { "name": "Edinburgh" },
-    { "name": "Glasgow" }
-  ],
-  "Wales": [
-    { "name": "Cardiff" }
-  ],
-  "Northern Ireland": [
-    { "name": "Belfast" }
-  ],
-  "Lagos": [
-    { "name": "Lagos" },
-    { "name": "Ikeja" }
-  ],
-  "Kano": [
-    { "name": "Kano" }
-  ],
-  "Rivers": [
-    { "name": "Port Harcourt" }
-  ],
-  "São Paulo": [
-    { "name": "São Paulo" },
-    { "name": "Campinas" }
-  ],
-  "Rio de Janeiro": [
-    { "name": "Rio de Janeiro" },
-    { "name": "Niterói" }
-  ],
-  "Bahia": [
-    { "name": "Salvador" }
-  ],
-  "Gauteng": [
-    { "name": "Johannesburg" },
-    { "name": "Pretoria" }
-  ],
-  "Western Cape": [
-    { "name": "Cape Town" }
-  ],
-  "KwaZulu-Natal": [
-    { "name": "Durban" }
+    { "name": "Manchester" },
+    { "name": "Birmingham" }
   ]
 }

@@ -17,7 +17,7 @@ const [apiBaseUrl] = useState(API_BASE ?? "");
 
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [selectedState, setSelectedState] = useState(null);
-
+  const [selectedCity, setSelectedCity] = useState(null);
 
 async function fetchJson(baseOrUrl, init = {}) {
   let url = "";
@@ -88,6 +88,7 @@ async function fetchJson(baseOrUrl, init = {}) {
 }, [/* keep deps if needed */]);
 
 // replace handleSelectCountry to use HATEOAS or fallback mapping
+// ...existing code...
 async function handleSelectCountry(value) {
   setSelectedCountry(value);
   setStates([]);
@@ -95,6 +96,7 @@ async function handleSelectCountry(value) {
   setSelectedState(null);
   setStatus("Loading states...");
   setIsError(false);
+
   try {
     const country = countries.find(
       (c) => (c.code || c.id || c.name) === value
@@ -109,11 +111,42 @@ async function handleSelectCountry(value) {
     if (statesUrl) {
       statesData = await fetchJson(statesUrl);
     } else {
-      // fallback to local map keyed by country name
-      statesData = statesByCountry[value] || [];
+      // robust lookup in statesByCountry:
+      const candidates = [
+        value,
+        country && country.name,
+        country && country.code,
+        country && country.id,
+      ].filter(Boolean).map(String);
+
+      // try exact keys
+      for (const k of candidates) {
+        if (statesByCountry[k]) {
+          statesData = statesByCountry[k];
+          break;
+        }
+      }
+
+      // case-insensitive exact key
+      if (!statesData.length) {
+        const key = Object.keys(statesByCountry).find(
+          (k) => k.toLowerCase() === String(value).toLowerCase()
+        );
+        if (key) statesData = statesByCountry[key];
+      }
+
+      // substring match (fallback)
+      if (!statesData.length && country && country.name) {
+        const key = Object.keys(statesByCountry).find((k) =>
+          k.toLowerCase().includes(String(country.name).toLowerCase()) ||
+          String(country.name).toLowerCase().includes(k.toLowerCase())
+        );
+        if (key) statesData = statesByCountry[key];
+      }
     }
+
     setStates(statesData || []);
-    setStatus("States loaded");
+    setStatus(statesData && statesData.length ? "States loaded" : "No states found");
   } catch (e) {
     setStatus("Error loading states: " + e.message);
     setIsError(true);
@@ -125,23 +158,49 @@ async function handleSelectState(value) {
   setCities([]);
   setStatus("Loading cities...");
   setIsError(false);
+
   try {
-    const state = states.find((s) => (s.code || s.id || s.name) === value);
-    let citiesUrl = state && state._links && state._links.cities ? state._links.cities.href : null;
+    const stateObj = states.find((s) => (s.code || s.id || s.name) === value);
+    let citiesUrl = stateObj && stateObj._links && stateObj._links.cities ? stateObj._links.cities.href : null;
 
     let citiesData = [];
     if (citiesUrl) {
       citiesData = await fetchJson(citiesUrl);
     } else {
-      citiesData = citiesByState[value] || [];
+      // robust lookup in citiesByState
+      const candidates = [value, stateObj && stateObj.name].filter(Boolean).map(String);
+
+      for (const k of candidates) {
+        if (citiesByState[k]) {
+          citiesData = citiesByState[k];
+          break;
+        }
+      }
+
+      if (!citiesData.length) {
+        const key = Object.keys(citiesByState).find(
+          (k) => k.toLowerCase() === String(value).toLowerCase()
+        );
+        if (key) citiesData = citiesByState[key];
+      }
+
+      if (!citiesData.length && stateObj && stateObj.name) {
+        const key = Object.keys(citiesByState).find((k) =>
+          k.toLowerCase().includes(String(stateObj.name).toLowerCase()) ||
+          String(stateObj.name).toLowerCase().includes(k.toLowerCase())
+        );
+        if (key) citiesData = citiesByState[key];
+      }
     }
+
     setCities(citiesData || []);
-    setStatus("Cities loaded");
+    setStatus(citiesData && citiesData.length ? "Cities loaded" : "No cities found");
   } catch (e) {
     setStatus("Error loading cities: " + e.message);
     setIsError(true);
   }
 }
+// ...existing code...
 async function deleteItem(item) {
   // prefer item's self link if available
   const path = item && item._links && item._links.self ? item._links.self.href : null;
@@ -225,7 +284,12 @@ async function deleteItem(item) {
 
           <label>
             City
-            <select aria-label="City" value="" onChange={() => {}} disabled={!cities.length || loading}>
+            <select
+              aria-label="City"
+              value={selectedCity || ""}
+              onChange={(e) => setSelectedCity(e.target.value)}
+              disabled={!cities.length || loading}
+            >
               <option value="">Select a city</option>
               {renderOptions(cities)}
             </select>
@@ -234,11 +298,27 @@ async function deleteItem(item) {
 
         <ul>{/* list is optional; keep for backward compatibility */}</ul>
 
-        <div style={{ display: "flex", gap: 8 }}>
+        <div style={{ marginTop: 12, textAlign: "left" }}>
+          <strong>Selected:</strong>{" "}
+          {selectedCountry || "-"} / {selectedState || "-"} / {selectedCity || "-"}
+        </div>
+
+        <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
           <Button onClick={() => handleLoadCountries()} disabled={loading}>
             Reload Countries
           </Button>
         </div>
+      </section>
+
+      <section className="card">
+        <h2>Selected Location</h2>
+        <p>
+          Country: {selectedCountry || "N/A"}
+          <br />
+          State: {selectedState || "N/A"}
+          <br />
+          City: {selectedCity || "N/A"}
+        </p>
       </section>
     </div>
   );
