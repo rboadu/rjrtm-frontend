@@ -1,0 +1,53 @@
+{
+  "United States": [
+    { "name": "California", "code": "CA" },
+    { "name": "New York", "code": "NY" },
+    { "name": "Texas", "code": "TX" },
+    { "name": "Florida", "code": "FL" },
+    { "name": "Washington", "code": "WA" }
+  ],
+  "Ghana": [
+    { "name": "Greater Accra", "code": "AA" },
+    { "name": "Ashanti", "code": "AS" },
+    { "name": "Northern", "code": "NR" },
+    { "name": "Western", "code": "WE" }
+  ],
+  "Canada": [
+    { "name": "Ontario", "code": "ON" },
+    { "name": "Quebec", "code": "QC" },
+    { "name": "British Columbia", "code": "BC" },
+    { "name": "Alberta", "code": "AB" }
+  ],
+  "Australia": [
+    { "name": "New South Wales", "code": "NSW" },
+    { "name": "Victoria", "code": "VIC" },
+    { "name": "Queensland", "code": "QLD" }
+  ],
+  "India": [
+    { "name": "Maharashtra", "code": "MH" },
+    { "name": "Delhi", "code": "DL" },
+    { "name": "Karnataka", "code": "KA" },
+    { "name": "Tamil Nadu", "code": "TN" }
+  ],
+  "United Kingdom": [
+    { "name": "England", "code": "ENG" },
+    { "name": "Scotland", "code": "SCT" },
+    { "name": "Wales", "code": "WLS" },
+    { "name": "Northern Ireland", "code": "NIR" }
+  ],
+  "Nigeria": [
+    { "name": "Lagos", "code": "LG" },
+    { "name": "Kano", "code": "KN" },
+    { "name": "Rivers", "code": "RV" }
+  ],
+  "Brazil": [
+    { "name": "São Paulo", "code": "SP" },
+    { "name": "Rio de Janeiro", "code": "RJ" },
+    { "name": "Bahia", "code": "BA" }
+  ],
+  "South Africa": [
+    { "name": "Gauteng", "code": "GT" },
+    { "name": "Western Cape", "code": "WC" },
+    { "name": "KwaZulu-Natal", "code": "KZN" }
+  ]
+}

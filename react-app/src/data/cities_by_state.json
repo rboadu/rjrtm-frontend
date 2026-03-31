@@ -1,0 +1,129 @@
+{
+  "California": [
+    { "name": "Los Angeles" },
+    { "name": "San Francisco" },
+    { "name": "San Diego" }
+  ],
+  "New York": [
+    { "name": "New York City" },
+    { "name": "Buffalo" },
+    { "name": "Rochester" }
+  ],
+  "Texas": [
+    { "name": "Houston" },
+    { "name": "Dallas" },
+    { "name": "Austin" }
+  ],
+  "Florida": [
+    { "name": "Miami" },
+    { "name": "Orlando" },
+    { "name": "Tampa" }
+  ],
+  "Washington": [
+    { "name": "Seattle" },
+    { "name": "Spokane" },
+    { "name": "Tacoma" }
+  ],
+  "Greater Accra": [
+    { "name": "Accra" },
+    { "name": "Tema" }
+  ],
+  "Ashanti": [
+    { "name": "Kumasi" }
+  ],
+  "Northern": [
+    { "name": "Tamale" }
+  ],
+  "Western": [
+    { "name": "Takoradi" }
+  ],
+  "Ontario": [
+    { "name": "Toronto" },
+    { "name": "Ottawa" },
+    { "name": "Hamilton" }
+  ],
+  "Quebec": [
+    { "name": "Montreal" },
+    { "name": "Quebec City" }
+  ],
+  "British Columbia": [
+    { "name": "Vancouver" },
+    { "name": "Victoria" }
+  ],
+  "Alberta": [
+    { "name": "Calgary" },
+    { "name": "Edmonton" }
+  ],
+  "New South Wales": [
+    { "name": "Sydney" },
+    { "name": "Newcastle" }
+  ],
+  "Victoria": [
+    { "name": "Melbourne" },
+    { "name": "Geelong" }
+  ],
+  "Queensland": [
+    { "name": "Brisbane" },
+    { "name": "Gold Coast" }
+  ],
+  "Maharashtra": [
+    { "name": "Mumbai" },
+    { "name": "Pune" }
+  ],
+  "Delhi": [
+    { "name": "New Delhi" }
+  ],
+  "Karnataka": [
+    { "name": "Bengaluru" },
+    { "name": "Mysore" }
+  ],
+  "Tamil Nadu": [
+    { "name": "Chennai" },
+    { "name": "Coimbatore" }
+  ],
+  "England": [
+    { "name": "London" },
+    { "name": "Manchester" }
+  ],
+  "Scotland": [
+    { "name": "Edinburgh" },
+    { "name": "Glasgow" }
+  ],
+  "Wales": [
+    { "name": "Cardiff" }
+  ],
+  "Northern Ireland": [
+    { "name": "Belfast" }
+  ],
+  "Lagos": [
+    { "name": "Lagos" },
+    { "name": "Ikeja" }
+  ],
+  "Kano": [
+    { "name": "Kano" }
+  ],
+  "Rivers": [
+    { "name": "Port Harcourt" }
+  ],
+  "São Paulo": [
+    { "name": "São Paulo" },
+    { "name": "Campinas" }
+  ],
+  "Rio de Janeiro": [
+    { "name": "Rio de Janeiro" },
+    { "name": "Niterói" }
+  ],
+  "Bahia": [
+    { "name": "Salvador" }
+  ],
+  "Gauteng": [
+    { "name": "Johannesburg" },
+    { "name": "Pretoria" }
+  ],
+  "Western Cape": [
+    { "name": "Cape Town" }
+  ],
+  "KwaZulu-Natal": [
+    { "name": "Durban" }
+  ]
+}
