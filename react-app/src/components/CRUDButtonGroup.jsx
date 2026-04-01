@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { API_BASE } from "../config";
 
 const entityLabels = {
   C: "City",
@@ -28,10 +29,101 @@ const createFields = {
   ],
 };
 
+const createEndpoints = {
+  C: "/cities",
+  S: "/states",
+  CNTRY: "/countries/",
+};
+
+function createEmptyValues(fields) {
+  return fields.reduce((values, field) => {
+    values[field.name] = "";
+    return values;
+  }, {});
+}
+
+function buildUrl(path) {
+  const base = (API_BASE || "").replace(/\/+$/, "");
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  return `${base}${normalizedPath}`;
+}
+
 export default function CRUDButtonGroup({ entityType = "C" }) {
   const [active, setActive] = useState(null);
+  const [formValues, setFormValues] = useState(() =>
+    createEmptyValues(createFields[entityType] || createFields.C),
+  );
+  const [status, setStatus] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fields = createFields[entityType] || createFields.C;
+
+  useEffect(() => {
+    setFormValues(createEmptyValues(fields));
+    setStatus("");
+  }, [entityType]);
+
+  const handleFieldChange = (name, value) => {
+    setFormValues((currentValues) => ({
+      ...currentValues,
+      [name]: value,
+    }));
+  };
+
+  const handleCreateSubmit = async (event) => {
+    event.preventDefault();
+
+    const missingField = fields.find(
+      (field) => field.required && !String(formValues[field.name] ?? "").trim(),
+    );
+
+    if (missingField) {
+      setStatus(`${missingField.label} is required.`);
+      return;
+    }
+
+    const endpoint = createEndpoints[entityType] || createEndpoints.C;
+    const payload = fields.reduce((values, field) => {
+      const rawValue = String(formValues[field.name] ?? "").trim();
+
+      if (!rawValue) {
+        return values;
+      }
+
+      values[field.name] =
+        field.type === "number" ? Number(rawValue) : rawValue;
+      return values;
+    }, {});
+
+    setIsSubmitting(true);
+    setStatus("Submitting...");
+    console.log(buildUrl(endpoint));
+    try {
+      const response = await fetch(buildUrl(endpoint), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const responseText = await response.text();
+      const responseBody = responseText ? responseText : "";
+
+      if (!response.ok) {
+        throw new Error(
+          responseBody || `${response.status} ${response.statusText}`,
+        );
+      }
+
+      setStatus(`${entityLabels[entityType] || "Item"} created successfully.`);
+      setFormValues(createEmptyValues(fields));
+    } catch (error) {
+      setStatus(`Create failed: ${error.message}`);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const renderInputs = () => {
     switch (active) {
@@ -39,7 +131,7 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
         return (
           <form
             className="mt-4 flex flex-col gap-3"
-            onSubmit={(event) => event.preventDefault()}
+            onSubmit={handleCreateSubmit}
           >
             <div className="text-sm font-medium text-gray-700">
               Create {entityLabels[entityType] || "Item"}
@@ -57,15 +149,29 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
                 <input
                   name={field.name}
                   type={field.type || "text"}
+                  value={formValues[field.name] || ""}
+                  onChange={(event) =>
+                    handleFieldChange(field.name, event.target.value)
+                  }
+                  required={field.required}
                   className="rounded border border-gray-300 px-2 py-1 shadow-sm"
                   placeholder={field.label}
                 />
               </label>
             ))}
 
-            <button className="rounded bg-blue-600 px-3 py-2 text-white">
-              Submit
+            <button
+              className="rounded bg-blue-600 px-3 py-2 text-white disabled:cursor-not-allowed disabled:bg-blue-400"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Submitting..." : "Submit"}
             </button>
+
+            {status ? (
+              <p className="text-sm text-gray-600" aria-live="polite">
+                {status}
+              </p>
+            ) : null}
           </form>
         );
       case "Edit":
