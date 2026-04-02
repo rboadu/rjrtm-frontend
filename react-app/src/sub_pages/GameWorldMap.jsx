@@ -17,6 +17,14 @@ function WorldMapPage() {
   const [timeLeft, setTimeLeft] = useState(30);
   const mapSectionRef = useRef(null);
 
+    function stopGame() {
+      setGameStarted(false);
+      setTargetCountry(null);
+      setTimeLeft(30);
+      setSelectedLocation(null);
+      setFeedback(null);
+    }
+
   function getRandomCountry() {
     const rand = countries[Math.floor(Math.random() * countries.length)];
     setTargetCountry(rand);
@@ -149,7 +157,7 @@ function WorldMapPage() {
           <strong className="highlight">The Map</strong>
         </h2>
         {gameStarted && targetCountry ? (
-          <GameStatusPanel targetCountry={targetCountry} timeLeft={timeLeft} />
+          <GameStatusPanel targetCountry={targetCountry} timeLeft={timeLeft} onStopGame={stopGame} />
         ) : (
           <p className="instruction-text">
             Double-click anywhere on the map to make your guess.
@@ -167,36 +175,22 @@ function WorldMapPage() {
         {/* Selected Location Display */}
         {selectedLocation && (
           <div className="location-card">
-            <div className="location-card-content">
-              <div className="location-info">
-                <h3 className="subsection-heading">
-                  📍 Selected Location
-                </h3>
-                <div className="coordinate-display">
-                  <p><strong>Latitude:</strong> {selectedLocation.lat.toFixed(6)}°</p>
-                  <p><strong>Longitude:</strong> {selectedLocation.lng.toFixed(6)}°</p>
-                </div>
-              </div>
-              
-              <div className="button-group">
-                <button
-                  type="button"
-                  onClick={handleSubmitGuess}
-                  disabled={!selectedLocation}
-                  className="btn-submit"
-                >
-                  Submit Guess
-                </button>
-
-                <button
-                  type="button"
-                  onClick={clearSelection}
-                  className="btn-secondary"
-                >
-                  Clear
-                </button>
-              </div>
-
+            <div className="button-group button-group-centered">
+              <button
+                type="button"
+                onClick={handleSubmitGuess}
+                disabled={!selectedLocation}
+                className="btn-submit"
+              >
+                Submit Guess
+              </button>
+              <button
+                type="button"
+                onClick={clearSelection}
+                className="btn-secondary"
+              >
+                Clear
+              </button>
             </div>
           </div>
         )}

@@ -1,3 +1,17 @@
+.btn-stop-game {
+  background-color: rgb(239, 68, 68) !important;
+  color: white !important;
+  border: 1px solid rgb(239, 68, 68) !important;
+  font-weight: 500;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.btn-stop-game:hover {
+  background-color: rgb(220, 38, 38) !important;
+  border-color: rgb(220, 38, 38) !important;
+}
 /* GameWorldMap.css - Reusable styles for the map game page */
 
 /* Container Styles */
@@ -389,6 +403,13 @@
   display: flex;
   gap: 0.75rem;
   margin-left: 1rem;
+}
+
+.button-group-centered {
+  justify-content: center;
+  align-items: center;
+  margin-left: 0;
+  width: 100%;
 }
 
 /* Feedback Styles */

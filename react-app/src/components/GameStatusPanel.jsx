@@ -1,4 +1,5 @@
-function GameStatusPanel({ targetCountry, timeLeft }) {
+
+function GameStatusPanel({ targetCountry, timeLeft, onStopGame }) {
   const countryLabel =
     typeof targetCountry === "string" ? targetCountry : targetCountry?.name ?? "Unknown";
 
@@ -13,9 +14,19 @@ function GameStatusPanel({ targetCountry, timeLeft }) {
           <p className="target-country-label">Target Country</p>
           <h3 className="target-country-name">{countryLabel}</h3>
         </div>
-        <div className="timer-chip" aria-live="polite">
-          <span className="timer-label">Time Left</span>
-          <strong className="timer-value">{timeLeft}s</strong>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div className="timer-chip" aria-live="polite">
+            <span className="timer-label">Time Left</span>
+            <strong className="timer-value">{timeLeft}s</strong>
+          </div>
+          <button
+            type="button"
+            className="btn-secondary btn-stop-game"
+            style={{ marginLeft: 0 }}
+            onClick={onStopGame}
+          >
+            Stop Game
+          </button>
         </div>
       </div>
     </div>
