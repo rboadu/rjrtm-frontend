@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export function Banner() {
   return (
     <section className="bg-white grid h-full w-full place-content-center dark:bg-gray-900">
@@ -15,19 +17,19 @@ export function Banner() {
           </p>
 
           <div className="mt-4 flex gap-4 sm:mt-6">
-            <a
+            <Link
               className="inline-block rounded border border-indigo-600 bg-indigo-600 px-5 py-3 font-medium text-white shadow-sm transition-colors hover:bg-indigo-700"
-              href="/loadscript"
+              to="/loadscript"
             >
               Get Started
-            </a>
+            </Link>
 
-            <a
+            <Link
               className="inline-block rounded border border-gray-200 px-5 py-3 font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 hover:text-gray-900 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-white"
-              href="/team"
+              to="/team"
             >
               Meet the Team
-            </a>
+            </Link>
           </div>
         </div>
 
