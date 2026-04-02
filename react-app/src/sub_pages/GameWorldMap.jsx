@@ -1,7 +1,8 @@
 // GameWorldMap.jsx
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import WorldMap from "../components/WorldMap";
 import Rules from "../components/Rules";
+import GameStatusPanel from "../components/GameStatusPanel";
 import countries from "../data/countries.json";
 import "./GameWorldMap.css";
 
@@ -13,6 +14,8 @@ function WorldMapPage() {
   const [gameStarted, setGameStarted] = useState(false);
   const [targetCountry, setTargetCountry] = useState(null);
   const [score, setScore] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(30);
+  const mapSectionRef = useRef(null);
 
   function getRandomCountry() {
     const rand = countries[Math.floor(Math.random() * countries.length)];
@@ -23,9 +26,31 @@ function WorldMapPage() {
     setScore(0);
     setFeedback(null);
     setSelectedLocation(null);
+    setTimeLeft(30);
     setGameStarted(true);
     getRandomCountry();
   }
+
+  useEffect(() => {
+    if (!gameStarted || timeLeft <= 0) return;
+
+    const countdown = setInterval(() => {
+      setTimeLeft((prev) => Math.max(prev - 1, 0));
+    }, 1000);
+
+    return () => clearInterval(countdown);
+  }, [gameStarted, timeLeft]);
+
+  useEffect(() => {
+    if (!gameStarted) return;
+
+    requestAnimationFrame(() => {
+      mapSectionRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  }, [gameStarted, targetCountry]);
 
   const handleLocationSelect = (lat, lng) => {
     console.log(`User double-clicked at: Latitude ${lat}, Longitude ${lng}`);
@@ -87,12 +112,19 @@ function WorldMapPage() {
 
             <div className="mt-6 flex gap-4">
               <button
+                type="button"
                 onClick={() => setShowRules(!showRules)}
                 className="btn-primary"
               >
                 How It Works
               </button>
-
+              <button
+                type="button"
+                onClick={startGame}
+                className="btn-primary"
+              >
+                Start Game
+              </button>
             </div>
 
           </div>
@@ -110,15 +142,21 @@ function WorldMapPage() {
         <hr className="divider" />
       </div>
 
+
       {/* Map Section */}
-      <section className="section-container map-section">
+      <section id="map-section" ref={mapSectionRef} className="section-container map-section">
         <h2 className="section-heading">
           <strong className="highlight">The Map</strong>
         </h2>
-        <p className="instruction-text">
-          Double-click anywhere on the map to make your guess.
-        </p>
-        
+        {gameStarted && targetCountry ? (
+          <GameStatusPanel targetCountry={targetCountry} timeLeft={timeLeft} />
+        ) : (
+          <p className="instruction-text">
+            Double-click anywhere on the map to make your guess.
+          </p>
+        )}
+
+
         <div className="map-container">
           <WorldMap 
             onLocationSelect={handleLocationSelect}
@@ -142,6 +180,7 @@ function WorldMapPage() {
               
               <div className="button-group">
                 <button
+                  type="button"
                   onClick={handleSubmitGuess}
                   disabled={!selectedLocation}
                   className="btn-submit"
@@ -150,6 +189,7 @@ function WorldMapPage() {
                 </button>
 
                 <button
+                  type="button"
                   onClick={clearSelection}
                   className="btn-secondary"
                 >

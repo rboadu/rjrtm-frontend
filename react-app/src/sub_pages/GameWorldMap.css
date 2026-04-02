@@ -53,7 +53,7 @@
 
 .map-section {
   padding-top: 3rem;
-  padding-bottom: 3rem;
+  padding-bottom: 6rem;
 }
 
 /* Heading Styles */
@@ -134,51 +134,186 @@
   color: rgb(229 231 235);
 }
 
+/* Game Status Panel */
+.game-status-card {
+  margin-bottom: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgb(199 210 254);
+  background-color: rgb(238 242 255);
+}
+
+.dark .game-status-card {
+  border-color: rgb(67 56 202);
+  background-color: rgba(79, 70, 229, 0.12);
+}
+
+.game-status-card.warning {
+  border-color: rgb(251 191 36);
+  background-color: rgb(255 251 235);
+}
+
+.dark .game-status-card.warning {
+  border-color: rgb(217 119 6);
+  background-color: rgba(217, 119, 6, 0.15);
+}
+
+.game-status-card.urgent {
+  border-color: rgb(248 113 113);
+  background-color: rgb(254 242 242);
+}
+
+.dark .game-status-card.urgent {
+  border-color: rgb(185 28 28);
+  background-color: rgba(185, 28, 28, 0.18);
+}
+
+.game-status-label {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  color: rgb(55 65 81);
+}
+
+.dark .game-status-label {
+  color: rgb(209 213 219);
+}
+
+.game-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.target-country-label {
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(79 70 229);
+  font-weight: 600;
+}
+
+.dark .target-country-label {
+  color: rgb(165 180 252);
+}
+
+.target-country-name {
+  margin: 0.15rem 0 0;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  font-weight: 700;
+  color: rgb(17 24 39);
+}
+
+.dark .target-country-name {
+  color: rgb(243 244 246);
+}
+
+.timer-chip {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 5.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.65rem;
+  background-color: white;
+  border: 1px solid rgb(224 231 255);
+}
+
+.dark .timer-chip {
+  background-color: rgb(31 41 55);
+  border-color: rgb(75 85 99);
+}
+
+.timer-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgb(75 85 99);
+}
+
+.dark .timer-label {
+  color: rgb(209 213 219);
+}
+
+.timer-value {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: rgb(17 24 39);
+}
+
+.dark .timer-value {
+  color: white;
+}
+
+@media (max-width: 640px) {
+  .game-status-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
 /* Button Styles */
+
 .btn-primary {
   display: inline-block;
   border-radius: 0.375rem;
   border: 1px solid rgb(79 70 229);
-  background-color: rgb(79 70 229);
+  background-color: rgb(79 70 229) !important;
+  color: white !important;
   padding: 0.75rem 1.25rem;
   font-weight: 500;
-  color: white;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   transition: background-color 0.2s;
   cursor: pointer;
 }
 
 .btn-primary:hover {
-  background-color: rgb(67 56 202);
+  background-color: rgb(67 56 202) !important;
 }
 
 .btn-primary:disabled {
-  background-color: rgb(156 163 175);
+  background-color: rgb(156 163 175) !important;
   cursor: not-allowed;
 }
 
 .btn-secondary {
   padding: 0.5rem 1.5rem;
-  background-color: rgb(229 231 235);
+  background-color: rgb(229 231 235) !important;
   border-radius: 0.5rem;
   font-weight: 500;
-  color: rgb(17 24 39);
+  color: rgb(17 24 39) !important;
   transition: background-color 0.2s;
   cursor: pointer;
   border: none;
 }
 
 .btn-secondary:hover {
-  background-color: rgb(209 213 219);
+  background-color: rgb(209 213 219) !important;
+}
+
+.dark .btn-primary {
+  background-color: rgb(79 70 229) !important;
+  color: white !important;
+}
+
+.dark .btn-primary:hover {
+  background-color: rgb(67 56 202) !important;
+}
+
+.dark .btn-primary:disabled {
+  background-color: rgb(156 163 175) !important;
 }
 
 .dark .btn-secondary {
-  background-color: rgb(55 65 81);
-  color: white;
+  background-color: rgb(55 65 81) !important;
+  color: white !important;
 }
 
 .dark .btn-secondary:hover {
-  background-color: rgb(75 85 99);
+  background-color: rgb(75 85 99) !important;
 }
 
 .btn-submit {
