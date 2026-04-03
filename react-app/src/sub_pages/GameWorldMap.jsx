@@ -1,5 +1,6 @@
 // GameWorldMap.jsx
 import { useEffect, useRef, useState } from "react";
+import booleanPointInPolygon from "@turf/boolean-point-in-polygon";
 import WorldMap from "../components/WorldMap";
 import Rules from "../components/Rules";
 import GameStatusPanel from "../components/GameStatusPanel";
@@ -15,7 +16,27 @@ function WorldMapPage() {
   const [targetCountry, setTargetCountry] = useState(null);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(30);
+  const [countriesGeoJson, setCountriesGeoJson] = useState(null);
   const mapSectionRef = useRef(null);
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    fetch("https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_admin_0_countries.geojson")
+      .then((res) => res.json())
+      .then((data) => setCountriesGeoJson(data))
+      .catch((err) => console.error("Failed to load countries GeoJSON:", err));
+  }, []);
+
+  function findClickedCountry(lat, lng) {
+    if (!countriesGeoJson) return null;
+    const pt = { type: "Feature", geometry: { type: "Point", coordinates: [lng, lat] } };
+    for (const feature of countriesGeoJson.features) {
+      if (booleanPointInPolygon(pt, feature)) {
+        return feature.properties;
+      }
+    }
+    return null;
+  }
 
     function stopGame() {
       setGameStarted(false);
@@ -42,11 +63,26 @@ function WorldMapPage() {
   useEffect(() => {
     if (!gameStarted || timeLeft <= 0) return;
 
-    const countdown = setInterval(() => {
+    timerRef.current = setInterval(() => {
       setTimeLeft((prev) => Math.max(prev - 1, 0));
     }, 1000);
 
-    return () => clearInterval(countdown);
+    return () => clearInterval(timerRef.current);
+  }, [gameStarted, timeLeft]);
+
+  useEffect(() => {
+    if (!gameStarted || timeLeft > 0) return;
+
+    setFeedback({ correct: false, message: "Time's up! Moving to the next country..." });
+
+    const advance = setTimeout(() => {
+      getRandomCountry();
+      setTimeLeft(30);
+      setSelectedLocation(null);
+      setFeedback(null);
+    }, 2000);
+
+    return () => clearTimeout(advance);
   }, [gameStarted, timeLeft]);
 
   useEffect(() => {
@@ -66,30 +102,53 @@ function WorldMapPage() {
     setFeedback(null);
   };
 
-  const handleSubmitGuess = async () => {
+  const handleSubmitGuess = () => {
     if (!selectedLocation) return;
 
-    const payload = {
-      latitude: selectedLocation.lat,
-      longitude: selectedLocation.lng,
-    };
+    clearInterval(timerRef.current);
 
-    // Mock the API call to /api/makeGuess
-    try {
-      // Log the payload to show what would be sent
-      console.log("POST /api/makeGuess", payload);
+    const clickedProps = findClickedCountry(selectedLocation.lat, selectedLocation.lng);
+    const targetName = targetCountry?.name ?? "";
 
-      // Mocked response (replace with real fetch/axios call later)
-      const mockResponse = {
-        correct: true,
-        message: "Mocked backend response: Guess received.",
-        correctCountry: "MockCountry" 
-      };
+    let correct = false;
+    let clickedName = null;
 
-      setFeedback(mockResponse);
-    } catch (error) {
-      setFeedback({ correct: false, message: "Network error (mocked)" });
+    if (clickedProps) {
+      console.log("GeoJSON feature properties:", clickedProps);
+      // Natural Earth 3.3.0 uses lowercase property names
+      clickedName =
+        clickedProps.name ?? clickedProps.NAME ??
+        clickedProps.admin ?? clickedProps.ADMIN ??
+        clickedProps.sovereignt ?? clickedProps.SOVEREIGNT ??
+        "Unknown";
+      const normalize = (s) => s.toLowerCase().trim();
+      const geoNames = [
+        clickedProps.name, clickedProps.NAME,
+        clickedProps.admin, clickedProps.ADMIN,
+        clickedProps.sovereignt, clickedProps.SOVEREIGNT,
+      ].filter(Boolean).map(normalize);
+      correct = geoNames.includes(normalize(targetName));
     }
+
+    if (correct) {
+      setScore((prev) => prev + 1);
+      setFeedback({ correct: true, message: `Correct! That's ${targetName}.` });
+    } else {
+      setFeedback({
+        correct: false,
+        message: clickedName
+          ? `That's ${clickedName}. The correct answer was ${targetName}.`
+          : `You clicked the ocean! The correct answer was ${targetName}.`,
+        correctCountry: targetName,
+      });
+    }
+
+    setTimeout(() => {
+      getRandomCountry();
+      setTimeLeft(30);
+      setSelectedLocation(null);
+      setFeedback(null);
+    }, 2000);
   };
 
   // Planning on making use of Google Maps Geocoding API to reverse geocode the lat/lng to get the country name,
@@ -166,9 +225,10 @@ function WorldMapPage() {
 
 
         <div className="map-container">
-          <WorldMap 
+          <WorldMap
             onLocationSelect={handleLocationSelect}
             selectedPosition={selectedLocation}
+            countriesGeoJson={countriesGeoJson}
           />
         </div>
 

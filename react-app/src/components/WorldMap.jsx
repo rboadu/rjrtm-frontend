@@ -1,6 +1,5 @@
 // WorldMap.jsx
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, GeoJSON } from "react-leaflet";
-import React, { useState, useEffect } from "react";
 import L from "leaflet";
 
 const countryStyle = {
@@ -18,15 +17,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 });
 
-function WorldMap({ onLocationSelect, selectedPosition }) {
-  const [countriesGeoJson, setCountriesGeoJson] = useState(null);
-
-  useEffect(() => {
-    fetch("https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_admin_0_countries.geojson")
-      .then((res) => res.json())
-      .then((data) => setCountriesGeoJson(data))
-      .catch((err) => console.error("Failed to load countries GeoJSON:", err));
-  }, []);
+function WorldMap({ onLocationSelect, selectedPosition, countriesGeoJson }) {
 
   // Define the world bounds (southwest and northeast corners)
   const worldBounds = [
