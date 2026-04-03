@@ -1,7 +1,14 @@
 // WorldMap.jsx
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from "react-leaflet";
-import React from "react";
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents, GeoJSON } from "react-leaflet";
+import React, { useState, useEffect } from "react";
 import L from "leaflet";
+
+const countryStyle = {
+  color: '#888',
+  weight: 1,
+  fillColor: '#eae6df',
+  fillOpacity: 1,
+};
 
 // Fix for default marker icon in bundlers
 delete L.Icon.Default.prototype._getIconUrl;
@@ -12,6 +19,15 @@ L.Icon.Default.mergeOptions({
 });
 
 function WorldMap({ onLocationSelect, selectedPosition }) {
+  const [countriesGeoJson, setCountriesGeoJson] = useState(null);
+
+  useEffect(() => {
+    fetch("https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_admin_0_countries.geojson")
+      .then((res) => res.json())
+      .then((data) => setCountriesGeoJson(data))
+      .catch((err) => console.error("Failed to load countries GeoJSON:", err));
+  }, []);
+
   // Define the world bounds (southwest and northeast corners)
   const worldBounds = [
     [-85, -180], // Southwest corner (min lat, min lng)
@@ -44,6 +60,9 @@ function WorldMap({ onLocationSelect, selectedPosition }) {
         url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
       />
+      {countriesGeoJson && (
+        <GeoJSON data={countriesGeoJson} style={countryStyle} />
+      )}
       <MapClickHandler />
       {selectedPosition && (
         <Marker position={[selectedPosition.lat, selectedPosition.lng]}>
