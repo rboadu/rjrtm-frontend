@@ -185,13 +185,13 @@ function WorldMapPage() {
               >
                 How It Works
               </button>
-              <button
+              {/* <button
                 type="button"
                 onClick={startGame}
                 className="btn-primary"
               >
                 Start Game
-              </button>
+              </button> */}
             </div>
 
           </div>
@@ -216,11 +216,28 @@ function WorldMapPage() {
           <strong className="highlight">The Map</strong>
         </h2>
         {gameStarted && targetCountry ? (
-          <GameStatusPanel targetCountry={targetCountry} timeLeft={timeLeft} onStopGame={stopGame} />
+          <GameStatusPanel
+            targetCountry={targetCountry}
+            timeLeft={timeLeft}
+            onStopGame={stopGame}
+            selectedLocation={selectedLocation}
+            onSubmitGuess={handleSubmitGuess}
+            onClearSelection={clearSelection}
+            feedback={feedback}
+          />
         ) : (
-          <p className="instruction-text">
-            Double-click anywhere on the map to make your guess.
-          </p>
+          <>
+            <p className="instruction-text">
+              Double-click anywhere on the map to make your guess.
+            </p>
+            <button
+              type="button"
+              onClick={startGame}
+              className="btn-primary start-game-btn"
+            >
+              Start Game
+            </button>
+          </>
         )}
 
 
@@ -231,49 +248,6 @@ function WorldMapPage() {
             countriesGeoJson={countriesGeoJson}
           />
         </div>
-
-        {/* Selected Location Display */}
-        {selectedLocation && (
-          <div className="location-card">
-            <div className="button-group button-group-centered">
-              <button
-                type="button"
-                onClick={handleSubmitGuess}
-                disabled={!selectedLocation}
-                className="btn-submit"
-              >
-                Submit Guess
-              </button>
-              <button
-                type="button"
-                onClick={clearSelection}
-                className="btn-secondary"
-              >
-                Clear
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* FEEDBACK */}
-        {feedback && (
-          <div className={`feedback-card ${
-            feedback.correct ? 'success' : 'error'
-          }`}>
-            <h3 className="feedback-heading">
-              {feedback.correct ? '✅ Correct!' : '❌ Incorrect'}
-            </h3>
-            <p className="feedback-message">
-              {feedback.message}
-            </p>
-            {!feedback.correct && feedback.correctCountry && (
-              <p className="feedback-detail">
-                Correct answer: {feedback.correctCountry}
-              </p>
-            )}
-
-          </div>
-        )}
 
       </section>
 

@@ -1,5 +1,13 @@
 
-function GameStatusPanel({ targetCountry, timeLeft, onStopGame }) {
+function GameStatusPanel({
+  targetCountry,
+  timeLeft,
+  onStopGame,
+  selectedLocation,
+  onSubmitGuess,
+  onClearSelection,
+  feedback,
+}) {
   const countryLabel =
     typeof targetCountry === "string" ? targetCountry : targetCountry?.name ?? "Unknown";
 
@@ -29,6 +37,36 @@ function GameStatusPanel({ targetCountry, timeLeft, onStopGame }) {
           </button>
         </div>
       </div>
+
+      <div className="game-status-actions-row">
+        <button
+          type="button"
+          onClick={onSubmitGuess}
+          disabled={!selectedLocation}
+          className="btn-submit"
+        >
+          Submit Guess
+        </button>
+        <button
+          type="button"
+          onClick={onClearSelection}
+          className="btn-secondary"
+        >
+          Clear
+        </button>
+      </div>
+
+      {feedback && (
+        <div className={`inline-feedback ${feedback.correct ? "success" : "error"}`}>
+          <h3 className="inline-feedback-heading">
+            {feedback.correct ? "Correct!" : "Incorrect"}
+          </h3>
+          <p className="inline-feedback-message">{feedback.message}</p>
+          {!feedback.correct && feedback.correctCountry && (
+            <p className="inline-feedback-detail">Correct answer: {feedback.correctCountry}</p>
+          )}
+        </div>
+      )}
     </div>
   );
 }

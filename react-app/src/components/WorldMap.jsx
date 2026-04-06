@@ -42,7 +42,7 @@ function WorldMap({ onLocationSelect, selectedPosition, countriesGeoJson }) {
       zoom={2}
       minZoom={2}
       doubleClickZoom={false}
-      style={{ height: "500px", width: "100%", fillColor: 'transparent', weight: 2, color: '#666' }}
+      style={{ height: "600px", width: "100%", fillColor: 'transparent', weight: 2, color: '#666' }}
       maxBounds={worldBounds}
       maxBoundsViscosity={1.0} // Prevents dragging outside bounds
     >
