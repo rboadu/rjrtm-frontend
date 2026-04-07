@@ -14,7 +14,7 @@ function WorldMapPage() {
 
   const [gameStarted, setGameStarted] = useState(false);
   const [targetCountry, setTargetCountry] = useState(null);
-  const [score, setScore] = useState(0);
+  const [streak, setStreak] = useState(0);
   const [timeLeft, setTimeLeft] = useState(30);
   const [countriesGeoJson, setCountriesGeoJson] = useState(null);
   const mapSectionRef = useRef(null);
@@ -41,6 +41,7 @@ function WorldMapPage() {
     function stopGame() {
       setGameStarted(false);
       setTargetCountry(null);
+      setStreak(0);
       setTimeLeft(30);
       setSelectedLocation(null);
       setFeedback(null);
@@ -52,7 +53,7 @@ function WorldMapPage() {
   }
 
   function startGame() {
-    setScore(0);
+    setStreak(0);
     setFeedback(null);
     setSelectedLocation(null);
     setTimeLeft(30);
@@ -73,6 +74,7 @@ function WorldMapPage() {
   useEffect(() => {
     if (!gameStarted || timeLeft > 0) return;
 
+    setStreak(0);
     setFeedback({ correct: false, message: "Time's up! Moving to the next country..." });
 
     const advance = setTimeout(() => {
@@ -131,9 +133,10 @@ function WorldMapPage() {
     }
 
     if (correct) {
-      setScore((prev) => prev + 1);
+      setStreak((prev) => prev + 1);
       setFeedback({ correct: true, message: `Correct! That's ${targetName}.` });
     } else {
+      setStreak(0);
       setFeedback({
         correct: false,
         message: clickedName
@@ -151,11 +154,6 @@ function WorldMapPage() {
     }, 2000);
   };
 
-  // Planning on making use of Google Maps Geocoding API to reverse geocode the lat/lng to get the country name,
-  // The Api endpoint will be implemented on the backend to keep the API key secure, with request limiting to prevent abuse. 
-  // You can't limit the billable account to the free tier, so I want to make sure the 
-  // API key is never exposed on the frontend and that the number of requests never exceeds the free tier limits.
-  // The Geocoding API is pretty accurate, even down to the address. That's unnecessary for this game, so I'll just extract the country name.
   const clearSelection = () => {
     setSelectedLocation(null);
     setFeedback(null);
@@ -185,13 +183,6 @@ function WorldMapPage() {
               >
                 How It Works
               </button>
-              {/* <button
-                type="button"
-                onClick={startGame}
-                className="btn-primary"
-              >
-                Start Game
-              </button> */}
             </div>
 
           </div>
@@ -219,6 +210,7 @@ function WorldMapPage() {
           <GameStatusPanel
             targetCountry={targetCountry}
             timeLeft={timeLeft}
+            streak={streak}
             onStopGame={stopGame}
             selectedLocation={selectedLocation}
             onSubmitGuess={handleSubmitGuess}

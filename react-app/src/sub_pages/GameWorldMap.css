@@ -241,6 +241,23 @@
   border-color: rgb(75 85 99);
 }
 
+.streak-chip {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.65rem;
+  background-color: rgb(224 231 255);
+  border: 1px solid rgb(199 210 254);
+}
+
+.dark .streak-chip {
+  background-color: rgba(79, 70, 229, 0.2);
+  border-color: rgb(99 102 241);
+}
+
 .timer-label {
   font-size: 0.7rem;
   text-transform: uppercase;
