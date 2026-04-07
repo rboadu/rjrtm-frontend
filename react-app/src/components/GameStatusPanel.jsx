@@ -67,6 +67,9 @@ function GameStatusPanel({
             {feedback.correct ? "Correct!" : "Incorrect"}
           </h3>
           <p className="inline-feedback-message">{feedback.message}</p>
+          {!feedback.correct && feedback.distanceKm != null && (
+            <p className="inline-feedback-detail">Your guess was {feedback.distanceKm.toLocaleString()} km away.</p>
+          )}
           {!feedback.correct && feedback.correctCountry && (
             <p className="inline-feedback-detail">Correct answer: {feedback.correctCountry}</p>
           )}

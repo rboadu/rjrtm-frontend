@@ -7,6 +7,18 @@ import GameStatusPanel from "../components/GameStatusPanel";
 import countries from "../data/countries.json";
 import "./GameWorldMap.css";
 
+function haversineKm(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLng = ((lng2 - lng1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLng / 2) ** 2;
+  return Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+}
+
 function WorldMapPage() {
   const [showRules, setShowRules] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -142,11 +154,15 @@ function WorldMapPage() {
       }, 2000);
     } else {
       setStreak(0);
+      const distanceKm = targetCountry
+        ? haversineKm(selectedLocation.lat, selectedLocation.lng, targetCountry.lat, targetCountry.lng)
+        : null;
       setFeedback({
         correct: false,
         message: clickedName
           ? `That's ${clickedName}. Try again!`
           : `You clicked the ocean! Try again!`,
+        distanceKm,
       });
       setSelectedLocation(null);
     }
