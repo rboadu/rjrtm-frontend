@@ -23,10 +23,15 @@ export default function Selector({
         value={value}
         onChange={onChange}
         className="mt-0.5 w-full rounded border-gray-300 shadow-sm sm:text-sm"
+        style={{ color: "black", backgroundColor: "white" }}
         {...props}
       >
         {options.map((option) => (
-          <option key={option.value} value={option.value}>
+          <option
+            key={option.value}
+            value={option.value}
+            style={{ color: "black", backgroundColor: "white" }}
+          >
             {option.label}
           </option>
         ))}

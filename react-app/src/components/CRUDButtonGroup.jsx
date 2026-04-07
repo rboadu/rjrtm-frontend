@@ -43,7 +43,7 @@ function createEmptyValues(fields) {
 }
 
 function buildUrl(path) {
-  const base = (API_BASE || "").replace(/\/+$/, "");
+  const base = ("http://127.0.0.1:8000/" || "").replace(/\/+$/, "");
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   return `${base}${normalizedPath}`;
 }
@@ -125,6 +125,37 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
     }
   };
 
+  const [listData, setListData] = useState([]);
+  const [isLoadingList, setIsLoadingList] = useState(false);
+
+  const handleList = async () => {
+    setIsLoadingList(true);
+    setListData([]);
+    try {
+      const endpoint = createEndpoints[entityType] || createEndpoints.C;
+      const response = await fetch(buildUrl(endpoint), {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok)
+        throw new Error(`${response.status} ${response.statusText}`);
+      const data = await response.json();
+      setListData(Array.isArray(data) ? data : []);
+    } catch (err) {
+      setListData([]);
+    } finally {
+      setIsLoadingList(false);
+    }
+  };
+
+  useEffect(() => {
+    if (active === "List") {
+      handleList();
+    }
+  }, [active, entityType]);
+
   const renderInputs = () => {
     switch (active) {
       case "Create":
@@ -156,6 +187,7 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
                   required={field.required}
                   className="rounded border border-gray-300 px-2 py-1 shadow-sm"
                   placeholder={field.label}
+                  style={{ backgroundColor: "white", color: "black" }}
                 />
               </label>
             ))}
@@ -180,8 +212,13 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
             <input
               className="border px-2 py-1"
               placeholder="Item ID to edit..."
+              style={{ backgroundColor: "white", color: "black" }}
             />
-            <input className="border px-2 py-1" placeholder="New value..." />
+            <input
+              className="border px-2 py-1"
+              placeholder="New value..."
+              style={{ backgroundColor: "white", color: "black" }}
+            />
             <button className="bg-blue-600 text-white px-3 py-1 rounded">
               Update
             </button>
@@ -193,6 +230,7 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
             <input
               className="border px-2 py-1"
               placeholder="Item ID to delete..."
+              style={{ backgroundColor: "white", color: "black" }}
             />
             <button className="bg-red-600 text-white px-3 py-1 rounded">
               Delete
@@ -202,7 +240,21 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
       case "List":
         return (
           <div className="mt-4 text-gray-700 dark:text-gray-200">
-            Listing items...
+            {isLoadingList ? (
+              <div>Loading...</div>
+            ) : listData.length === 0 ? (
+              <div>No items found.</div>
+            ) : (
+              <ul className="list-disc pl-5">
+                {listData.map((item, idx) => (
+                  <li key={item.id || item.code || item.name || idx}>
+                    {Object.entries(item)
+                      .map(([k, v]) => `${k}: ${v}`)
+                      .join(", ")}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         );
       default:
