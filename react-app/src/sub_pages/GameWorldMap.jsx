@@ -107,8 +107,6 @@ function WorldMapPage() {
   const handleSubmitGuess = () => {
     if (!selectedLocation) return;
 
-    clearInterval(timerRef.current);
-
     const clickedProps = findClickedCountry(selectedLocation.lat, selectedLocation.lng);
     const targetName = targetCountry?.name ?? "";
 
@@ -133,25 +131,25 @@ function WorldMapPage() {
     }
 
     if (correct) {
+      clearInterval(timerRef.current);
       setStreak((prev) => prev + 1);
       setFeedback({ correct: true, message: `Correct! That's ${targetName}.` });
+      setTimeout(() => {
+        getRandomCountry();
+        setTimeLeft(30);
+        setSelectedLocation(null);
+        setFeedback(null);
+      }, 2000);
     } else {
       setStreak(0);
       setFeedback({
         correct: false,
         message: clickedName
-          ? `That's ${clickedName}. The correct answer was ${targetName}.`
-          : `You clicked the ocean! The correct answer was ${targetName}.`,
-        correctCountry: targetName,
+          ? `That's ${clickedName}. Try again!`
+          : `You clicked the ocean! Try again!`,
       });
-    }
-
-    setTimeout(() => {
-      getRandomCountry();
-      setTimeLeft(30);
       setSelectedLocation(null);
-      setFeedback(null);
-    }, 2000);
+    }
   };
 
   const clearSelection = () => {
