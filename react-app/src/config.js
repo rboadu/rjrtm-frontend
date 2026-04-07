@@ -8,6 +8,6 @@ export const API_BASE =
   // Optional window-level override (useful for non-bundled scripts)
   (typeof window !== "undefined" && window.__API_BASE__) ||
   // Fallback default
-  "http://localhost:5000";
+  "http://127.0.0.1:8000";
 
 export default { API_BASE };
