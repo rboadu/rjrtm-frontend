@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <!-- Globe base -->
+  <circle cx="12" cy="12" r="10" fill="#0ea5e9"/>
+
+  <!-- Vertical meridian -->
+  <ellipse cx="12" cy="12" rx="4" ry="10" fill="none" stroke="#022c43" stroke-width="1"/>
+
+  <!-- Horizontal equator -->
+  <ellipse cx="12" cy="12" rx="10" ry="4" fill="none" stroke="#022c43" stroke-width="1"/>
+
+  <!-- Outer circle border (optional but helps clarity) -->
+  <circle cx="12" cy="12" r="10" fill="none" stroke="#022c43" stroke-width="1"/>
+</svg>
