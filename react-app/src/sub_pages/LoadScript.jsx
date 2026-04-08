@@ -244,82 +244,94 @@ async function deleteItem(item) {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
-      <section className="card">
-        <h1>Frontend API Connector</h1>
-        <p>
-          Dropdowns are populated from endpoints. Selecting a country loads its
-          states via the country-provided link or fallback query.
-        </p>
-        <p className={`status${isError ? " error" : ""}`}>{status}</p>
-      </section>
+    <div className="min-h-screen p-6 bg-gradient-to-b from-sky-50 to-white dark:from-slate-900 dark:to-slate-800">
+      <div className="max-w-4xl mx-auto space-y-6">
+        <header className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
+              Frontend API Connector
+            </h1>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
+              Dropdowns are populated from endpoints. Selecting a country loads its states via the country-provided link or fallback mapping.
+            </p>
+          </div>
 
-      <section className="card">
-        <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 12 }}>
-          <label>
-            Country
-            <select
-              aria-label="Country"
-              value={selectedCountry || ""}
-              onChange={(e) => handleSelectCountry(e.target.value)}
-              disabled={loading}
-            >
-              <option value="">Select a country</option>
-              {renderOptions(countries)}
-            </select>
-          </label>
+          <div className="flex items-center gap-2">
+            <Button onClick={() => handleLoadCountries()} disabled={loading}>
+              Reload Countries
+            </Button>
+          </div>
+        </header>
 
-          <label>
-            State
-            <select
-              aria-label="State"
-              value={selectedState || ""}
-              onChange={(e) => handleSelectState(e.target.value)}
-              disabled={!states.length || loading}
-            >
-              <option value="">Select a state</option>
-              {renderOptions(states)}
-            </select>
-          </label>
+        <main className="bg-white dark:bg-slate-900 shadow-md rounded-lg p-5">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <label className="block">
+              <span className="text-xs font-medium text-slate-600 dark:text-slate-400">Country</span>
+              <select
+                aria-label="Country"
+                value={selectedCountry || ""}
+                onChange={(e) => handleSelectCountry(e.target.value)}
+                disabled={loading}
+                className="mt-2 block w-full rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-400"
+              >
+                <option value="">Select a country</option>
+                {renderOptions(countries)}
+              </select>
+            </label>
 
-          <label>
-            City
-            <select
-              aria-label="City"
-              value={selectedCity || ""}
-              onChange={(e) => setSelectedCity(e.target.value)}
-              disabled={!cities.length || loading}
-            >
-              <option value="">Select a city</option>
-              {renderOptions(cities)}
-            </select>
-          </label>
-        </div>
+            <label className="block">
+              <span className="text-xs font-medium text-slate-600 dark:text-slate-400">State</span>
+              <select
+                aria-label="State"
+                value={selectedState || ""}
+                onChange={(e) => handleSelectState(e.target.value)}
+                disabled={!states.length || loading}
+                className="mt-2 block w-full rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-400"
+              >
+                <option value="">Select a state</option>
+                {renderOptions(states)}
+              </select>
+            </label>
 
-        <ul>{/* list is optional; keep for backward compatibility */}</ul>
+            <label className="block">
+              <span className="text-xs font-medium text-slate-600 dark:text-slate-400">City</span>
+              <select
+                aria-label="City"
+                value={selectedCity || ""}
+                onChange={(e) => setSelectedCity(e.target.value)}
+                disabled={!cities.length || loading}
+                className="mt-2 block w-full rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-400"
+              >
+                <option value="">Select a city</option>
+                {renderOptions(cities)}
+              </select>
+            </label>
+          </div>
 
-        <div style={{ marginTop: 12, textAlign: "left" }}>
-          <strong>Selected:</strong>{" "}
-          {selectedCountry || "-"} / {selectedState || "-"} / {selectedCity || "-"}
-        </div>
+          <div className="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="text-sm text-slate-600 dark:text-slate-400">
+              Status:{" "}
+              <span className={isError ? "text-red-500" : "text-emerald-600"}>{status}</span>
+            </div>
 
-        <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
-          <Button onClick={() => handleLoadCountries()} disabled={loading}>
-            Reload Countries
-          </Button>
-        </div>
-      </section>
+            <div className="text-sm text-slate-700 dark:text-slate-200">
+              <strong>Selected:</strong>{" "}
+              <span className="ml-1">
+                {selectedCountry || "-"} / {selectedState || "-"} / {selectedCity || "-"}
+              </span>
+            </div>
+          </div>
+        </main>
 
-      <section className="card">
-        <h2>Selected Location</h2>
-        <p>
-          Country: {selectedCountry || "N/A"}
-          <br />
-          State: {selectedState || "N/A"}
-          <br />
-          City: {selectedCity || "N/A"}
-        </p>
-      </section>
+        <section className="bg-white dark:bg-slate-900 shadow rounded-lg p-4">
+          <h2 className="text-lg font-medium text-slate-900 dark:text-slate-100">Selected Location</h2>
+          <div className="mt-3 text-sm text-slate-600 dark:text-slate-400 space-y-1">
+            <div>Country: <span className="font-medium text-slate-800 dark:text-slate-100">{selectedCountry || "N/A"}</span></div>
+            <div>State: <span className="font-medium text-slate-800 dark:text-slate-100">{selectedState || "N/A"}</span></div>
+            <div>City: <span className="font-medium text-slate-800 dark:text-slate-100">{selectedCity || "N/A"}</span></div>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

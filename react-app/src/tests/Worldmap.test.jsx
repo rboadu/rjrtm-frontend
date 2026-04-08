@@ -14,7 +14,7 @@ vi.mock("react-leaflet", () => {
   };
 });
 
-import WorldMap from "../components/worldMap";
+import WorldMap from "../components/GameWorldMap";
 
 describe("WorldMap", () => {
   it("renders a map container, tile layer and marker popup for selectedPosition", () => {
