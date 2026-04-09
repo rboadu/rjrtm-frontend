@@ -25,6 +25,7 @@ function WorldMapPage() {
   const [feedback, setFeedback] = useState(null);
 
   const [gameStarted, setGameStarted] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
   const [targetCountry, setTargetCountry] = useState(null);
   const [score, setScore] = useState(0);
   const [streak, setStreak] = useState(0);
@@ -53,12 +54,12 @@ function WorldMapPage() {
 
     function stopGame() {
       setGameStarted(false);
+      setGameOver(false);
       setTargetCountry(null);
       setStreak(0);
       setTimeLeft(30);
       setSelectedLocation(null);
       setFeedback(null);
-      setStreak(0);
     }
 
   function getRandomCountry() {
@@ -69,6 +70,7 @@ function WorldMapPage() {
   function startGame() {
     setScore(0);
     setStreak(0);
+    setGameOver(false);
     setFeedback(null);
     setSelectedLocation(null);
     setTimeLeft(30);
@@ -90,16 +92,8 @@ function WorldMapPage() {
     if (!gameStarted || timeLeft > 0) return;
 
     setStreak(0);
-    setFeedback({ correct: false, message: "Time's up! Moving to the next country..." });
-
-    const advance = setTimeout(() => {
-      getRandomCountry();
-      setTimeLeft(30);
-      setSelectedLocation(null);
-      setFeedback(null);
-    }, 2000);
-
-    return () => clearTimeout(advance);
+    setGameStarted(false);
+    setGameOver(true);
   }, [gameStarted, timeLeft]);
 
   useEffect(() => {
@@ -234,6 +228,19 @@ function WorldMapPage() {
             onClearSelection={clearSelection}
             feedback={feedback}
           />
+        ) : gameOver ? (
+          <div className="game-over-card">
+            <h2 className="game-over-title">Time's Up!</h2>
+            <p className="game-over-score">You scored <strong>{score}</strong> {score === 1 ? "point" : "points"}.</p>
+            <div className="game-over-actions">
+              <button type="button" onClick={startGame} className="btn-primary">
+                Play Again
+              </button>
+              <button type="button" onClick={stopGame} className="btn-secondary">
+                Stop Game
+              </button>
+            </div>
+          </div>
         ) : (
           <>
             <p className="instruction-text">

@@ -149,6 +149,47 @@
 }
 
 /* Game Status Panel */
+.game-over-card {
+  margin-bottom: 1rem;
+  padding: 2rem 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgb(248 113 113);
+  background-color: rgb(254 242 242);
+  text-align: center;
+}
+
+.dark .game-over-card {
+  border-color: rgb(185 28 28);
+  background-color: rgba(185, 28, 28, 0.18);
+}
+
+.game-over-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: rgb(185 28 28);
+}
+
+.dark .game-over-title {
+  color: rgb(252 165 165);
+}
+
+.game-over-score {
+  font-size: 1rem;
+  margin: 0 0 1.5rem;
+  color: rgb(75 85 99);
+}
+
+.dark .game-over-score {
+  color: rgb(209 213 219);
+}
+
+.game-over-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
 .game-status-card {
   margin-bottom: 1rem;
   padding: 1rem 1.25rem;
