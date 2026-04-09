@@ -224,6 +224,39 @@
   color: rgb(243 244 246);
 }
 
+.streak-chip {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 5.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.65rem;
+  background-color: rgb(254 243 199);
+  border: 1px solid rgb(252 211 77);
+}
+
+.dark .streak-chip {
+  background-color: rgb(120 53 15);
+  border-color: rgb(217 119 6);
+}
+
+.streak-chip .timer-label {
+  color: rgb(146 64 14);
+}
+
+.dark .streak-chip .timer-label {
+  color: rgb(253 230 138);
+}
+
+.streak-chip .timer-value {
+  color: rgb(180 83 9);
+}
+
+.dark .streak-chip .timer-value {
+  color: rgb(253 230 138);
+}
+
 .timer-chip {
   display: inline-flex;
   flex-direction: column;

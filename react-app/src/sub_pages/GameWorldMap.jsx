@@ -26,6 +26,7 @@ function WorldMapPage() {
 
   const [gameStarted, setGameStarted] = useState(false);
   const [targetCountry, setTargetCountry] = useState(null);
+  const [score, setScore] = useState(0);
   const [streak, setStreak] = useState(0);
   const [timeLeft, setTimeLeft] = useState(30);
   const [countriesGeoJson, setCountriesGeoJson] = useState(null);
@@ -57,6 +58,7 @@ function WorldMapPage() {
       setTimeLeft(30);
       setSelectedLocation(null);
       setFeedback(null);
+      setStreak(0);
     }
 
   function getRandomCountry() {
@@ -65,6 +67,7 @@ function WorldMapPage() {
   }
 
   function startGame() {
+    setScore(0);
     setStreak(0);
     setFeedback(null);
     setSelectedLocation(null);
@@ -143,7 +146,7 @@ function WorldMapPage() {
     }
 
     if (correct) {
-      clearInterval(timerRef.current);
+      setScore((prev) => prev + 1);
       setStreak((prev) => prev + 1);
       setFeedback({ correct: true, message: `Correct! That's ${targetName}.` });
       setTimeout(() => {

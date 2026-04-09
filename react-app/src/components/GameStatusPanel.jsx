@@ -24,10 +24,12 @@ function GameStatusPanel({
           <h3 className="target-country-name">{countryLabel}</h3>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <div className="streak-chip" aria-live="polite">
-            <span className="timer-label">Streak</span>
-            <strong className="timer-value">{streak}</strong>
-          </div>
+          {streak > 0 && (
+            <div className="streak-chip">
+              <span className="timer-label">Streak</span>
+              <strong className="timer-value">{streak}</strong>
+            </div>
+          )}
           <div className="timer-chip" aria-live="polite">
             <span className="timer-label">Time Left</span>
             <strong className="timer-value">{timeLeft}s</strong>
