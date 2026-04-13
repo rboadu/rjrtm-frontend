@@ -62,6 +62,11 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
   const [deleteStatus, setDeleteStatus] = useState("");
   const [status, setStatus] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // Edit state hooks (must be top-level)
+  const [editName, setEditName] = useState("");
+  const [editCountry, setEditCountry] = useState("");
+  const [editPopulation, setEditPopulation] = useState("");
+  const [editStatus, setEditStatus] = useState("");
 
   const fields = createFields[entityType] || createFields.C;
 
@@ -283,17 +288,94 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
           <div className="mt-4 flex flex-col gap-2">
             <input
               className="border px-2 py-1"
-              placeholder="Item ID to edit..."
+              placeholder={
+                entityType === "C"
+                  ? "City name to update..."
+                  : "Item ID to update..."
+              }
+              value={editName}
+              onChange={(e) => setEditName(e.target.value)}
               style={{ backgroundColor: "white", color: "black" }}
             />
-            <input
-              className="border px-2 py-1"
-              placeholder="New value..."
-              style={{ backgroundColor: "white", color: "black" }}
-            />
-            <button className="bg-blue-600 text-white px-3 py-1 rounded">
+            {entityType === "C" && (
+              <>
+                <input
+                  className="border px-2 py-1"
+                  placeholder="Country"
+                  value={editCountry}
+                  onChange={(e) => setEditCountry(e.target.value)}
+                  style={{ backgroundColor: "white", color: "black" }}
+                />
+                <input
+                  className="border px-2 py-1"
+                  placeholder="Population (optional)"
+                  type="number"
+                  value={editPopulation}
+                  onChange={(e) => setEditPopulation(e.target.value)}
+                  style={{ backgroundColor: "white", color: "black" }}
+                />
+              </>
+            )}
+            <button
+              className="bg-blue-600 text-white px-3 py-1 rounded"
+              onClick={async () => {
+                setEditStatus("");
+                if (!editName.trim()) {
+                  setEditStatus("Please enter a name to update.");
+                  return;
+                }
+                if (entityType === "C" && !editCountry.trim()) {
+                  setEditStatus("Please enter a country.");
+                  return;
+                }
+                try {
+                  let endpoint, payload;
+                  if (entityType === "C") {
+                    endpoint = `/cities/${encodeURIComponent(editName.trim())}`;
+                    payload = {
+                      name: editName.trim(),
+                      country: editCountry.trim(),
+                    };
+                    if (editPopulation.trim()) {
+                      payload.population = Number(editPopulation.trim());
+                    }
+                  } else {
+                    setEditStatus("Update only implemented for cities.");
+                    return;
+                  }
+                  const response = await fetch(buildUrl(endpoint), {
+                    method: "PUT",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(payload),
+                  });
+                  if (response.ok) {
+                    setEditStatus(
+                      `${entityLabels[entityType] || "Item"} updated successfully.`,
+                    );
+                    setEditName("");
+                    setEditCountry("");
+                    setEditPopulation("");
+                  } else {
+                    const data = await response.json().catch(() => ({}));
+                    setEditStatus(
+                      data.error ||
+                        `Update failed: ${response.status} ${response.statusText}`,
+                    );
+                  }
+                } catch (err) {
+                  setEditStatus(`Update failed: ${err.message}`);
+                }
+              }}
+            >
               Update
             </button>
+            {editStatus && (
+              <p className="text-sm text-gray-600" aria-live="polite">
+                {editStatus}
+              </p>
+            )}
           </div>
         );
       case "Delete":
