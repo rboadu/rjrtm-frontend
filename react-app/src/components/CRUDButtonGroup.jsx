@@ -10,7 +10,7 @@ const entityLabels = {
 const createFields = {
   C: [
     { name: "name", label: "Name", required: true },
-    { name: "country", label: "Country", required: false },
+    { name: "country", label: "Country", required: true },
     {
       name: "population",
       label: "Population",
@@ -35,6 +35,11 @@ const createEndpoints = {
   CNTRY: "/countries/",
 };
 
+const bulkCreateEndpoints = {
+  C: "/cities/bulk",
+  S: "/states/bulk",
+};
+
 function createEmptyValues(fields) {
   return fields.reduce((values, field) => {
     values[field.name] = "";
@@ -50,55 +55,80 @@ function buildUrl(path) {
 
 export default function CRUDButtonGroup({ entityType = "C" }) {
   const [active, setActive] = useState(null);
-  const [formValues, setFormValues] = useState(() =>
+  const [createRows, setCreateRows] = useState(() => [
     createEmptyValues(createFields[entityType] || createFields.C),
-  );
+  ]);
+  const [deleteInput, setDeleteInput] = useState("");
+  const [deleteStatus, setDeleteStatus] = useState("");
   const [status, setStatus] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fields = createFields[entityType] || createFields.C;
 
   useEffect(() => {
-    setFormValues(createEmptyValues(fields));
+    setCreateRows([createEmptyValues(fields)]);
     setStatus("");
   }, [entityType]);
 
-  const handleFieldChange = (name, value) => {
-    setFormValues((currentValues) => ({
-      ...currentValues,
-      [name]: value,
-    }));
+  const isBulkCreateEnabled = entityType === "C" || entityType === "S";
+
+  const handleFieldChange = (rowIndex, name, value) => {
+    setCreateRows((currentRows) =>
+      currentRows.map((row, index) =>
+        index === rowIndex ? { ...row, [name]: value } : row,
+      ),
+    );
+  };
+
+  const handleAddRow = () => {
+    setCreateRows((currentRows) => [...currentRows, createEmptyValues(fields)]);
+  };
+
+  const handleRemoveRow = (rowIndex) => {
+    setCreateRows((currentRows) => {
+      if (currentRows.length === 1) {
+        return currentRows;
+      }
+
+      return currentRows.filter((_, index) => index !== rowIndex);
+    });
   };
 
   const handleCreateSubmit = async (event) => {
     event.preventDefault();
 
-    const missingField = fields.find(
-      (field) => field.required && !String(formValues[field.name] ?? "").trim(),
-    );
-
-    if (missingField) {
-      setStatus(`${missingField.label} is required.`);
-      return;
-    }
-
-    const endpoint = createEndpoints[entityType] || createEndpoints.C;
-    const payload = fields.reduce((values, field) => {
-      const rawValue = String(formValues[field.name] ?? "").trim();
-
-      if (!rawValue) {
-        return values;
-      }
-
-      values[field.name] =
-        field.type === "number" ? Number(rawValue) : rawValue;
-      return values;
-    }, {});
-
     setIsSubmitting(true);
     setStatus("Submitting...");
-    console.log(buildUrl(endpoint));
     try {
+      const endpoint = isBulkCreateEnabled
+        ? bulkCreateEndpoints[entityType] || createEndpoints.C
+        : createEndpoints[entityType] || createEndpoints.C;
+
+      const payloadRows = createRows.map((row, rowIndex) => {
+        const missingField = fields.find(
+          (field) => field.required && !String(row[field.name] ?? "").trim(),
+        );
+
+        if (missingField) {
+          throw new Error(
+            `Row ${rowIndex + 1}: ${missingField.label} is required.`,
+          );
+        }
+
+        return fields.reduce((values, field) => {
+          const rawValue = String(row[field.name] ?? "").trim();
+
+          if (!rawValue) {
+            return values;
+          }
+
+          values[field.name] =
+            field.type === "number" ? Number(rawValue) : rawValue;
+          return values;
+        }, {});
+      });
+
+      const payload = isBulkCreateEnabled ? payloadRows : payloadRows[0] || {};
       const response = await fetch(buildUrl(endpoint), {
         method: "POST",
         headers: {
@@ -116,8 +146,12 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
         );
       }
 
-      setStatus(`${entityLabels[entityType] || "Item"} created successfully.`);
-      setFormValues(createEmptyValues(fields));
+      setStatus(
+        isBulkCreateEnabled
+          ? `${entityLabels[entityType] || "Item"}s created successfully.`
+          : `${entityLabels[entityType] || "Item"} created successfully.`,
+      );
+      setCreateRows([createEmptyValues(fields)]);
     } catch (error) {
       setStatus(`Create failed: ${error.message}`);
     } finally {
@@ -168,28 +202,66 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
               Create {entityLabels[entityType] || "Item"}
             </div>
 
-            {fields.map((field) => (
-              <label
-                key={field.name}
-                className="flex flex-col gap-1 text-sm font-medium text-gray-700"
+            {createRows.map((row, rowIndex) => (
+              <div
+                key={rowIndex}
+                className="rounded border border-gray-200 p-3"
               >
-                <span>
-                  {field.label}
-                  {!field.required ? " (optional)" : ""}
-                </span>
-                <input
-                  name={field.name}
-                  type={field.type || "text"}
-                  value={formValues[field.name] || ""}
-                  onChange={(event) =>
-                    handleFieldChange(field.name, event.target.value)
-                  }
-                  required={field.required}
-                  className="rounded border border-gray-300 px-2 py-1 shadow-sm"
-                  placeholder={field.label}
-                  style={{ backgroundColor: "white", color: "black" }}
-                />
-              </label>
+                <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">
+                  {isBulkCreateEnabled ? `Entry ${rowIndex + 1}` : "Details"}
+                </div>
+
+                <div className="flex flex-col gap-3">
+                  {fields.map((field) => (
+                    <label
+                      key={field.name}
+                      className="flex flex-col gap-1 text-sm font-medium text-gray-700"
+                    >
+                      <span>
+                        {field.label}
+                        {!field.required ? " (optional)" : ""}
+                      </span>
+                      <input
+                        name={field.name}
+                        type={field.type || "text"}
+                        value={row[field.name] || ""}
+                        onChange={(event) =>
+                          handleFieldChange(
+                            rowIndex,
+                            field.name,
+                            event.target.value,
+                          )
+                        }
+                        required={field.required}
+                        className="rounded border border-gray-300 px-2 py-1 shadow-sm"
+                        placeholder={field.label}
+                        style={{ backgroundColor: "white", color: "black" }}
+                      />
+                    </label>
+                  ))}
+                </div>
+
+                {isBulkCreateEnabled ? (
+                  <div className="mt-3 flex gap-2">
+                    <button
+                      type="button"
+                      className="rounded border border-gray-300 px-3 py-1 text-sm text-gray-700 hover:bg-gray-50"
+                      onClick={handleAddRow}
+                    >
+                      Add another
+                    </button>
+                    {createRows.length > 1 ? (
+                      <button
+                        type="button"
+                        className="rounded border border-red-300 px-3 py-1 text-sm text-red-700 hover:bg-red-50"
+                        onClick={() => handleRemoveRow(rowIndex)}
+                      >
+                        Remove
+                      </button>
+                    ) : null}
+                  </div>
+                ) : null}
+              </div>
             ))}
 
             <button
@@ -229,17 +301,67 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
           <div className="mt-4 flex flex-col gap-2">
             <input
               className="border px-2 py-1"
-              placeholder="Item ID to delete..."
+              placeholder={
+                entityType === "C"
+                  ? "City name to delete..."
+                  : "Item ID to delete..."
+              }
+              value={deleteInput}
+              onChange={(e) => setDeleteInput(e.target.value)}
               style={{ backgroundColor: "white", color: "black" }}
             />
-            <button className="bg-red-600 text-white px-3 py-1 rounded">
+            <button
+              className="bg-red-600 text-white px-3 py-1 rounded"
+              onClick={async () => {
+                setDeleteStatus("");
+                if (!deleteInput.trim()) {
+                  setDeleteStatus("Please enter a name to delete.");
+                  return;
+                }
+                try {
+                  let endpoint;
+                  if (entityType === "C") {
+                    endpoint = `/cities/${encodeURIComponent(deleteInput.trim())}`;
+                  } else if (entityType === "S") {
+                    endpoint = `/states/${encodeURIComponent(deleteInput.trim())}`;
+                  } else if (entityType === "CNTRY") {
+                    endpoint = `/countries/${encodeURIComponent(deleteInput.trim())}`;
+                  } else {
+                    setDeleteStatus("Unknown entity type.");
+                    return;
+                  }
+                  const response = await fetch(buildUrl(endpoint), {
+                    method: "DELETE",
+                  });
+                  if (response.ok) {
+                    setDeleteStatus(
+                      `${entityLabels[entityType] || "Item"} deleted successfully.`,
+                    );
+                    setDeleteInput("");
+                  } else {
+                    const data = await response.json().catch(() => ({}));
+                    setDeleteStatus(
+                      data.error ||
+                        `Delete failed: ${response.status} ${response.statusText}`,
+                    );
+                  }
+                } catch (err) {
+                  setDeleteStatus(`Delete failed: ${err.message}`);
+                }
+              }}
+            >
               Delete
             </button>
+            {deleteStatus && (
+              <p className="text-sm text-gray-600" aria-live="polite">
+                {deleteStatus}
+              </p>
+            )}
           </div>
         );
       case "List":
         return (
-          <div className="mt-4 text-gray-700 dark:text-gray-200">
+          <div className="mt-4 text-gray-700 dark:text-black">
             {isLoadingList ? (
               <div>Loading...</div>
             ) : listData.length === 0 ? (
