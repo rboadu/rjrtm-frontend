@@ -1,40 +1,43 @@
 {
   "United States": [
-    { "name": "California", "code": "CA" },
-    { "name": "New York", "code": "NY" },
-    { "name": "Texas", "code": "TX" },
-    { "name": "Florida", "code": "FL" },
-    { "name": "Washington", "code": "WA" },
-    { "name": "Illinois", "code": "IL" },
-    { "name": "Georgia", "code": "GA" },
-    { "name": "Massachusetts", "code": "MA" }
+    { "name": "California", "code": "CA", "population": 39512223 },
+    { "name": "Texas", "code": "TX", "population": 28995881 },
+    { "name": "New York", "code": "NY", "population": 19453561 }
   ],
   "Ghana": [
-    { "name": "Greater Accra", "code": "AA" },
-    { "name": "Ashanti", "code": "AS" },
-    { "name": "Northern", "code": "NR" },
-    { "name": "Western", "code": "WE" },
-    { "name": "Eastern", "code": "EA" },
-    { "name": "Central", "code": "CE" }
+    { "name": "Greater Accra", "code": "AA", "population": 5270000 },
+    { "name": "Ashanti", "code": "AS", "population": 5710000 }
   ],
   "Canada": [
-    { "name": "Ontario", "code": "ON" },
-    { "name": "Quebec", "code": "QC" },
-    { "name": "British Columbia", "code": "BC" },
-    { "name": "Alberta", "code": "AB" },
-    { "name": "Manitoba", "code": "MB" }
+    { "name": "Ontario", "code": "ON", "population": 14711827 },
+    { "name": "Quebec", "code": "QC", "population": 8575779 }
+  ],
+  "Australia": [
+    { "name": "New South Wales", "code": "NSW", "population": 8089526 },
+    { "name": "Victoria", "code": "VIC", "population": 6594804 }
   ],
   "India": [
-    { "name": "Maharashtra", "code": "MH" },
-    { "name": "Delhi", "code": "DL" },
-    { "name": "Karnataka", "code": "KA" },
-    { "name": "Tamil Nadu", "code": "TN" },
-    { "name": "Uttar Pradesh", "code": "UP" }
+    { "name": "Maharashtra", "code": "MH", "population": 112374333 },
+    { "name": "Karnataka", "code": "KA", "population": 61095297 }
   ],
   "United Kingdom": [
-    { "name": "England", "code": "ENG" },
-    { "name": "Scotland", "code": "SCT" },
-    { "name": "Wales", "code": "WLS" },
-    { "name": "Northern Ireland", "code": "NIR" }
+    { "name": "England", "code": "ENG", "population": 55977178 },
+    { "name": "Scotland", "code": "SCT", "population": 5463300 }
+  ],
+  "Brazil": [
+    { "name": "São Paulo", "code": "SP", "population": 45919049 },
+    { "name": "Rio de Janeiro", "code": "RJ", "population": 17264943 }
+  ],
+  "Japan": [
+    { "name": "Tokyo", "code": "TK", "population": 13929286 },
+    { "name": "Osaka", "code": "OS", "population": 8839469 }
+  ],
+  "Germany": [
+    { "name": "Bavaria", "code": "BY", "population": 13076721 },
+    { "name": "North Rhine-Westphalia", "code": "NW", "population": 17932651 }
+  ],
+  "Mexico": [
+    { "name": "Mexico City", "code": "CMX", "population": 8918653 },
+    { "name": "Jalisco", "code": "JA", "population": 8348151 }
   ]
 }

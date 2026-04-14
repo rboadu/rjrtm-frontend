@@ -1,70 +1,74 @@
 {
   "California": [
-    { "name": "Los Angeles" },
-    { "name": "San Francisco" },
-    { "name": "San Diego" },
-    { "name": "Sacramento" }
-  ],
-  "New York": [
-    { "name": "New York City" },
-    { "name": "Buffalo" },
-    { "name": "Rochester" },
-    { "name": "Albany" }
+    { "name": "Los Angeles", "population": 3970000 },
+    { "name": "San Francisco", "population": 884363 },
+    { "name": "San Diego", "population": 1425976 }
   ],
   "Texas": [
-    { "name": "Houston" },
-    { "name": "Dallas" },
-    { "name": "Austin" },
-    { "name": "San Antonio" }
+    { "name": "Houston", "population": 2328000 },
+    { "name": "Dallas", "population": 1343000 }
   ],
-  "Illinois": [
-    { "name": "Chicago" },
-    { "name": "Springfield" }
+  "New York": [
+    { "name": "New York City", "population": 8419000 },
+    { "name": "Buffalo", "population": 256000 }
   ],
-  "Georgia": [
-    { "name": "Atlanta" },
-    { "name": "Savannah" }
-  ],
-
   "Greater Accra": [
-    { "name": "Accra" },
-    { "name": "Tema" },
-    { "name": "Madina" }
+    { "name": "Accra", "population": 2270000 },
+    { "name": "Tema", "population": 350000 }
   ],
   "Ashanti": [
-    { "name": "Kumasi" },
-    { "name": "Obuasi" }
+    { "name": "Kumasi", "population": 3000000 }
   ],
-  "Eastern": [
-    { "name": "Koforidua" }
-  ],
-  "Central": [
-    { "name": "Cape Coast" }
-  ],
-
   "Ontario": [
-    { "name": "Toronto" },
-    { "name": "Ottawa" },
-    { "name": "Hamilton" },
-    { "name": "London" }
+    { "name": "Toronto", "population": 2930000 },
+    { "name": "Ottawa", "population": 934243 }
   ],
-  "Manitoba": [
-    { "name": "Winnipeg" }
+  "Quebec": [
+    { "name": "Montreal", "population": 1780000 }
   ],
-
+  "New South Wales": [
+    { "name": "Sydney", "population": 5230000 }
+  ],
+  "Victoria": [
+    { "name": "Melbourne", "population": 5078000 }
+  ],
   "Maharashtra": [
-    { "name": "Mumbai" },
-    { "name": "Pune" },
-    { "name": "Nagpur" }
+    { "name": "Mumbai", "population": 12442373 },
+    { "name": "Pune", "population": 3124458 }
   ],
-  "Uttar Pradesh": [
-    { "name": "Lucknow" },
-    { "name": "Kanpur" }
+  "Karnataka": [
+    { "name": "Bengaluru", "population": 8443675 }
   ],
-
   "England": [
-    { "name": "London" },
-    { "name": "Manchester" },
-    { "name": "Birmingham" }
+    { "name": "London", "population": 8982000 },
+    { "name": "Manchester", "population": 553230 }
+  ],
+  "Scotland": [
+    { "name": "Edinburgh", "population": 482005 }
+  ],
+  "São Paulo": [
+    { "name": "São Paulo", "population": 12252023 }
+  ],
+  "Rio de Janeiro": [
+    { "name": "Rio de Janeiro", "population": 6748000 }
+  ],
+  "Tokyo": [
+    { "name": "Tokyo", "population": 13929286 }
+  ],
+  "Osaka": [
+    { "name": "Osaka", "population": 2715000 }
+  ],
+  "Bavaria": [
+    { "name": "Munich", "population": 1471508 }
+  ],
+  "North Rhine-Westphalia": [
+    { "name": "Cologne", "population": 1085000 },
+    { "name": "Düsseldorf", "population": 619294 }
+  ],
+  "Mexico City": [
+    { "name": "Mexico City", "population": 8918653 }
+  ],
+  "Jalisco": [
+    { "name": "Guadalajara", "population": 1495182 }
   ]
 }
