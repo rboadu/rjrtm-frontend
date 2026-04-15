@@ -33,6 +33,7 @@ function WorldMapPage() {
   const [countriesGeoJson, setCountriesGeoJson] = useState(null);
   const mapSectionRef = useRef(null);
   const timerRef = useRef(null);
+  const seenCountriesRef = useRef(new Set());
 
   useEffect(() => {
     fetch("https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_admin_0_countries.geojson")
@@ -63,11 +64,17 @@ function WorldMapPage() {
     }
 
   function getRandomCountry() {
-    const rand = countries[Math.floor(Math.random() * countries.length)];
+    const seen = seenCountriesRef.current;
+    // Reset history once all countries have been shown
+    if (seen.size >= countries.length) seen.clear();
+    const unseen = countries.filter((c) => !seen.has(c.name));
+    const rand = unseen[Math.floor(Math.random() * unseen.length)];
+    seen.add(rand.name);
     setTargetCountry(rand);
   }
 
   function startGame() {
+    seenCountriesRef.current.clear();
     setScore(0);
     setStreak(0);
     setGameOver(false);
