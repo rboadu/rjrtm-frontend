@@ -1,4 +1,6 @@
 
+import AnalogTimerClock from "./AnalogTimerClock";
+
 function GameStatusPanel({
   targetCountry,
   timeLeft,
@@ -30,10 +32,11 @@ function GameStatusPanel({
               <strong className="timer-value">{streak}</strong>
             </div>
           )}
-          <div className="timer-chip" aria-live="polite">
-            <span className="timer-label">Time Left</span>
-            <strong className="timer-value">{timeLeft}s</strong>
-          </div>
+          <AnalogTimerClock
+            timeLeft={timeLeft}
+            totalTime={30}
+            timerStateClass={timerStateClass}
+          />
           <button
             type="button"
             className="btn-secondary btn-stop-game"

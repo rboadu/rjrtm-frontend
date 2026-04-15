@@ -353,6 +353,118 @@
   color: white;
 }
 
+.analog-timer {
+  --timer-ring-color: rgb(79 70 229);
+  --timer-hand-color: rgb(55 48 163);
+  --timer-shell-bg: white;
+  --timer-shell-border: rgb(224 231 255);
+  --timer-face-bg: rgb(249 250 251);
+  --timer-tick-color: rgb(75 85 99);
+  --timer-muted-ring: rgba(156, 163, 175, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 9.25rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: 0.65rem;
+  background-color: var(--timer-shell-bg);
+  border: 1px solid var(--timer-shell-border);
+}
+
+.dark .analog-timer {
+  --timer-shell-bg: rgb(31 41 55);
+  --timer-shell-border: rgb(75 85 99);
+  --timer-face-bg: rgb(17 24 39);
+  --timer-tick-color: rgb(209 213 219);
+  --timer-muted-ring: rgba(107, 114, 128, 0.4);
+}
+
+.analog-timer.warning {
+  --timer-ring-color: rgb(245 158 11);
+  --timer-hand-color: rgb(180 83 9);
+}
+
+.analog-timer.urgent {
+  --timer-ring-color: rgb(239 68 68);
+  --timer-hand-color: rgb(185 28 28);
+}
+
+.analog-timer-face {
+  position: relative;
+  width: 2.9rem;
+  height: 2.9rem;
+  border-radius: 9999px;
+  background: var(--timer-face-bg);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+}
+
+.analog-timer-face::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 9999px;
+  background: conic-gradient(
+    var(--timer-ring-color) var(--progress-deg),
+    var(--timer-muted-ring) var(--progress-deg)
+  );
+  -webkit-mask: radial-gradient(circle at center, transparent 62%, black 64%);
+  mask: radial-gradient(circle at center, transparent 62%, black 64%);
+}
+
+.analog-timer-tick {
+  position: absolute;
+  left: 50%;
+  top: 5px;
+  width: 2px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: var(--timer-tick-color);
+  transform-origin: 50% 18px;
+  transform: translateX(-50%) rotate(var(--tick-rotation));
+  opacity: 0.7;
+}
+
+.analog-timer-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background-color: var(--timer-hand-color);
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+
+.analog-timer-hand {
+  position: absolute;
+  left: 50%;
+  top: 18%;
+  width: 2.5px;
+  height: 34%;
+  border-radius: 9999px;
+  background-color: var(--timer-hand-color);
+  transform-origin: 50% calc(100% + 8px);
+  transform: translateX(-50%) rotate(var(--hand-deg));
+  z-index: 2;
+  transition: transform 200ms ease-out;
+}
+
+.analog-timer.urgent .analog-timer-face {
+  animation: timerPulse 900ms ease-in-out infinite;
+}
+
+@keyframes timerPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.35), inset 0 1px 2px rgba(0, 0, 0, 0.08);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(239, 68, 68, 0.08), inset 0 1px 2px rgba(0, 0, 0, 0.08);
+  }
+}
+
 .game-status-actions-row {
   display: flex;
   gap: 0.75rem;
@@ -444,6 +556,15 @@
   .game-status-row {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .analog-timer {
+    min-width: 8.2rem;
+  }
+
+  .analog-timer-face {
+    width: 2.6rem;
+    height: 2.6rem;
   }
 
   .game-status-actions-row {
