@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export function Banner() {
   return (
     <section className="bg-white grid h-full w-full place-content-center dark:bg-gray-900">
-      <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-12 md:grid md:grid-cols-2 md:items-center md:gap-4 lg:px-8 lg:py-16">
+      <div className="mx-auto w-full max-w-7xl px-4 py-4 sm:px-6 sm:py-6 md:grid md:grid-cols-2 md:items-center md:gap-4 lg:px-8 lg:py-8">
         <div className="max-w-prose text-left">
           <h1 className="text-4xl font-bold text-gray-900 sm:text-5xl dark:text-white">
             The Globe In Your
@@ -34,7 +34,7 @@ export function Banner() {
         </div>
 
           <svg
-            className="w-full max-w-[600px] h-auto"
+            className="w-full max-w-[380px] h-auto"
             viewBox="0 0 48 48"
             version="1"
             xmlns="http://www.w3.org/2000/svg"

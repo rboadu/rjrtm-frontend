@@ -18,7 +18,7 @@ const FaqAccordion = () => {
   ];
 
   return (
-    <div className="flex flex-col md:flex-row items-start gap-4 justify-center max-w-5xl mx-auto mt-8 w-full">
+    <div className="flex flex-col md:flex-row items-start gap-4 mx-auto mt-4 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
       {faqs.map((faq, index) => (
         <div key={index} className="flex-1 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 overflow-hidden">
           <button
