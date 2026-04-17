@@ -229,6 +229,7 @@ function WorldMapPage() {
             targetCountry={targetCountry}
             timeLeft={timeLeft}
             streak={streak}
+            score={score}
             onStopGame={stopGame}
             selectedLocation={selectedLocation}
             onSubmitGuess={handleSubmitGuess}

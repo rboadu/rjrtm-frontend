@@ -5,6 +5,7 @@ function GameStatusPanel({
   targetCountry,
   timeLeft,
   streak,
+  score,
   onStopGame,
   selectedLocation,
   onSubmitGuess,
@@ -26,6 +27,10 @@ function GameStatusPanel({
           <h3 className="target-country-name">{countryLabel}</h3>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div className="score-chip">
+            <span className="timer-label">Score</span>
+            <strong className="timer-value">{score}</strong>
+          </div>
           {streak > 0 && (
             <div className="streak-chip">
               <span className="timer-label">Streak</span>
