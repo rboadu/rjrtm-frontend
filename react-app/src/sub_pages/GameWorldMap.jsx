@@ -29,6 +29,7 @@ function WorldMapPage() {
   const [targetCountry, setTargetCountry] = useState(null);
   const [score, setScore] = useState(0);
   const [streak, setStreak] = useState(0);
+  const [bestStreak, setBestStreak] = useState(0);
   const [timeLeft, setTimeLeft] = useState(30);
   const [countriesGeoJson, setCountriesGeoJson] = useState(null);
   const mapSectionRef = useRef(null);
@@ -77,6 +78,7 @@ function WorldMapPage() {
     seenCountriesRef.current.clear();
     setScore(0);
     setStreak(0);
+    setBestStreak(0);
     setGameOver(false);
     setFeedback(null);
     setSelectedLocation(null);
@@ -148,7 +150,11 @@ function WorldMapPage() {
 
     if (correct) {
       setScore((prev) => prev + 1);
-      setStreak((prev) => prev + 1);
+      setStreak((prev) => {
+        const next = prev + 1;
+        setBestStreak((best) => Math.max(best, next));
+        return next;
+      });
       setFeedback({ correct: true, message: `Correct! That's ${targetName}.` });
       setTimeout(() => {
         getRandomCountry();
@@ -240,6 +246,9 @@ function WorldMapPage() {
           <div className="game-over-card">
             <h2 className="game-over-title">Time's Up!</h2>
             <p className="game-over-score">You scored <strong>{score}</strong> {score === 1 ? "point" : "points"}.</p>
+            {bestStreak > 0 && (
+              <p className="game-over-best-streak">Best streak: <strong>{bestStreak}</strong></p>
+            )}
             <div className="game-over-actions">
               <button type="button" onClick={startGame} className="btn-primary">
                 Play Again

@@ -184,6 +184,16 @@
   color: rgb(209 213 219);
 }
 
+.game-over-best-streak {
+  font-size: 0.9rem;
+  margin: 0 0 1.5rem;
+  color: rgb(75 85 99);
+}
+
+.dark .game-over-best-streak {
+  color: rgb(209 213 219);
+}
+
 .game-over-actions {
   display: flex;
   justify-content: center;
