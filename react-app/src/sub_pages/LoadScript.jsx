@@ -248,6 +248,9 @@ async function handleSelectState(value) {
           <div style={{ border: "1px solid #eee", borderRadius: 8, overflow: "hidden", background: "#fff" }}>
             <div style={{ padding: 10, borderBottom: "1px solid #f3f3f3", fontWeight: 600 }}>Countries</div>
             <div style={{ maxHeight: 420, overflow: "auto" }}>
+              {loading ? (
+                <div style={{ padding: 16, textAlign: "center", color: "#888" }}>Loading countries...</div>
+              ) : (
               <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead>
                   <tr style={{ background: "#fafafa" }}>
@@ -278,6 +281,7 @@ async function handleSelectState(value) {
                   })}
                 </tbody>
               </table>
+              )}
             </div>
           </div>
 
