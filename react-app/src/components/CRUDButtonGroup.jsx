@@ -441,26 +441,41 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
             )}
           </div>
         );
-      case "List":
+      case "List": {
+        const columns = listData.length > 0 ? Object.keys(listData[0]) : [];
         return (
-          <div className="mt-4 text-gray-700 dark:text-black">
+          <div className="mt-4 text-gray-700 dark:text-black overflow-x-auto">
             {isLoadingList ? (
               <div>Loading...</div>
             ) : listData.length === 0 ? (
               <div>No items found.</div>
             ) : (
-              <ul className="list-disc pl-5">
-                {listData.map((item, idx) => (
-                  <li key={item.id || item.code || item.name || idx}>
-                    {Object.entries(item)
-                      .map(([k, v]) => `${k}: ${v}`)
-                      .join(", ")}
-                  </li>
-                ))}
-              </ul>
+              <table className="w-full border-collapse text-sm">
+                <thead>
+                  <tr className="bg-gray-100">
+                    {columns.map((col) => (
+                      <th key={col} className="border border-gray-200 px-3 py-2 text-left font-semibold capitalize">
+                        {col}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {listData.map((item, idx) => (
+                    <tr key={item.id || item.code || item.name || idx} className="even:bg-gray-50">
+                      {columns.map((col) => (
+                        <td key={col} className="border border-gray-200 px-3 py-2">
+                          {item[col] != null ? String(item[col]) : "—"}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             )}
           </div>
         );
+      }
       default:
         return null;
     }
