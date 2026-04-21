@@ -21,6 +21,21 @@ export default function LoadScript() {
   const [minPopulation, setMinPopulation] = useState("");
   const [maxPopulation, setMaxPopulation] = useState("");
   const [sortOption, setSortOption] = useState("name-asc");
+  
+  // Clear/reset handler: resets filters, selections and UI state
+  const handleClear = () => {
+    setSearchText("");
+    setMinPopulation("");
+    setMaxPopulation("");
+    setSortOption("name-asc");
+    setSelectedCountry(null);
+    setSelectedState(null);
+    setSelectedCity(null);
+    setStates([]);
+    setCities([]);
+    setStatus("Ready.");
+    setIsError(false);
+  };
 
   const displayedCountries = useMemo(() => {
     const q = String(searchText || "").trim().toLowerCase();
@@ -64,7 +79,6 @@ export default function LoadScript() {
     }
   }, []);
 
-// ...existing code...
 /* helper: robust fetch that returns parsed JSON or throws */
 async function fetchJson(url, init = {}) {
   if (!url) throw new Error("No URL provided to fetchJson");
@@ -239,9 +253,22 @@ async function handleSelectState(value) {
               onChange={(e) => setMaxPopulation(e.target.value)}
               style={{ width: 110, padding: 8 }}
             />
+            <button
+              onClick={handleClear}
+              style={{
+                padding: "8px 12px",
+                borderRadius: 6,
+                border: "1px solid #ddd",
+                background: "#fff",
+                cursor: "pointer",
+                marginLeft: 4,
+              }}
+              aria-label="Clear filters"
+            >
+              Clear
+            </button>
           </div>
         </div>
-
         {/* Three-column layout: Countries | States | Cities */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
           {/* Countries */}
