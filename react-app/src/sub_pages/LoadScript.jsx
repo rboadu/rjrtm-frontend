@@ -17,7 +17,7 @@ export default function LoadScript() {
   const [selectedState, setSelectedState] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
 
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState(""); 
   const [minPopulation, setMinPopulation] = useState("");
   const [maxPopulation, setMaxPopulation] = useState("");
   const [sortOption, setSortOption] = useState("name-asc");
@@ -64,47 +64,64 @@ export default function LoadScript() {
     }
   }, []);
 
-  function handleReloadCountries() {
-    setCountries(Array.isArray(countriesData) ? countriesData : []);
-    setSelectedCountry(null);
-    setSelectedState(null);
-    setSelectedCity(null);
-    setStates([]);
-    setCities([]);
-    setStatus("Reloaded local countries");
-    setIsError(false);
+// ...existing code...
+/* helper: robust fetch that returns parsed JSON or throws */
+async function fetchJson(url, init = {}) {
+  if (!url) throw new Error("No URL provided to fetchJson");
+  // allow absolute or relative URLs
+  const full = /^https?:\/\//i.test(url) ? url : url.startsWith("/") ? url : `/${url}`;
+  const res = await fetch(full, init);
+  if (!res.ok) {
+    const txt = await res.text().catch(() => res.statusText);
+    throw new Error(`${res.status} ${res.statusText}: ${txt}`);
   }
+  const ct = res.headers.get?.("content-type") || "";
+  if (ct.includes("application/json")) return res.json();
+  const text = await res.text();
+  try { return JSON.parse(text); } catch { return text; }
+}
 
-  function handleSelectCountry(value) {
-    setSelectedCountry(value);
-    setStates([]);
-    setCities([]);
-    setSelectedState(null);
-    setSelectedCity(null);
-    setStatus("Loading states...");
-    setIsError(false);
+/* improved country selection: follow HATEOAS link when available, else local mapping */
+async function handleSelectCountry(value) {
+  setSelectedCountry(value);
+  setStates([]);
+  setCities([]);
+  setSelectedState(null);
+  setSelectedCity(null);
+  setStatus("Loading states...");
+  setIsError(false);
 
-    try {
-      const country = countries.find((c) => (c.code || c.id || c.name) === value);
+  try {
+    const country = countries.find((c) => (c.code || c.id || c.name) === value);
 
-      let statesData = [];
+    //Try HATEOAS link first
+    let statesData = [];
+    const statesLink = country && country._links && country._links.states && country._links.states.href;
+    if (statesLink) {
+      try {
+        const payload = await fetchJson(statesLink);
+        // payload may be array or { data: [...] }
+        statesData = Array.isArray(payload) ? payload : payload.data || payload.items || [];
+      } catch (err) {
+        console.warn("[LoadScript] failing to fetch states via link, falling back:", err.message);
+      }
+    }
 
+    // Fallback to local mapping if needed
+    if (!statesData.length) {
       const candidates = [value, country && country.name, country && country.code, country && country.id]
         .filter(Boolean)
         .map(String);
-
       for (const k of candidates) {
         if (statesByCountry[k]) {
           statesData = statesByCountry[k];
           break;
         }
       }
-
       if (!statesData.length) {
         const key = Object.keys(statesByCountry).find((k) => k.toLowerCase() === String(value).toLowerCase());
         if (key) statesData = statesByCountry[key];
       }
-
       if (!statesData.length && country && country.name) {
         const key = Object.keys(statesByCountry).find(
           (k) =>
@@ -113,40 +130,51 @@ export default function LoadScript() {
         );
         if (key) statesData = statesByCountry[key];
       }
-
-      setStates(statesData || []);
-      setStatus(statesData && statesData.length ? "States loaded (local)" : "No states found (local)");
-    } catch (e) {
-      setStatus("Error loading states: " + (e && e.message));
-      setIsError(true);
     }
+
+    setStates(statesData || []);
+    setStatus(statesData && statesData.length ? "States loaded" : "No states found");
+  } catch (e) {
+    setStatus("Error loading states: " + (e && e.message));
+    setIsError(true);
   }
+}
 
-  function handleSelectState(value) {
-    setSelectedState(value);
-    setCities([]);
-    setSelectedCity(null);
-    setStatus("Loading cities...");
-    setIsError(false);
+async function handleSelectState(value) {
+  setSelectedState(value);
+  setCities([]);
+  setSelectedCity(null);
+  setStatus("Loading cities...");
+  setIsError(false);
 
-    try {
-      const stateObj = states.find((s) => (s.code || s.id || s.name) === value);
+  try {
+    const stateObj = states.find((s) => (s.code || s.id || s.name) === value);
 
-      let citiesData = [];
+    // Try HATEOAS link first
+    let citiesData = [];
+    const citiesLink = stateObj && stateObj._links && stateObj._links.cities && stateObj._links.cities.href;
+    if (citiesLink) {
+      try {
+        const payload = await fetchJson(citiesLink);
+        citiesData = Array.isArray(payload) ? payload : payload.data || payload.items || [];
+      } catch (err) {
+        console.warn("[LoadScript] failing to fetch cities via link, falling back:", err.message);
+      }
+    }
+
+    // Fallback to local mapping if needed
+    if (!citiesData.length) {
       const candidates = [value, stateObj && stateObj.name].filter(Boolean).map(String);
-
       for (const k of candidates) {
         if (citiesByState[k]) {
           citiesData = citiesByState[k];
           break;
         }
       }
-
       if (!citiesData.length) {
         const key = Object.keys(citiesByState).find((k) => k.toLowerCase() === String(value).toLowerCase());
         if (key) citiesData = citiesByState[key];
       }
-
       if (!citiesData.length && stateObj && stateObj.name) {
         const key = Object.keys(citiesByState).find(
           (k) =>
@@ -155,14 +183,15 @@ export default function LoadScript() {
         );
         if (key) citiesData = citiesByState[key];
       }
-
-      setCities(citiesData || []);
-      setStatus(citiesData && citiesData.length ? "Cities loaded (local)" : "No cities found (local)");
-    } catch (e) {
-      setStatus("Error loading cities: " + (e && e.message));
-      setIsError(true);
     }
+
+    setCities(citiesData || []);
+    setStatus(citiesData && citiesData.length ? "Cities loaded" : "No cities found");
+  } catch (e) {
+    setStatus("Error loading cities: " + (e && e.message));
+    setIsError(true);
   }
+}
 
   const renderOptions = (data) => {
     if (!data || data.length === 0) return <option value="">No options</option>;
