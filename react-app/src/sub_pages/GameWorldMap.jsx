@@ -4,8 +4,22 @@ import booleanPointInPolygon from "@turf/boolean-point-in-polygon";
 import WorldMap from "../components/WorldMap";
 import Rules from "../components/Rules";
 import GameStatusPanel from "../components/GameStatusPanel";
-import countries from "../data/countries.json";
 import "./GameWorldMap.css";
+
+function bboxCenter(geometry) {
+  const coords = [];
+  const collect = (arr) => {
+    if (typeof arr[0] === "number") { coords.push(arr); return; }
+    arr.forEach(collect);
+  };
+  collect(geometry.coordinates);
+  const lngs = coords.map((c) => c[0]);
+  const lats = coords.map((c) => c[1]);
+  return {
+    lng: (Math.min(...lngs) + Math.max(...lngs)) / 2,
+    lat: (Math.min(...lats) + Math.max(...lats)) / 2,
+  };
+}
 
 function haversineKm(lat1, lng1, lat2, lng2) {
   const R = 6371;
@@ -35,11 +49,26 @@ function WorldMapPage() {
   const mapSectionRef = useRef(null);
   const timerRef = useRef(null);
   const seenCountriesRef = useRef(new Set());
+  const countryListRef = useRef([]);
 
   useEffect(() => {
     fetch("https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_admin_0_countries.geojson")
       .then((res) => res.json())
-      .then((data) => setCountriesGeoJson(data))
+      .then((data) => {
+        setCountriesGeoJson(data);
+        const list = data.features
+          .map((f) => {
+            const name =
+              f.properties.name ?? f.properties.NAME ??
+              f.properties.admin ?? f.properties.ADMIN ??
+              f.properties.sovereignt ?? f.properties.SOVEREIGNT ?? null;
+            if (!name) return null;
+            const { lat, lng } = bboxCenter(f.geometry);
+            return { name, lat, lng };
+          })
+          .filter(Boolean);
+        countryListRef.current = list;
+      })
       .catch((err) => console.error("Failed to load countries GeoJSON:", err));
   }, []);
 
@@ -65,10 +94,10 @@ function WorldMapPage() {
     }
 
   function getRandomCountry() {
+    const list = countryListRef.current;
     const seen = seenCountriesRef.current;
-    // Reset history once all countries have been shown
-    if (seen.size >= countries.length) seen.clear();
-    const unseen = countries.filter((c) => !seen.has(c.name));
+    if (seen.size >= list.length) seen.clear();
+    const unseen = list.filter((c) => !seen.has(c.name));
     const rand = unseen[Math.floor(Math.random() * unseen.length)];
     seen.add(rand.name);
     setTargetCountry(rand);
