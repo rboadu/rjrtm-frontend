@@ -75,6 +75,10 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
     setStatus("");
   }, [entityType]);
 
+  useEffect(() => {
+    setActive("Create");
+  }, [entityType]);
+
   const isBulkCreateEnabled = entityType === "C" || entityType === "S";
 
   const handleFieldChange = (rowIndex, name, value) => {
@@ -454,7 +458,10 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
                 <thead>
                   <tr className="bg-gray-100">
                     {columns.map((col) => (
-                      <th key={col} className="border border-gray-200 px-3 py-2 text-left font-semibold capitalize">
+                      <th
+                        key={col}
+                        className="border border-gray-200 px-3 py-2 text-left font-semibold capitalize"
+                      >
                         {col}
                       </th>
                     ))}
@@ -462,9 +469,15 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
                 </thead>
                 <tbody>
                   {listData.map((item, idx) => (
-                    <tr key={item.id || item.code || item.name || idx} className="even:bg-gray-50">
+                    <tr
+                      key={item.id || item.code || item.name || idx}
+                      className="even:bg-gray-50"
+                    >
                       {columns.map((col) => (
-                        <td key={col} className="border border-gray-200 px-3 py-2">
+                        <td
+                          key={col}
+                          className="border border-gray-200 px-3 py-2"
+                        >
                           {item[col] != null ? String(item[col]) : "—"}
                         </td>
                       ))}
@@ -482,34 +495,36 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
   };
 
   return (
-    <div>
-      <div className="inline-flex">
+    <div className="space-y-4">
+      <div className="inline-flex rounded-full border border-white/10 bg-slate-950/50 p-1 shadow-inner shadow-black/20">
         <button
-          className="rounded-s-sm border border-gray-200 px-3 py-2 font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900 focus:z-10 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white focus:outline-none disabled:pointer-events-auto disabled:opacity-50"
+          className={`rounded-full px-4 py-2 text-sm font-semibold transition focus:z-10 focus:outline-none ${active === "Create" ? "bg-cyan-400 text-slate-950 shadow-lg shadow-cyan-400/30" : "text-slate-300 hover:text-white"}`}
           onClick={() => setActive("Create")}
         >
           Create
         </button>
         <button
-          className="-ms-px border border-gray-200 px-3 py-2 font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900 focus:z-10 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white focus:outline-none disabled:pointer-events-auto disabled:opacity-50"
+          className={`-ms-px rounded-full px-4 py-2 text-sm font-semibold transition focus:z-10 focus:outline-none ${active === "Edit" ? "bg-cyan-400 text-slate-950 shadow-lg shadow-cyan-400/30" : "text-slate-300 hover:text-white"}`}
           onClick={() => setActive("Edit")}
         >
           Edit
         </button>
         <button
-          className="-ms-px border border-gray-200 px-3 py-2 font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900 focus:z-10 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white focus:outline-none disabled:pointer-events-auto disabled:opacity-50"
+          className={`-ms-px rounded-full px-4 py-2 text-sm font-semibold transition focus:z-10 focus:outline-none ${active === "Delete" ? "bg-rose-400 text-slate-950 shadow-lg shadow-rose-400/30" : "text-slate-300 hover:text-white"}`}
           onClick={() => setActive("Delete")}
         >
           Delete
         </button>
         <button
-          className="-ms-px rounded-e-sm border border-gray-200 px-3 py-2 font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900 focus:z-10 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white focus:outline-none disabled:pointer-events-auto disabled:opacity-50"
+          className={`-ms-px rounded-full px-4 py-2 text-sm font-semibold transition focus:z-10 focus:outline-none ${active === "List" ? "bg-cyan-400 text-slate-950 shadow-lg shadow-cyan-400/30" : "text-slate-300 hover:text-white"}`}
           onClick={() => setActive("List")}
         >
           List
         </button>
       </div>
-      {renderInputs()}
+      <div className="rounded-[1.5rem] border border-white/10 bg-slate-950/40 p-4 shadow-inner shadow-black/10 sm:p-5">
+        {renderInputs()}
+      </div>
     </div>
   );
 }

@@ -15,27 +15,37 @@ export default function Selector({
 }) {
   return (
     <label htmlFor={id} className={`block ${className}`}>
-      <span className="text-sm font-medium text-gray-700"> {label} </span>
+      <span className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-300">
+        {label}
+      </span>
 
-      <select
-        name={name}
-        id={id}
-        value={value}
-        onChange={onChange}
-        className="mt-0.5 w-full rounded border-gray-300 shadow-sm sm:text-sm"
-        style={{ color: "black", backgroundColor: "white" }}
-        {...props}
-      >
-        {options.map((option) => (
-          <option
-            key={option.value}
-            value={option.value}
-            style={{ color: "black", backgroundColor: "white" }}
-          >
-            {option.label}
-          </option>
-        ))}
-      </select>
+      <div className="relative mt-2">
+        <select
+          name={name}
+          id={id}
+          value={value}
+          onChange={onChange}
+          className="w-full appearance-none rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 pr-11 text-sm text-white outline-none transition focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/30"
+          {...props}
+        >
+          {options.map((option) => (
+            <option
+              key={option.value}
+              value={option.value}
+              style={{ color: "black", backgroundColor: "white" }}
+            >
+              {option.label}
+            </option>
+          ))}
+        </select>
+
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-slate-400"
+        >
+          ▾
+        </span>
+      </div>
     </label>
   );
 }
