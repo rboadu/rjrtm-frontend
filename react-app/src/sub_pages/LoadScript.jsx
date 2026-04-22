@@ -220,179 +220,160 @@ async function handleSelectState(value) {
     });
   };
 
+  const inputCls = "px-3 py-2 rounded-md border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500";
+
   return (
     <div className="min-h-screen p-6 bg-gradient-to-b from-sky-50 to-white dark:from-slate-900 dark:to-slate-800">
       <div className="max-w-6xl mx-auto">
         {/* Search / filter */}
-        <div className="mb-4">
-          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <input
-              aria-label="Search countries"
-              placeholder="Search countries..."
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              style={{ padding: 8, borderRadius: 6, border: "1px solid #ddd", flex: 1 }}
-            />
-            <select value={sortOption} onChange={(e) => setSortOption(e.target.value)} style={{ padding: 8 }}>
-              <option value="name-asc">Name ↑</option>
-              <option value="name-desc">Name ↓</option>
-              <option value="pop-asc">Population ↑</option>
-              <option value="pop-desc">Population ↓</option>
-            </select>
-            <input
-              type="number"
-              placeholder="Min pop"
-              value={minPopulation}
-              onChange={(e) => setMinPopulation(e.target.value)}
-              style={{ width: 110, padding: 8 }}
-            />
-            <input
-              type="number"
-              placeholder="Max pop"
-              value={maxPopulation}
-              onChange={(e) => setMaxPopulation(e.target.value)}
-              style={{ width: 110, padding: 8 }}
-            />
-            <button
-              onClick={handleClear}
-              style={{
-                padding: "8px 12px",
-                borderRadius: 6,
-                border: "1px solid #ddd",
-                background: "#fff",
-                cursor: "pointer",
-                marginLeft: 4,
-              }}
-              aria-label="Clear filters"
-            >
-              Clear
-            </button>
-          </div>
+        <div className="mb-4 flex gap-2 items-center">
+          <input
+            aria-label="Search countries"
+            placeholder="Search countries..."
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            className={`${inputCls} flex-1`}
+          />
+          <select
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+            className={inputCls}
+          >
+            <option value="name-asc">Name ↑</option>
+            <option value="name-desc">Name ↓</option>
+            <option value="pop-asc">Population ↑</option>
+            <option value="pop-desc">Population ↓</option>
+          </select>
+          <input
+            type="number"
+            placeholder="Min pop"
+            value={minPopulation}
+            onChange={(e) => setMinPopulation(e.target.value)}
+            className={`${inputCls} w-28`}
+          />
+          <input
+            type="number"
+            placeholder="Max pop"
+            value={maxPopulation}
+            onChange={(e) => setMaxPopulation(e.target.value)}
+            className={`${inputCls} w-28`}
+          />
+          <button
+            onClick={handleClear}
+            aria-label="Clear filters"
+            className="px-3 py-2 rounded-md border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-600 cursor-pointer"
+          >
+            Clear
+          </button>
         </div>
+
         {/* Three-column layout: Countries | States | Cities */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
+        <div className="grid grid-cols-3 gap-3">
           {/* Countries */}
-          <div style={{ border: "1px solid #eee", borderRadius: 8, overflow: "hidden", background: "#fff" }}>
-            <div style={{ padding: 10, borderBottom: "1px solid #f3f3f3", fontWeight: 600 }}>Countries</div>
-            <div style={{ maxHeight: 420, overflow: "auto" }}>
+          <div className="border border-gray-200 dark:border-slate-700 rounded-lg overflow-hidden bg-white dark:bg-slate-800">
+            <div className="px-3 py-2 border-b border-gray-100 dark:border-slate-700 font-semibold text-gray-900 dark:text-gray-100">
+              Countries
+            </div>
+            <div className="max-h-[420px] overflow-auto">
               {loading ? (
-                <div style={{ padding: 16, textAlign: "center", color: "#888" }}>Loading countries...</div>
+                <div className="p-4 text-center text-gray-500 dark:text-gray-400">Loading countries...</div>
               ) : (
-              <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                <thead>
-                  <tr style={{ background: "#fafafa" }}>
-                    <th style={{ textAlign: "left", padding: 8 }}>Name</th>
-                    <th style={{ textAlign: "right", padding: 8 }}>Population</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {displayedCountries.map((c, idx) => {
-                    const val = c.code || c.id || c.name;
-                    const isActive = selectedCountry === val;
-                    return (
-                      <tr
-                        key={idx}
-                        onClick={() => {
-                          setSelectedCountry(val);
-                          handleSelectCountry(val);
-                        }}
-                        style={{
-                          cursor: "pointer",
-                          background: isActive ? "#eef6ff" : "transparent",
-                        }}
-                      >
-                        <td style={{ padding: 8 }}>{c.name}</td>
-                        <td style={{ padding: 8, textAlign: "right" }}>{Number(c.population || 0).toLocaleString()}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                <table className="w-full border-collapse">
+                  <thead>
+                    <tr className="bg-gray-50 dark:bg-slate-700">
+                      <th className="text-left px-2 py-2 text-gray-700 dark:text-gray-300">Name</th>
+                      <th className="text-right px-2 py-2 text-gray-700 dark:text-gray-300">Population</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {displayedCountries.map((c, idx) => {
+                      const val = c.code || c.id || c.name;
+                      const isActive = selectedCountry === val;
+                      return (
+                        <tr
+                          key={idx}
+                          onClick={() => { setSelectedCountry(val); handleSelectCountry(val); }}
+                          className={`cursor-pointer ${isActive ? "bg-blue-50 dark:bg-blue-900/40" : "hover:bg-gray-50 dark:hover:bg-slate-700"}`}
+                        >
+                          <td className="px-2 py-2 text-gray-900 dark:text-gray-100">{c.name}</td>
+                          <td className="px-2 py-2 text-right text-gray-600 dark:text-gray-400">{Number(c.population || 0).toLocaleString()}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               )}
             </div>
           </div>
 
           {/* States */}
-          <div style={{ border: "1px solid #eee", borderRadius: 8, overflow: "hidden", background: "#fff" }}>
-            <div style={{ padding: 10, borderBottom: "1px solid #f3f3f3", fontWeight: 600 }}>
+          <div className="border border-gray-200 dark:border-slate-700 rounded-lg overflow-hidden bg-white dark:bg-slate-800">
+            <div className="px-3 py-2 border-b border-gray-100 dark:border-slate-700 font-semibold text-gray-900 dark:text-gray-100">
               States {selectedCountry ? `for ${selectedCountry}` : ""}
             </div>
-            <div style={{ maxHeight: 420, overflow: "auto", padding: 8 }}>
+            <div className="max-h-[420px] overflow-auto p-2">
               {states && states.length ? (
-                <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+                <ul className="space-y-1.5">
                   {states.map((s, i) => {
                     const val = s.code || s.id || s.name;
                     const isActive = selectedState === val;
                     return (
                       <li
                         key={i}
-                        onClick={() => {
-                          setSelectedState(val);
-                          handleSelectState(val);
-                        }}
-                        style={{
-                          cursor: "pointer",
-                          padding: "8px 10px",
-                          borderRadius: 6,
-                          marginBottom: 6,
-                          background: isActive ? "#eef6ff" : "#fff",
-                          border: "1px solid #f3f3f3",
-                        }}
+                        onClick={() => { setSelectedState(val); handleSelectState(val); }}
+                        className={`cursor-pointer px-3 py-2 rounded-md border ${isActive ? "bg-blue-50 dark:bg-blue-900/40 border-blue-200 dark:border-blue-700" : "bg-white dark:bg-slate-700 border-gray-100 dark:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-600"}`}
                       >
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
-                          <span>{s.name}</span>
-                          <small style={{ color: "#666" }}>{s.population ? Number(s.population).toLocaleString() : ""}</small>
+                        <div className="flex justify-between">
+                          <span className="text-gray-900 dark:text-gray-100">{s.name}</span>
+                          <small className="text-gray-500 dark:text-gray-400">{s.population ? Number(s.population).toLocaleString() : ""}</small>
                         </div>
                       </li>
                     );
                   })}
                 </ul>
               ) : (
-                <div style={{ color: "#666" , padding: 10}}>No states to display</div>
+                <div className="p-2 text-gray-500 dark:text-gray-400">No states to display</div>
               )}
             </div>
           </div>
 
           {/* Cities */}
-          <div style={{ border: "1px solid #eee", borderRadius: 8, overflow: "hidden", background: "#fff" }}>
-            <div style={{ padding: 10, borderBottom: "1px solid #f3f3f3", fontWeight: 600 }}>
+          <div className="border border-gray-200 dark:border-slate-700 rounded-lg overflow-hidden bg-white dark:bg-slate-800">
+            <div className="px-3 py-2 border-b border-gray-100 dark:border-slate-700 font-semibold text-gray-900 dark:text-gray-100">
               Cities {selectedState ? `in ${selectedState}` : ""}
             </div>
-            <div style={{ maxHeight: 420, overflow: "auto", padding: 8 }}>
+            <div className="max-h-[420px] overflow-auto p-2">
               {cities && cities.length ? (
-                <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
-                  {cities.map((c, i) => (
-                    <li
-                      key={i}
-                      onClick={() => setSelectedCity(c.name || (c.code || c.id || String(i)))}
-                      style={{
-                        cursor: "pointer",
-                        padding: "8px 10px",
-                        borderRadius: 6,
-                        marginBottom: 6,
-                        background: selectedCity === (c.name || c.code || c.id) ? "#eef6ff" : "#fff",
-                        border: "1px solid #f3f3f3",
-                      }}
-                    >
-                      <div style={{ display: "flex", justifyContent: "space-between" }}>
-                        <span>{c.name}</span>
-                        <small style={{ color: "#666" }}>{c.population ? Number(c.population).toLocaleString() : ""}</small>
-                      </div>
-                    </li>
-                  ))}
+                <ul className="space-y-1.5">
+                  {cities.map((c, i) => {
+                    const val = c.name || c.code || c.id;
+                    const isActive = selectedCity === val;
+                    return (
+                      <li
+                        key={i}
+                        onClick={() => setSelectedCity(val || String(i))}
+                        className={`cursor-pointer px-3 py-2 rounded-md border ${isActive ? "bg-blue-50 dark:bg-blue-900/40 border-blue-200 dark:border-blue-700" : "bg-white dark:bg-slate-700 border-gray-100 dark:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-600"}`}
+                      >
+                        <div className="flex justify-between">
+                          <span className="text-gray-900 dark:text-gray-100">{c.name}</span>
+                          <small className="text-gray-500 dark:text-gray-400">{c.population ? Number(c.population).toLocaleString() : ""}</small>
+                        </div>
+                      </li>
+                    );
+                  })}
                 </ul>
               ) : (
-                <div style={{ color: "#666", padding: 10 }}>No cities to display</div>
+                <div className="p-2 text-gray-500 dark:text-gray-400">No cities to display</div>
               )}
             </div>
           </div>
         </div>
 
         {/* status line */}
-        <div style={{ marginTop: 12, color: isError ? "#C53030" : "#0f5132" }}>
+        <div className={`mt-3 text-sm ${isError ? "text-red-600 dark:text-red-400" : "text-green-700 dark:text-green-400"}`}>
           Status: {status}
         </div>
       </div>
     </div>
-    );
-  }
+  );
+}
