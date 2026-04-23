@@ -20,11 +20,11 @@ export default function CreativeSuite() {
             <span className="inline-flex w-fit items-center rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.28em] text-cyan-100">
               Creative Suite
             </span>
-            <div>
+            <div className="text-center">
               <h1 className="text-2xl font-bold text-white sm:text-3xl">
                 Manage {resourceLabel.toLowerCase()} records
               </h1>
-              <p className="mt-2 max-w-xl text-sm leading-6 text-slate-300 sm:text-base">
+              <p className="mx-auto mt-2 max-w-xl text-sm leading-6 text-slate-300 sm:text-base">
                 Pick a resource type, then use the actions below to create,
                 edit, delete, or list records.
               </p>

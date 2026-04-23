@@ -10,6 +10,7 @@ const entityLabels = {
 const createFields = {
   C: [
     { name: "name", label: "Name", required: true },
+    { name: "state", label: "State", required: true },
     { name: "country", label: "Country", required: true },
     {
       name: "population",
@@ -33,11 +34,6 @@ const createEndpoints = {
   C: "/cities",
   S: "/states",
   CNTRY: "/countries/",
-};
-
-const bulkCreateEndpoints = {
-  C: "/cities/bulk",
-  S: "/states/bulk",
 };
 
 function createEmptyValues(fields) {
@@ -79,8 +75,6 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
     setActive("Create");
   }, [entityType]);
 
-  const isBulkCreateEnabled = entityType === "C" || entityType === "S";
-
   const handleFieldChange = (rowIndex, name, value) => {
     setCreateRows((currentRows) =>
       currentRows.map((row, index) =>
@@ -89,55 +83,31 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
     );
   };
 
-  const handleAddRow = () => {
-    setCreateRows((currentRows) => [...currentRows, createEmptyValues(fields)]);
-  };
-
-  const handleRemoveRow = (rowIndex) => {
-    setCreateRows((currentRows) => {
-      if (currentRows.length === 1) {
-        return currentRows;
-      }
-
-      return currentRows.filter((_, index) => index !== rowIndex);
-    });
-  };
-
   const handleCreateSubmit = async (event) => {
     event.preventDefault();
 
     setIsSubmitting(true);
     setStatus("Submitting...");
     try {
-      const endpoint = isBulkCreateEnabled
-        ? bulkCreateEndpoints[entityType] || createEndpoints.C
-        : createEndpoints[entityType] || createEndpoints.C;
+      const endpoint = createEndpoints[entityType] || createEndpoints.C;
+      const row = createRows[0];
 
-      const payloadRows = createRows.map((row, rowIndex) => {
-        const missingField = fields.find(
-          (field) => field.required && !String(row[field.name] ?? "").trim(),
-        );
+      const missingField = fields.find(
+        (field) => field.required && !String(row[field.name] ?? "").trim(),
+      );
 
-        if (missingField) {
-          throw new Error(
-            `Row ${rowIndex + 1}: ${missingField.label} is required.`,
-          );
-        }
+      if (missingField) {
+        throw new Error(`${missingField.label} is required.`);
+      }
 
-        return fields.reduce((values, field) => {
-          const rawValue = String(row[field.name] ?? "").trim();
+      const payload = fields.reduce((values, field) => {
+        const rawValue = String(row[field.name] ?? "").trim();
+        if (!rawValue) return values;
+        values[field.name] =
+          field.type === "number" ? Number(rawValue) : rawValue;
+        return values;
+      }, {});
 
-          if (!rawValue) {
-            return values;
-          }
-
-          values[field.name] =
-            field.type === "number" ? Number(rawValue) : rawValue;
-          return values;
-        }, {});
-      });
-
-      const payload = isBulkCreateEnabled ? payloadRows : payloadRows[0] || {};
       const response = await fetch(buildUrl(endpoint), {
         method: "POST",
         headers: {
@@ -155,11 +125,7 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
         );
       }
 
-      setStatus(
-        isBulkCreateEnabled
-          ? `${entityLabels[entityType] || "Item"}s created successfully.`
-          : `${entityLabels[entityType] || "Item"} created successfully.`,
-      );
+      setStatus(`${entityLabels[entityType] || "Item"} created successfully.`);
       setCreateRows([createEmptyValues(fields)]);
     } catch (error) {
       setStatus(`Create failed: ${error.message}`);
@@ -211,15 +177,7 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
               Create {entityLabels[entityType] || "Item"}
             </div>
 
-            {createRows.map((row, rowIndex) => (
-              <div
-                key={rowIndex}
-                className="rounded border border-gray-200 p-3"
-              >
-                <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                  {isBulkCreateEnabled ? `Entry ${rowIndex + 1}` : "Details"}
-                </div>
-
+            <div className="rounded border border-gray-200 p-3">
                 <div className="flex flex-col gap-3">
                   {fields.map((field) => (
                     <label
@@ -233,13 +191,9 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
                       <input
                         name={field.name}
                         type={field.type || "text"}
-                        value={row[field.name] || ""}
+                        value={createRows[0][field.name] || ""}
                         onChange={(event) =>
-                          handleFieldChange(
-                            rowIndex,
-                            field.name,
-                            event.target.value,
-                          )
+                          handleFieldChange(0, field.name, event.target.value)
                         }
                         required={field.required}
                         className="rounded border border-gray-300 px-2 py-1 shadow-sm"
@@ -249,29 +203,7 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
                     </label>
                   ))}
                 </div>
-
-                {isBulkCreateEnabled ? (
-                  <div className="mt-3 flex gap-2">
-                    <button
-                      type="button"
-                      className="rounded border border-gray-300 px-3 py-1 text-sm text-gray-700 hover:bg-gray-50"
-                      onClick={handleAddRow}
-                    >
-                      Add another
-                    </button>
-                    {createRows.length > 1 ? (
-                      <button
-                        type="button"
-                        className="rounded border border-red-300 px-3 py-1 text-sm text-red-700 hover:bg-red-50"
-                        onClick={() => handleRemoveRow(rowIndex)}
-                      >
-                        Remove
-                      </button>
-                    ) : null}
-                  </div>
-                ) : null}
               </div>
-            ))}
 
             <button
               className="rounded bg-blue-600 px-3 py-2 text-white disabled:cursor-not-allowed disabled:bg-blue-400"
@@ -448,14 +380,14 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
       case "List": {
         const columns = listData.length > 0 ? Object.keys(listData[0]) : [];
         return (
-          <div className="mt-4 text-gray-700 dark:text-black overflow-x-auto">
+          <div className="mt-4 text-white overflow-x-auto">
             {isLoadingList ? (
               <div>Loading...</div>
             ) : listData.length === 0 ? (
               <div>No items found.</div>
             ) : (
               <table className="w-full border-collapse text-sm">
-                <thead>
+                <thead className="text-gray-800">
                   <tr className="bg-gray-100">
                     {columns.map((col) => (
                       <th
