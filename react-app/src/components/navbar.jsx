@@ -8,7 +8,7 @@ import { NavLink } from "react-router-dom";
 
 const navigation = [
   { name: "Home", to: "/" },
-  { name: "Load Script", to: "/loadscript" },
+  { name: "Data Explorer", to: "/loadscript" },
   { name: "Team", to: "/team" },
   { name: "Game", to: "/game-worldmap" },
   { name: "Creative Suite", to: "/creative-suite" },
