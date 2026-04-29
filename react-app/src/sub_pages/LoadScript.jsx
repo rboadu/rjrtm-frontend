@@ -3,7 +3,7 @@ import { Button } from "../components/button";
 import countriesData from "../data/countries.json";
 import statesByCountry from "../data/states_by_country.json";
 import citiesByState from "../data/cities_by_state.json";
-
+// These are initializing the state variables
 export default function LoadScript() {
   const [status, setStatus] = useState("Ready.");
   const [isError, setIsError] = useState(false);
@@ -36,7 +36,7 @@ export default function LoadScript() {
     setStatus("Ready.");
     setIsError(false);
   };
-
+// This is the memoized list of displayed countries
   const displayedCountries = useMemo(() => {
     const q = String(searchText || "").trim().toLowerCase();
     let list = (countries || []).slice();
@@ -145,7 +145,7 @@ async function handleSelectCountry(value) {
         if (key) statesData = statesByCountry[key];
       }
     }
-
+    // This is where we set the states
     setStates(statesData || []);
     setStatus(statesData && statesData.length ? "States loaded" : "No states found");
   } catch (e) {
