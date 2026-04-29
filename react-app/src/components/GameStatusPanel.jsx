@@ -5,6 +5,7 @@ function GameStatusPanel({
   targetCountry,
   timeLeft,
   streak,
+  bestStreak,
   score,
   onStopGame,
   selectedLocation,
@@ -35,6 +36,12 @@ function GameStatusPanel({
             <div className="streak-chip">
               <span className="timer-label">Streak</span>
               <strong className="timer-value">{streak}</strong>
+            </div>
+          )}
+          {bestStreak > 0 && (
+            <div className="score-chip">
+              <span className="timer-label">Best</span>
+              <strong className="timer-value">{bestStreak}</strong>
             </div>
           )}
           <AnalogTimerClock

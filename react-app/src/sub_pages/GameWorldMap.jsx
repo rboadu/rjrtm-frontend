@@ -44,7 +44,9 @@ function WorldMapPage() {
   const [targetCountry, setTargetCountry] = useState(null);
   const [score, setScore] = useState(0);
   const [streak, setStreak] = useState(0);
-  const [bestStreak, setBestStreak] = useState(0);
+  const [bestStreak, setBestStreak] = useState(
+    () => parseInt(localStorage.getItem("bestStreak") ?? "0", 10)
+  );
   const [timeLeft, setTimeLeft] = useState(30);
   const [countriesGeoJson, setCountriesGeoJson] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -126,7 +128,6 @@ function WorldMapPage() {
     seenCountriesRef.current.clear();
     setScore(0);
     setStreak(0);
-    setBestStreak(0);
     setGameOver(false);
     setFeedback(null);
     setSelectedLocation(null);
@@ -195,7 +196,11 @@ function WorldMapPage() {
       setScore((prev) => prev + 1);
       setStreak((prev) => {
         const next = prev + 1;
-        setBestStreak((best) => Math.max(best, next));
+        setBestStreak((best) => {
+          const updated = Math.max(best, next);
+          localStorage.setItem("bestStreak", updated);
+          return updated;
+        });
         return next;
       });
       setFeedback({ correct: true, message: `Correct! That's ${targetName}.` });
@@ -296,6 +301,7 @@ function WorldMapPage() {
             targetCountry={targetCountry}
             timeLeft={timeLeft}
             streak={streak}
+            bestStreak={bestStreak}
             score={score}
             onStopGame={stopGame}
             selectedLocation={selectedLocation}
