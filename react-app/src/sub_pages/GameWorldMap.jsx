@@ -48,6 +48,7 @@ function WorldMapPage() {
   const [timeLeft, setTimeLeft] = useState(30);
   const [countriesGeoJson, setCountriesGeoJson] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [guessCount, setGuessCount] = useState(0);
   const mapSectionRef = useRef(null);
   const timerRef = useRef(null);
   const seenCountriesRef = useRef(new Set());
@@ -103,6 +104,7 @@ function WorldMapPage() {
     setTimeLeft(30);
     setSelectedLocation(null);
     setFeedback(null);
+    setGuessCount(0);
     seenCountriesRef.current.clear();
   }, []);
 
@@ -116,6 +118,7 @@ function WorldMapPage() {
     const rand = unseen[Math.floor(Math.random() * unseen.length)];
     seen.add(rand.name);
     setTargetCountry(rand);
+    setGuessCount(0);
   }, [countryList]);
 
 
@@ -128,6 +131,7 @@ function WorldMapPage() {
     setFeedback(null);
     setSelectedLocation(null);
     setTimeLeft(30);
+    setGuessCount(0);
     setGameStarted(true);
     getRandomCountry();
   }, [getRandomCountry]);
@@ -201,19 +205,38 @@ function WorldMapPage() {
         setSelectedLocation(null);
         setFeedback(null);
       }, 2000);
+      setGuessCount(0);
     } else {
-      setStreak(0);
-      const distanceKm = targetCountry
-        ? haversineKm(selectedLocation.lat, selectedLocation.lng, targetCountry.lat, targetCountry.lng)
-        : null;
-      setFeedback({
-        correct: false,
-        message: clickedName
-          ? `That's ${clickedName}. Try again!`
-          : `You clicked the ocean! Try again!`,
-        distanceKm,
+      setGuessCount((prev) => {
+        const next = prev + 1;
+        if (next >= 3) {
+          setStreak(0);
+          setGameStarted(false);
+          setGameOver(true);
+          setFeedback({
+            correct: false,
+            message: `Out of guesses! The correct answer was ${targetName}.`,
+            distanceKm: targetCountry
+              ? haversineKm(selectedLocation.lat, selectedLocation.lng, targetCountry.lat, targetCountry.lng)
+              : null,
+          });
+          setSelectedLocation(null);
+        } else {
+          setStreak(0);
+          const distanceKm = targetCountry
+            ? haversineKm(selectedLocation.lat, selectedLocation.lng, targetCountry.lat, targetCountry.lng)
+            : null;
+          setFeedback({
+            correct: false,
+            message: clickedName
+              ? `That's ${clickedName}. Try again!`
+              : `You clicked the ocean! Try again!`,
+            distanceKm,
+          });
+          setSelectedLocation(null);
+        }
+        return next;
       });
-      setSelectedLocation(null);
     }
   }, [selectedLocation, findClickedCountry, targetCountry, getRandomCountry, haversineKm]);
 
