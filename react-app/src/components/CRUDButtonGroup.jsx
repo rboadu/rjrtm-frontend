@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { API_BASE } from "../config";
+import ErrorModal from "./ErrorModal";
 
 const entityLabels = {
   C: "City",
@@ -63,6 +64,9 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
   const [editCountry, setEditCountry] = useState("");
   const [editPopulation, setEditPopulation] = useState("");
   const [editStatus, setEditStatus] = useState("");
+  // Error modal state
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const fields = createFields[entityType] || createFields.C;
 
@@ -128,7 +132,9 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
       setStatus(`${entityLabels[entityType] || "Item"} created successfully.`);
       setCreateRows([createEmptyValues(fields)]);
     } catch (error) {
-      setStatus(`Create failed: ${error.message}`);
+      setErrorMessage(`Create failed: ${error.message}`);
+      setErrorModalOpen(true);
+      setStatus("");
     } finally {
       setIsSubmitting(false);
     }
@@ -178,32 +184,32 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
             </div>
 
             <div className="rounded border border-gray-200 p-3">
-                <div className="flex flex-col gap-3">
-                  {fields.map((field) => (
-                    <label
-                      key={field.name}
-                      className="flex flex-col gap-1 text-sm font-medium text-gray-700"
-                    >
-                      <span>
-                        {field.label}
-                        {!field.required ? " (optional)" : ""}
-                      </span>
-                      <input
-                        name={field.name}
-                        type={field.type || "text"}
-                        value={createRows[0][field.name] || ""}
-                        onChange={(event) =>
-                          handleFieldChange(0, field.name, event.target.value)
-                        }
-                        required={field.required}
-                        className="rounded border border-gray-300 px-2 py-1 shadow-sm"
-                        placeholder={field.label}
-                        style={{ backgroundColor: "white", color: "black" }}
-                      />
-                    </label>
-                  ))}
-                </div>
+              <div className="flex flex-col gap-3">
+                {fields.map((field) => (
+                  <label
+                    key={field.name}
+                    className="flex flex-col gap-1 text-sm font-medium text-gray-700"
+                  >
+                    <span>
+                      {field.label}
+                      {!field.required ? " (optional)" : ""}
+                    </span>
+                    <input
+                      name={field.name}
+                      type={field.type || "text"}
+                      value={createRows[0][field.name] || ""}
+                      onChange={(event) =>
+                        handleFieldChange(0, field.name, event.target.value)
+                      }
+                      required={field.required}
+                      className="rounded border border-gray-300 px-2 py-1 shadow-sm"
+                      placeholder={field.label}
+                      style={{ backgroundColor: "white", color: "black" }}
+                    />
+                  </label>
+                ))}
               </div>
+            </div>
 
             <button
               className="rounded bg-blue-600 px-3 py-2 text-white disabled:cursor-not-allowed disabled:bg-blue-400"
@@ -257,11 +263,13 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
               onClick={async () => {
                 setEditStatus("");
                 if (!editName.trim()) {
-                  setEditStatus("Please enter a name to update.");
+                  setErrorMessage("Please enter a name to update.");
+                  setErrorModalOpen(true);
                   return;
                 }
                 if (entityType === "C" && !editCountry.trim()) {
-                  setEditStatus("Please enter a country.");
+                  setErrorMessage("Please enter a country.");
+                  setErrorModalOpen(true);
                   return;
                 }
                 try {
@@ -276,7 +284,8 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
                       payload.population = Number(editPopulation.trim());
                     }
                   } else {
-                    setEditStatus("Update only implemented for cities.");
+                    setErrorMessage("Update only implemented for cities.");
+                    setErrorModalOpen(true);
                     return;
                   }
                   const response = await fetch(buildUrl(endpoint), {
@@ -295,13 +304,15 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
                     setEditPopulation("");
                   } else {
                     const data = await response.json().catch(() => ({}));
-                    setEditStatus(
+                    setErrorMessage(
                       data.error ||
                         `Update failed: ${response.status} ${response.statusText}`,
                     );
+                    setErrorModalOpen(true);
                   }
                 } catch (err) {
-                  setEditStatus(`Update failed: ${err.message}`);
+                  setErrorMessage(`Update failed: ${err.message}`);
+                  setErrorModalOpen(true);
                 }
               }}
             >
@@ -333,7 +344,8 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
               onClick={async () => {
                 setDeleteStatus("");
                 if (!deleteInput.trim()) {
-                  setDeleteStatus("Please enter a name to delete.");
+                  setErrorMessage("Please enter a name to delete.");
+                  setErrorModalOpen(true);
                   return;
                 }
                 try {
@@ -345,7 +357,8 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
                   } else if (entityType === "CNTRY") {
                     endpoint = `/countries/${encodeURIComponent(deleteInput.trim())}`;
                   } else {
-                    setDeleteStatus("Unknown entity type.");
+                    setErrorMessage("Unknown entity type.");
+                    setErrorModalOpen(true);
                     return;
                   }
                   const response = await fetch(buildUrl(endpoint), {
@@ -358,13 +371,15 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
                     setDeleteInput("");
                   } else {
                     const data = await response.json().catch(() => ({}));
-                    setDeleteStatus(
+                    setErrorMessage(
                       data.error ||
                         `Delete failed: ${response.status} ${response.statusText}`,
                     );
+                    setErrorModalOpen(true);
                   }
                 } catch (err) {
-                  setDeleteStatus(`Delete failed: ${err.message}`);
+                  setErrorMessage(`Delete failed: ${err.message}`);
+                  setErrorModalOpen(true);
                 }
               }}
             >
@@ -428,6 +443,11 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
 
   return (
     <div className="space-y-4">
+      <ErrorModal
+        isOpen={errorModalOpen}
+        message={errorMessage}
+        onClose={() => setErrorModalOpen(false)}
+      />
       <div className="inline-flex rounded-full border border-white/10 bg-slate-950/50 p-1 shadow-inner shadow-black/20">
         <button
           className={`rounded-full px-4 py-2 text-sm font-semibold transition focus:z-10 focus:outline-none ${active === "Create" ? "bg-cyan-400 text-slate-950 shadow-lg shadow-cyan-400/30" : "text-slate-300 hover:text-white"}`}
