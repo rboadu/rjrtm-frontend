@@ -50,6 +50,35 @@ function buildUrl(path) {
   return `${base}${normalizedPath}`;
 }
 
+function parseErrorMessage(error) {
+  if (!error) return "An unknown error occurred.";
+
+  // If it's a string, try to parse as JSON
+  if (typeof error === "string") {
+    try {
+      const parsed = JSON.parse(error);
+      // Look for common error message fields
+      if (parsed.detail) return parsed.detail;
+      if (parsed.message) return parsed.message;
+      if (parsed.error) return parsed.error;
+      // If it's an object, stringify it nicely
+      return JSON.stringify(parsed);
+    } catch {
+      // Not JSON, return as-is
+      return error;
+    }
+  }
+
+  // If it's an object, look for message properties
+  if (typeof error === "object") {
+    if (error.detail) return error.detail;
+    if (error.message) return error.message;
+    if (error.error) return error.error;
+  }
+
+  return String(error);
+}
+
 export default function CRUDButtonGroup({ entityType = "C" }) {
   const [active, setActive] = useState(null);
   const [createRows, setCreateRows] = useState(() => [
@@ -132,7 +161,8 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
       setStatus(`${entityLabels[entityType] || "Item"} created successfully.`);
       setCreateRows([createEmptyValues(fields)]);
     } catch (error) {
-      setErrorMessage(`Create failed: ${error.message}`);
+      const friendlyMessage = parseErrorMessage(error.message);
+      setErrorMessage(friendlyMessage);
       setErrorModalOpen(true);
       setStatus("");
     } finally {
@@ -304,14 +334,13 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
                     setEditPopulation("");
                   } else {
                     const data = await response.json().catch(() => ({}));
-                    setErrorMessage(
-                      data.error ||
-                        `Update failed: ${response.status} ${response.statusText}`,
-                    );
+                    const friendlyMessage = parseErrorMessage(data);
+                    setErrorMessage(friendlyMessage);
                     setErrorModalOpen(true);
                   }
                 } catch (err) {
-                  setErrorMessage(`Update failed: ${err.message}`);
+                  const friendlyMessage = parseErrorMessage(err.message);
+                  setErrorMessage(friendlyMessage);
                   setErrorModalOpen(true);
                 }
               }}
@@ -371,14 +400,13 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
                     setDeleteInput("");
                   } else {
                     const data = await response.json().catch(() => ({}));
-                    setErrorMessage(
-                      data.error ||
-                        `Delete failed: ${response.status} ${response.statusText}`,
-                    );
+                    const friendlyMessage = parseErrorMessage(data);
+                    setErrorMessage(friendlyMessage);
                     setErrorModalOpen(true);
                   }
                 } catch (err) {
-                  setErrorMessage(`Delete failed: ${err.message}`);
+                  const friendlyMessage = parseErrorMessage(err.message);
+                  setErrorMessage(friendlyMessage);
                   setErrorModalOpen(true);
                 }
               }}
