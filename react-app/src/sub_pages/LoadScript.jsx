@@ -147,7 +147,11 @@ async function handleSelectCountry(value) {
     }
     // This is where we set the states
     setStates(statesData || []);
-    setStatus(statesData && statesData.length ? "States loaded" : "No states found");
+    setStatus(
+      statesData && statesData.length
+        ? `Loaded ${statesData.length} states`
+        : "No states found for this country"
+    );
   } catch (e) {
     setStatus("Error loading states: " + (e && e.message));
     setIsError(true);
