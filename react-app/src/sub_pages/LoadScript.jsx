@@ -47,7 +47,7 @@ export default function LoadScript() {
     const max = Number(maxPopulation) || null;
     if (min) list = list.filter((c) => Number(c.population || 0) >= min);
     if (max) list = list.filter((c) => Number(c.population || 0) <= max);
-
+    // Apply sorting
     switch (sortOption) {
       case "name-desc":
         list.sort((a, b) => (b.name || "").localeCompare(a.name || ""));
@@ -104,7 +104,7 @@ async function handleSelectCountry(value) {
   setSelectedCity(null);
   setStatus("Loading states...");
   setIsError(false);
-
+  // Clear previous state and city selections
   try {
     const country = countries.find((c) => (c.code || c.id || c.name) === value);
 
@@ -154,6 +154,7 @@ async function handleSelectCountry(value) {
   }
 }
 
+// This function handles the selection of a state
 async function handleSelectState(value) {
   setSelectedState(value);
   setCities([]);
@@ -207,6 +208,7 @@ async function handleSelectState(value) {
   }
 }
 
+// This function renders the options for the select inputs
   const renderOptions = (data) => {
     if (!data || data.length === 0) return <option value="">No options</option>;
     return data.map((item, idx) => {
