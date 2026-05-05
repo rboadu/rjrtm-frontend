@@ -1,5 +1,8 @@
 
+
 import AnalogTimerClock from "./AnalogTimerClock";
+import Confetti from "react-confetti";
+import { useEffect, useState } from "react";
 
 function GameStatusPanel({
   targetCountry,
@@ -19,8 +22,27 @@ function GameStatusPanel({
   const timerStateClass =
     timeLeft <= 10 ? "urgent" : timeLeft <= 20 ? "warning" : "normal";
 
+  // Confetti state: show for 2s after correct answer
+  const [showConfetti, setShowConfetti] = useState(false);
+  useEffect(() => {
+    if (feedback && feedback.correct) {
+      setShowConfetti(true);
+      const t = setTimeout(() => setShowConfetti(false), 2000);
+      return () => clearTimeout(t);
+    } else {
+      setShowConfetti(false);
+    }
+  }, [feedback]);
+
   return (
-    <div className={`game-status-card ${timerStateClass}`}>
+    <div className={`game-status-card ${timerStateClass}`} style={{ position: "relative", overflow: "visible" }}>
+      {showConfetti && (
+        <Confetti
+          numberOfPieces={180}
+          recycle={false}
+          style={{ position: "absolute", top: 0, left: 0, width: "100vw", height: "100vh", pointerEvents: "none", zIndex: 1000 }}
+        />
+      )}
       <p className="game-status-label">Find this country before time runs out</p>
       <div className="game-status-row">
         <div>

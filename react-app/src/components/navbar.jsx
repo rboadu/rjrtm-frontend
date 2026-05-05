@@ -6,6 +6,13 @@ import {
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { NavLink } from "react-router-dom";
 
+const LogoDot = () => (
+  <span
+    aria-label="App logo"
+    className="h-10 w-10 rounded-full bg-white"
+  />
+);
+
 const navigation = [
   { name: "Home", to: "/" },
   { name: "Data Explorer", to: "/loadscript" },
@@ -65,6 +72,10 @@ export default function NavBar() {
                 ))}
               </div>
             </div>
+          </div>
+          {/* Logo on right */}
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center">
+            <LogoDot />
           </div>
         </div>
       </div>
