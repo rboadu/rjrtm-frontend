@@ -1,0 +1,42 @@
+.team-page {
+  min-height: 100vh;
+  background-color: white;
+  padding: 5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dark .team-page {
+  background-color: rgb(17 24 39);
+}
+
+.team-title {
+  margin-bottom: 0.5rem;
+}
+
+.team-subtitle {
+  margin-bottom: 3rem;
+  color: #999;
+}
+
+.team-contact-link {
+  margin-bottom: 3rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #000dfe;
+  color: #fff;
+  border-radius: 9999px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.team-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.team-grid + .team-grid {
+  margin-top: 2rem;
+}

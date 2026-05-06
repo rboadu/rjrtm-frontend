@@ -308,22 +308,6 @@
   color: rgb(253 230 138);
 }
 
-.timer-chip {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-width: 5.5rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.65rem;
-  background-color: white;
-  border: 1px solid rgb(224 231 255);
-}
-
-.dark .timer-chip {
-  background-color: rgb(31 41 55);
-  border-color: rgb(75 85 99);
-}
 
 .streak-chip {
   display: inline-flex;

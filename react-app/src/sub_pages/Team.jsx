@@ -5,6 +5,7 @@ import RebeccaHeadshot from "../images/Profile.png";
 import TerraHeadshot from "../images/terra.png";
 import rikuHeadshot from "../images/riku_headshot.png";
 import MikiyasHeadshot from "../images/miki_headshot.jpeg";
+import "./Team.css";
 
 const teamMembers = [
   {
@@ -43,41 +44,13 @@ export default function Team() {
   const row1 = teamMembers.slice(0, 3);
   const row2 = teamMembers.slice(3);
   return (
-    <div
-      className="min-h-screen bg-white dark:bg-gray-900"
-      style={{
-        padding: "5rem 2rem",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      <h1 style={{ marginBottom: "0.5rem" }}>Senior Design Team</h1>
-      <p style={{ marginBottom: "3rem", color: "#999" }}>
-        This is the RJRTM team.
-      </p>
-      <a
-        href="#contact-us"
-        style={{
-          marginBottom: "3rem",
-          padding: "0.75rem 1.5rem",
-          backgroundColor: "#000dfe",
-          color: "#fff",
-          borderRadius: "9999px",
-          textDecoration: "none",
-          fontWeight: 600,
-        }}
-      >
+    <div className="team-page">
+      <h1 className="team-title">Senior Design Team</h1>
+      <p className="team-subtitle">This is the RJRTM team.</p>
+      <a href="#contact-us" className="team-contact-link">
         Contact Us
       </a>
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "2rem",
-          justifyContent: "center",
-        }}
-      >
+      <div className="team-grid">
         {row1.map((member) => (
           <ProfileCard
             key={member.name}
@@ -88,15 +61,7 @@ export default function Team() {
           />
         ))}
       </div>
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "2rem",
-          justifyContent: "center",
-          marginTop: "2rem",
-        }}
-      >
+      <div className="team-grid">
         {row2.map((member) => (
           <ProfileCard
             key={member.name}

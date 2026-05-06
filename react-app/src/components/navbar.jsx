@@ -8,7 +8,7 @@ import { NavLink } from "react-router-dom";
 
 const LogoDot = () => (
   <span
-    aria-label="App logo"
+    aria-hidden="true"
     className="h-10 w-10 rounded-full bg-white"
   />
 );
