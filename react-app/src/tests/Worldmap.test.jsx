@@ -4,7 +4,6 @@ import { vi } from "vitest";
 
 // mock react-leaflet so Leaflet internals don't run in JSDOM
 vi.mock("react-leaflet", () => {
-  const React = require("react");
   return {
     MapContainer: ({ children }) => React.createElement("div", { "data-testid": "map-container" }, children),
     TileLayer: () => React.createElement("div", { "data-testid": "tile-layer" }),
