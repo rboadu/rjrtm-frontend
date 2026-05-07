@@ -7,17 +7,17 @@ export default defineConfig({
     proxy: {
       // proxy each endpoint prefix to the backend
       "/countries": {
-        target: "http://localhost:9000",
+        target: "http://localhost:8000",
         changeOrigin: true,
         secure: false,
       },
       "/states": {
-        target: "http://localhost:9000",
+        target: "http://localhost:8000",
         changeOrigin: true,
         secure: false,
       },
       "/cities": {
-        target: "http://localhost:9000",
+        target: "http://localhost:8000",
         changeOrigin: true,
         secure: false,
       },

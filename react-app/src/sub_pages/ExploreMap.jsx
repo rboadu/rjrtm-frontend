@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
+import { apiFetch } from "../config";
 
 export default function ExploreGeography() {
   const [countries, setCountries] = useState([]);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/countries/`)
+        apiFetch("/countries/")
       .then((res) => res.json())
       .then((data) => setCountries(data))
       .catch((err) => console.error(err));

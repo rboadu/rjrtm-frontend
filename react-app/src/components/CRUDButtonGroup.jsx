@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { API_BASE } from "../config";
+import { apiFetch } from "../config";
 import ErrorModal from "./ErrorModal";
 
 const entityLabels = {
@@ -42,12 +42,6 @@ function createEmptyValues(fields) {
     values[field.name] = "";
     return values;
   }, {});
-}
-
-function buildUrl(path) {
-  const base = API_BASE.replace(/\/+$/, "");
-  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-  return `${base}${normalizedPath}`;
 }
 
 function parseErrorMessage(error) {
@@ -141,7 +135,7 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
         return values;
       }, {});
 
-      const response = await fetch(buildUrl(endpoint), {
+      const response = await apiFetch(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -178,7 +172,7 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
     setListData([]);
     try {
       const endpoint = createEndpoints[entityType] || createEndpoints.C;
-      const response = await fetch(buildUrl(endpoint), {
+      const response = await apiFetch(endpoint, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -318,7 +312,7 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
                     setErrorModalOpen(true);
                     return;
                   }
-                  const response = await fetch(buildUrl(endpoint), {
+                  const response = await apiFetch(endpoint, {
                     method: "PUT",
                     headers: {
                       "Content-Type": "application/json",
@@ -390,7 +384,7 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
                     setErrorModalOpen(true);
                     return;
                   }
-                  const response = await fetch(buildUrl(endpoint), {
+                  const response = await apiFetch(endpoint, {
                     method: "DELETE",
                   });
                   if (response.ok) {
@@ -445,7 +439,7 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
                 <tbody>
                   {listData.map((item, idx) => (
                     <tr
-                      key={item.id || item.code || item.name || idx}
+                      key={`${item.id || item._id || item.code || item.name || "row"}-${idx}`}
                       className="even:bg-gray-50"
                     >
                       {columns.map((col) => (
