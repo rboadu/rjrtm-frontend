@@ -1,8 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
+import { vi, afterEach } from "vitest";
 import NavBar from "../components/navbar";
 import App from "../App";
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 test("renders navbar links", () => {
   render(
@@ -15,15 +20,18 @@ test("renders navbar links", () => {
   expect(screen.getByText("Team")).toBeInTheDocument();
 });
 
-test("navbar still navigates after using creative suite actions", async () => {
+test("navbar navigates to Home from Creative Suite page", async () => {
   const user = userEvent.setup();
-  window.history.pushState({}, "", "/creative-suite");
+  vi.stubGlobal("fetch", vi.fn(() =>
+    Promise.resolve({ ok: true, json: async () => [] })
+  ));
 
+  window.history.pushState({}, "", "/creative-suite");
   render(<App />);
 
-  await user.click(screen.getByRole("button", { name: "Create" }));
-  expect(screen.getByPlaceholderText("Enter new item...")).toBeInTheDocument();
+  expect(screen.getByText(/manage city records/i)).toBeInTheDocument();
 
-  await user.click(screen.getByRole("link", { name: "Home" }));
+  const homeLinks = screen.getAllByRole("link", { name: "Home" });
+  await user.click(homeLinks[0]);
   expect(window.location.pathname).toBe("/");
 });

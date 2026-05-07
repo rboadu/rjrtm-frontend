@@ -1,86 +1,38 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { vi, describe, it, afterEach, expect } from "vitest";
+import { describe, it, expect } from "vitest";
 import LoadScript from "../sub_pages/LoadScript";
 
-describe("LoadScript HATEOAS dropdowns", () => {
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
-  it("loads countries then states and cities using HATEOAS links", async () => {
-    const fakeFetch = vi.fn((input, init) => {
-      // normalize input to a URL string (handles Request objects and init)
-      let raw = "";
-      if (typeof input === "string") raw = input;
-      else if (input && (input.url || input instanceof Request)) raw = input.url || String(input);
-      else raw = String(input);
-      if (init && init.url) raw = init.url;
-      const url = String(raw).toLowerCase();
-
-      // helpful for debugging when test times out
-      console.log("fakeFetch called with:", raw);
-
-      if (url.includes("countries")) {
-        return Promise.resolve({
-          ok: true,
-          json: async () => [
-            {
-              name: "Country A",
-              code: "A",
-              _links: { states: { href: "/states?country=A" } },
-            },
-          ],
-        });
-      }
-      if (url.includes("states?country=a")) {
-        return Promise.resolve({
-          ok: true,
-          json: async () => [
-            {
-              name: "State X",
-              code: "X",
-              _links: { cities: { href: "/cities?state=X" } },
-            },
-          ],
-        });
-      }
-      if (url.includes("cities?state=x")) {
-        return Promise.resolve({
-          ok: true,
-          json: async () => [{ name: "City 1", id: "c1" }],
-        });
-      }
-      return Promise.resolve({ ok: false, status: 404, text: async () => "not found" });
-    });
-
-    vi.stubGlobal("fetch", fakeFetch);
-
+describe("LoadScript data browser", () => {
+  it("loads countries from local JSON on mount", async () => {
     render(<LoadScript />);
 
-    // wait for the country text to appear in the DOM
-    await screen.findByText(/country a/i);
-    const countrySelect = screen.getByLabelText("Country");
-    fireEvent.change(countrySelect, { target: { value: "A" } });
+    expect(await screen.findByText("United States")).toBeInTheDocument();
+    expect(screen.getByText("Ghana")).toBeInTheDocument();
+    expect(screen.getByText("Canada")).toBeInTheDocument();
+  });
 
-    // wait for state text to appear
-    await screen.findByText(/state x/i);
-    const stateSelect = screen.getByLabelText("State");
-    fireEvent.change(stateSelect, { target: { value: "X" } });
+  it("shows states when a country row is clicked", async () => {
+    render(<LoadScript />);
+    await screen.findByText("United States");
 
-    // wait for city text to appear
-    await screen.findByText(/city 1/i);
+    fireEvent.click(screen.getByText("United States"));
 
-    // verify fetch was called for countries, states and cities
-    const calledUrls = fakeFetch.mock.calls.map(([input, init]) => {
-      if (typeof input === "string") return input.toLowerCase();
-      if (input && input.url) return String(input.url).toLowerCase();
-      if (init && init.url) return String(init.url).toLowerCase();
-      return String(input).toLowerCase();
-    });
+    expect(await screen.findByText("California")).toBeInTheDocument();
+    expect(screen.getByText("Texas")).toBeInTheDocument();
+    expect(screen.getByText("New York")).toBeInTheDocument();
+  });
 
-    expect(calledUrls.some((u) => u.includes("countries"))).toBe(true);
-    expect(calledUrls.some((u) => u.includes("states?country=a"))).toBe(true);
-    expect(calledUrls.some((u) => u.includes("cities?state=x"))).toBe(true);
+  it("shows cities when a state is clicked", async () => {
+    render(<LoadScript />);
+    await screen.findByText("United States");
+
+    fireEvent.click(screen.getByText("United States"));
+    await screen.findByText("California");
+
+    fireEvent.click(screen.getByText("California"));
+
+    expect(await screen.findByText("Los Angeles")).toBeInTheDocument();
+    expect(screen.getByText("San Francisco")).toBeInTheDocument();
   });
 });

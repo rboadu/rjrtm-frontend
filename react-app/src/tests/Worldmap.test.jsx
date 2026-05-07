@@ -10,11 +10,12 @@ vi.mock("react-leaflet", () => {
     TileLayer: () => React.createElement("div", { "data-testid": "tile-layer" }),
     Marker: ({ children }) => React.createElement("div", { "data-testid": "marker" }, children),
     Popup: ({ children }) => React.createElement("div", { "data-testid": "popup" }, children),
+    GeoJSON: () => React.createElement("div", { "data-testid": "geojson" }),
     useMapEvents: () => () => null,
   };
 });
 
-import WorldMap from "../components/GameWorldMap";
+import WorldMap from "../components/WorldMap";
 
 describe("WorldMap", () => {
   it("renders a map container, tile layer and marker popup for selectedPosition", () => {
@@ -22,9 +23,15 @@ describe("WorldMap", () => {
 
     expect(screen.getByTestId("map-container")).toBeInTheDocument();
     expect(screen.getByTestId("tile-layer")).toBeInTheDocument();
-    // marker + popup render because we passed selectedPosition
     expect(screen.getByTestId("marker")).toBeInTheDocument();
     expect(screen.getByTestId("popup")).toBeInTheDocument();
     expect(screen.getByText(/your selection/i)).toBeInTheDocument();
+  });
+
+  it("does not render a marker when no position is selected", () => {
+    render(<WorldMap onLocationSelect={() => {}} />);
+
+    expect(screen.getByTestId("map-container")).toBeInTheDocument();
+    expect(screen.queryByTestId("marker")).not.toBeInTheDocument();
   });
 });
