@@ -4,7 +4,7 @@ export default function ExploreGeography() {
   const [countries, setCountries] = useState([]);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/countries/")
+    fetch(`${import.meta.env.VITE_API_URL}/countries/`)
       .then((res) => res.json())
       .then((data) => setCountries(data))
       .catch((err) => console.error(err));
