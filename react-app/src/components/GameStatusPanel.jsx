@@ -1,5 +1,4 @@
 
-
 import AnalogTimerClock from "./AnalogTimerClock";
 import Confetti from "react-confetti";
 import { useEffect, useState } from "react";
@@ -24,6 +23,7 @@ function GameStatusPanel({
 
   // Confetti state: show for 2s after correct answer
   const [showConfetti, setShowConfetti] = useState(false);
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (feedback && feedback.correct) {
       setShowConfetti(true);
@@ -33,6 +33,7 @@ function GameStatusPanel({
       setShowConfetti(false);
     }
   }, [feedback]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   return (
     <div className={`game-status-card ${timerStateClass}`} style={{ position: "relative", overflow: "visible" }}>

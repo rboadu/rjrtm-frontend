@@ -71,7 +71,7 @@ export default function LoadScript() {
     try {
       setCountries(Array.isArray(countriesData) ? countriesData : []);
       setStatus("Countries loaded (local)");
-    } catch (err) {
+    } catch {
       setStatus("Failed to load local countries");
       setIsError(true);
     } finally {
@@ -211,20 +211,6 @@ async function handleSelectState(value) {
     setIsError(true);
   }
 }
-
-// This function renders the options for the select inputs
-  const renderOptions = (data) => {
-    if (!data || data.length === 0) return <option value="">No options</option>;
-    return data.map((item, idx) => {
-      const value = item.code || item.id || item.name || String(idx);
-      const label = item.name || JSON.stringify(item);
-      return (
-        <option key={idx} value={value}>
-          {label}
-        </option>
-      );
-    });
-  };
 
   const inputCls = "px-3 py-2 rounded-md border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500";
 

@@ -1,14 +1,9 @@
 .team-page {
   min-height: 100vh;
-  background-color: white;
   padding: 5rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.dark .team-page {
-  background-color: rgb(17 24 39);
 }
 
 .team-title {

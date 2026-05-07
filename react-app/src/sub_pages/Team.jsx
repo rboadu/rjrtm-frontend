@@ -44,7 +44,7 @@ export default function Team() {
   const row1 = teamMembers.slice(0, 3);
   const row2 = teamMembers.slice(3);
   return (
-    <div className="team-page">
+    <div className="team-page bg-white dark:bg-gray-900">
       <h1 className="team-title">Senior Design Team</h1>
       <p className="team-subtitle">This is the RJRTM team.</p>
       <a href="#contact-us" className="team-contact-link">

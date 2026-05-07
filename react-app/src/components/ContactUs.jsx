@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from "react";
 
+const STORAGE_KEY_DRAFT = "contactFormDraft";
+const STORAGE_KEY_SUBMISSIONS = "contactFormSubmissions";
+const EMPTY_FORM = { name: "", email: "", message: "" };
+
 export default function ContactUs() {
-  const STORAGE_KEY_DRAFT = "contactFormDraft";
-  const STORAGE_KEY_SUBMISSIONS = "contactFormSubmissions";
-
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [status, setStatus] = useState(null); // null | "saved" | "error"
-  const [error, setError] = useState("");
-
-  // load draft on mount
-  useEffect(() => {
+  const [form, setForm] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_DRAFT);
-      if (saved) setForm(JSON.parse(saved));
+      return saved ? JSON.parse(saved) : EMPTY_FORM;
     } catch {
-      /* ignore */
+      return EMPTY_FORM;
     }
-  }, []);
+  });
+  const [status, setStatus] = useState(null); // null | "saved" | "error"
+  const [error, setError] = useState("");
 
   // update draft in localStorage whenever form changes
   useEffect(() => {

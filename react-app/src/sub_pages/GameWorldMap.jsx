@@ -69,10 +69,9 @@ function WorldMapPage() {
         return { name, lat, lng };
       })
       .filter(Boolean);
-  }, [countriesGeoJson, bboxCenter]);
+  }, [countriesGeoJson]);
 
   useEffect(() => {
-    setLoading(true);
     fetch("https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_admin_0_countries.geojson")
       .then((res) => res.json())
       .then((data) => {
@@ -148,14 +147,6 @@ function WorldMapPage() {
 
 
   useEffect(() => {
-    if (!gameStarted || timeLeft > 0) return;
-    setStreak(0);
-    setGameStarted(false);
-    setGameOver(true);
-  }, [gameStarted, timeLeft]);
-
-
-  useEffect(() => {
     if (!gameStarted) return;
     requestAnimationFrame(() => {
       mapSectionRef.current?.scrollIntoView({
@@ -212,38 +203,36 @@ function WorldMapPage() {
       }, 2000);
       setGuessCount(0);
     } else {
-      setGuessCount((prev) => {
-        const next = prev + 1;
-        if (next >= 3) {
-          setStreak(0);
-          setGameStarted(false);
-          setGameOver(true);
-          setFeedback({
-            correct: false,
-            message: `Out of guesses! The correct answer was ${targetName}.`,
-            distanceKm: targetCountry
-              ? haversineKm(selectedLocation.lat, selectedLocation.lng, targetCountry.lat, targetCountry.lng)
-              : null,
-          });
-          setSelectedLocation(null);
-        } else {
-          setStreak(0);
-          const distanceKm = targetCountry
+      const nextGuessCount = guessCount + 1;
+      setGuessCount(nextGuessCount);
+      if (nextGuessCount >= 3) {
+        setStreak(0);
+        setGameStarted(false);
+        setGameOver(true);
+        setFeedback({
+          correct: false,
+          message: `Out of guesses! The correct answer was ${targetName}.`,
+          distanceKm: targetCountry
             ? haversineKm(selectedLocation.lat, selectedLocation.lng, targetCountry.lat, targetCountry.lng)
-            : null;
-          setFeedback({
-            correct: false,
-            message: clickedName
-              ? `That's ${clickedName}. Try again!`
-              : `You clicked the ocean! Try again!`,
-            distanceKm,
-          });
-          setSelectedLocation(null);
-        }
-        return next;
-      });
+            : null,
+        });
+        setSelectedLocation(null);
+      } else {
+        setStreak(0);
+        const distanceKm = targetCountry
+          ? haversineKm(selectedLocation.lat, selectedLocation.lng, targetCountry.lat, targetCountry.lng)
+          : null;
+        setFeedback({
+          correct: false,
+          message: clickedName
+            ? `That's ${clickedName}. Try again!`
+            : `You clicked the ocean! Try again!`,
+          distanceKm,
+        });
+        setSelectedLocation(null);
+      }
     }
-  }, [selectedLocation, findClickedCountry, targetCountry, getRandomCountry, haversineKm]);
+  }, [selectedLocation, findClickedCountry, targetCountry, getRandomCountry, guessCount]);
 
 
   const clearSelection = useCallback(() => {
@@ -251,6 +240,8 @@ function WorldMapPage() {
     setFeedback(null);
   }, []);
 
+
+  const isGameOver = gameOver || (gameStarted && timeLeft <= 0);
 
   return (
     <div className="page-container dark">
@@ -296,7 +287,7 @@ function WorldMapPage() {
           <div style={{ textAlign: "center", margin: "2rem 0" }}>
             <span>Loading map data...</span>
           </div>
-        ) : gameStarted && targetCountry ? (
+        ) : gameStarted && targetCountry && timeLeft > 0 ? (
           <GameStatusPanel
             targetCountry={targetCountry}
             timeLeft={timeLeft}
@@ -309,7 +300,7 @@ function WorldMapPage() {
             onClearSelection={clearSelection}
             feedback={feedback}
           />
-        ) : gameOver ? (
+        ) : isGameOver ? (
           <div className="game-over-card">
             <h2 className="game-over-title">Time's Up!</h2>
             <p className="game-over-score">You scored <strong>{score}</strong> {score === 1 ? "point" : "points"}.</p>

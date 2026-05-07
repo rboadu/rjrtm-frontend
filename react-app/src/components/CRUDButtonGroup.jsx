@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { API_BASE } from "../config";
 import ErrorModal from "./ErrorModal";
 
@@ -45,7 +45,7 @@ function createEmptyValues(fields) {
 }
 
 function buildUrl(path) {
-  const base = ("http://127.0.0.1:8000/" || "").replace(/\/+$/, "");
+  const base = API_BASE.replace(/\/+$/, "");
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   return `${base}${normalizedPath}`;
 }
@@ -102,7 +102,7 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
   useEffect(() => {
     setCreateRows([createEmptyValues(fields)]);
     setStatus("");
-  }, [entityType]);
+  }, [entityType, fields]);
 
   useEffect(() => {
     setActive("Create");
@@ -173,7 +173,7 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
   const [listData, setListData] = useState([]);
   const [isLoadingList, setIsLoadingList] = useState(false);
 
-  const handleList = async () => {
+  const handleList = useCallback(async () => {
     setIsLoadingList(true);
     setListData([]);
     try {
@@ -188,18 +188,18 @@ export default function CRUDButtonGroup({ entityType = "C" }) {
         throw new Error(`${response.status} ${response.statusText}`);
       const data = await response.json();
       setListData(Array.isArray(data) ? data : []);
-    } catch (err) {
+    } catch {
       setListData([]);
     } finally {
       setIsLoadingList(false);
     }
-  };
+  }, [entityType]);
 
   useEffect(() => {
     if (active === "List") {
       handleList();
     }
-  }, [active, entityType]);
+  }, [active, handleList]);
 
   const renderInputs = () => {
     switch (active) {

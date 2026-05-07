@@ -1,6 +1,6 @@
 export const API_BASE =
   // Node/process (only if present at build/runtime)
-  (typeof process !== "undefined" && process.env && process.env.REACT_APP_API_URL) ||
+  (typeof globalThis.process !== "undefined" && globalThis.process.env && globalThis.process.env.REACT_APP_API_URL) ||
   // Vite runtime env
   (typeof import.meta !== "undefined" &&
     import.meta.env &&
